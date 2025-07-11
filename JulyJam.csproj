@@ -10,7 +10,7 @@
 
 	<!-- References -->
 	<ItemGroup>
-		
+	  <Folder Include="NewFolder\" />
 	</ItemGroup>
 
     <!-- Publicize tModLoader for easy access to private fields -->
