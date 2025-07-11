@@ -19,9 +19,9 @@ namespace JulyJam.Common.Systems
         // m - Whether this tile is a mine
         // f - Whether this tile is flagged by the player
         // nnnnnmf0
-        public byte bitpack;
-        public bool HasMine { get => TileDataPacking.GetBit(bitpack, 2); 
-            set => bitpack = (byte)TileDataPacking.SetBit(value, bitpack, 2); }
+        public byte data;
+        public bool HasMine { get => TileDataPacking.GetBit(data, 2); 
+            set => data = (byte)TileDataPacking.SetBit(value, data, 2); }
 
 
     }
@@ -43,11 +43,11 @@ namespace JulyJam.Common.Systems
                     throw new Exception("This method only works for ITileDatas whose size is 1");
                 writer.Write(MemoryMarshal.Cast<MinesweeperData, byte>(Main.tile.GetData<MinesweeperData>()));
             }
-            tag["MyTileDatas"] = data.ToArray();
+            tag["MinesweeperData"] = data.ToArray();
         }
         public override void LoadWorldData(TagCompound tag)
         {
-            if (tag.TryGet("MyTileDatas", out byte[] data))
+            if (tag.TryGet("MinesweeperData", out byte[] data))
             {
                 using (BinaryReader reader = new(new DeflateStream(new MemoryStream(data), CompressionMode.Decompress), Encoding.UTF8))
                 {
@@ -67,7 +67,7 @@ namespace JulyJam.Common.Systems
                             if (Unsafe.SizeOf<MinesweeperData>() != 1)
                                 throw new Exception("This method only works for ITileDatas whose size is 1");
                             var worldData = MemoryMarshal.Cast<MinesweeperData, byte>(Main.tile.GetData<MinesweeperData>());
-                            reader.Read(worldData);
+                            reader.BaseStream.ReadExactly(worldData);
                         }
                     }
                     // add more else-ifs for newer versions of the data
@@ -76,6 +76,10 @@ namespace JulyJam.Common.Systems
                         throw new Exception("Unknown world data saved version");
                     }
                 }
+            }
+            else
+            {
+                Log.Warn("No MinesweeperData found in world data. This is normal for new worlds or worlds that haven't been played yet.");
             }
         }
     }
