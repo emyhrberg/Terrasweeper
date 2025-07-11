@@ -1,3 +1,9 @@
+Items: {
+	MineItem: {
+		DisplayName: Mine Item
+		Tooltip: ""
+	}
+}
 Worldgen.WorldgenMinesPassMessage: Adding mines...
 BuilderToggles: {
 	NumbersVisibleBuilderToggle: {
