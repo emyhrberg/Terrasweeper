@@ -15,7 +15,7 @@ namespace JulyJam.Helpers
     {
         // Add assets here
         // public static Asset<Texture2D> EditorIcon;
-
+        public static Asset<Texture2D> Mine;
         // This bool automatically initializes all specified assets
         public static bool Initialized { get; set; }
 
