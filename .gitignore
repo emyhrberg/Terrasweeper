@@ -1,0 +1,8 @@
+# Folders
+/bin
+/obj
+/.vs
+/.idea
+
+# Files
+*.user
