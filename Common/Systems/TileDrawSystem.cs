@@ -9,18 +9,12 @@ namespace JulyJam.Common.Systems
         public override void PostDrawTiles()
         {
             base.PostDrawTiles();
+            if (!BuilderToggles.NumbersVisibleState.Visible) return;
+
             Main.spriteBatch.Begin();
 
-            // Check if the toggle is enabled
-            if (!BuilderToggles.NumbersVisibleState.Visible)
-            {
-                // If not visible, skip drawing numbers
-                Main.spriteBatch.End();
-                return;
-            }
-
-            // Draw test numbers
-            int padding = -5;
+            // Draw test numbers using 16x16 tile scaling logic
+            int padding = -29;
             int tileStartX = Math.Max((int)(Main.screenPosition.X / 16) - padding, 0);
             int tileStartY = Math.Max((int)(Main.screenPosition.Y / 16) - padding, 0);
             int tileEndX = Math.Min((int)((Main.screenPosition.X + Main.screenWidth) / 16) + padding, Main.maxTilesX - 1);
@@ -31,7 +25,8 @@ namespace JulyJam.Common.Systems
                 for (int y = tileStartY; y <= tileEndY; y++)
                 {
                     Vector2 drawPos = new(x * 16 - Main.screenPosition.X, y * 16 - Main.screenPosition.Y);
-                    Utils.DrawBorderString(Main.spriteBatch, "1", drawPos, Color.Red);
+                    string number = "1";
+                    Utils.DrawBorderString(Main.spriteBatch, number, drawPos, Color.Red, 1.0f);
                 }
             }
 
