@@ -29,7 +29,7 @@ public class MineFlagGlobalTile : GlobalTile
             TriggerMine(i, j);
             //Update data to turn it into number or empty space
         }
-        data.Clear();
+        data.ClearMineFlagData();
     }
 
     private static void TriggerMine(int i, int j)

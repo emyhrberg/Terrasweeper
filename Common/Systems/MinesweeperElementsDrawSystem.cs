@@ -9,14 +9,11 @@ using Terraria.ModLoader;
 
 namespace JulyJam.Common.Systems
 {
-    internal class TileDrawSystem : ModSystem
+    internal class MinesweeperElementsDrawSystem : ModSystem
     {
         public override void PostDrawTiles()
         {
             base.PostDrawTiles();;
-            //Main.spriteBatch.Begin();
-
-
             if (NumbersVisibleState.Visible)
                 DrawMinesweeperElements();
 

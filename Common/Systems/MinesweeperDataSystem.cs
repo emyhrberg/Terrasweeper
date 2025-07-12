@@ -18,19 +18,28 @@ namespace JulyJam.Common.Systems
         // n - Number of mines in the 3x3 area around this tile
         // m - Whether this tile is a mine
         // f - Whether this tile is flagged by the player
-        // nnnnnmf0
+        // nnnn0mf0
         public byte data;
-        public bool HasMine { get => TileDataPacking.GetBit(data, 2); 
-            set => data = (byte)TileDataPacking.SetBit(value, data, 2); }
+        public bool HasMine
+        {
+            get => TileDataPacking.GetBit(data, 2);
+            set => data = (byte)TileDataPacking.SetBit(value, data, 2);
+        }
         public bool HasFlag
         {
             get => TileDataPacking.GetBit(data, 1);
             set => data = (byte)TileDataPacking.SetBit(value, data, 1);
         }
-
-        public void Clear()
+        public byte TileNumber // from 0 to 9
         {
-            data = 0; // clear all bits
+            get => (byte)TileDataPacking.Unpack(data, 4, 4);
+            set => data = (byte)TileDataPacking.Pack(value, data, 4, 4);
+        }
+
+        public void ClearMineFlagData()
+        {
+            HasMine = false;
+            HasFlag = false;
         }
     }
     class MinesweeperDataSystem : ModSystem
