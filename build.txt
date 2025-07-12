@@ -1,3 +1,3 @@
-displayName = July Jam Mod
+displayName = Terrasweeper
 author = Erky, Cotlim and Cronus
 version = 0.1
