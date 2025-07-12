@@ -23,4 +23,4 @@ Items: {
 }
 
 Projectiles.MineExplosion.DisplayName: Mine Explosion
-Worldgen.WorldgenMinesPassMessage: Mods.JulyJam.Worldgen.WorldgenMinesPassMessage
+Worldgen.WorldgenMinesPassMessage: Adding mines...
