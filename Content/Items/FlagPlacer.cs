@@ -1,4 +1,4 @@
-using JulyJam.Content.TileEntities;
+using JulyJam.Common.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -38,11 +38,16 @@ namespace JulyJam.Content.Items
             Vector2 worldPos = Main.MouseWorld;
             player.LimitPointToPlayerReachableArea(ref worldPos); // limit to player reach
             Point tilePos = worldPos.ToTileCoordinates();
+            Tile tile = Main.tile[tilePos];
 
-            if (!Main.tile[tilePos].HasTile)
-                return false; // only toggle if the tile exists
+            if (!tile.HasTile || Main.tileFrameImportant[tile.TileType])
+                return false; // only toggle if the tile exists and not a frameimportant
 
-            FlagTileEntity.Toggle(tilePos);
+            
+            ref var data = ref tile.Get<MinesweeperData>();
+            data.HasFlag = !data.HasFlag; // toggle flag presence
+
+            //FlagTileEntity.Toggle(tilePos);
 
             SoundEngine.PlaySound(SoundID.Grab, player.Center);
             return true;

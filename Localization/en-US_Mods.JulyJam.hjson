@@ -15,6 +15,12 @@ Items: {
 		DisplayName: Mine Placer
 		Tooltip: Place a mine on a tile
 	}
+
+	MineItem: {
+		DisplayName: Mine Item
+		Tooltip: ""
+	}
 }
 
 Projectiles.MineExplosion.DisplayName: Mine Explosion
+Worldgen.WorldgenMinesPassMessage: Mods.JulyJam.Worldgen.WorldgenMinesPassMessage

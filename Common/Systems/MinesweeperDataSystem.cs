@@ -22,8 +22,16 @@ namespace JulyJam.Common.Systems
         public byte data;
         public bool HasMine { get => TileDataPacking.GetBit(data, 2); 
             set => data = (byte)TileDataPacking.SetBit(value, data, 2); }
+        public bool HasFlag
+        {
+            get => TileDataPacking.GetBit(data, 1);
+            set => data = (byte)TileDataPacking.SetBit(value, data, 1);
+        }
 
-
+        public void Clear()
+        {
+            data = 0; // clear all bits
+        }
     }
     class MinesweeperDataSystem : ModSystem
     {

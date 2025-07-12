@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -15,8 +16,7 @@ namespace JulyJam.Helpers
     {
         // Add assets here
         // public static Asset<Texture2D> EditorIcon;
-        public static Asset<Texture2D> Mine;
-        public static Asset<Texture2D> Flag;
+        public static Asset<Texture2D> Minesweeper;
 
         static Ass()
         {
@@ -27,6 +27,28 @@ namespace JulyJam.Helpers
         public static bool Initialized { get; set; }
     }
 
+
+    public static class MinesweeperTextures
+    {
+        public static Rectangle GetRectangle(MinesweeperTexturesEnum mte) {
+            return new Rectangle(18 * (int)mte, 0, 16, 16);
+        }
+
+    }
+    public enum MinesweeperTexturesEnum
+    {
+        Mine = 0,
+        One = 1,
+        Two = 2,
+        Three = 3,
+        Four = 4,
+        Five = 5,
+        Six = 6,
+        Seven = 7,
+        Eight = 8,
+        Nine = 9,
+        Flag = 10,
+    }
     /// <summary>
     /// System that automatically initializes assets
     /// </summary>

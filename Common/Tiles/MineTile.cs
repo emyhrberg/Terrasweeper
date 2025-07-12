@@ -1,9 +1,11 @@
-﻿using JulyJam.Content.Projectiles;
-using JulyJam.Content.TileEntities;
+﻿using JulyJam.Common.Systems;
+using JulyJam.Content.Projectiles;
+
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace JulyJam.Common.Tiles;
 
@@ -14,43 +16,29 @@ public class MineFlagGlobalTile : GlobalTile
     {
         if (fail || effectOnly) return; // tile survived or just an effect
 
-        RemoveEntityIfPresent(i, j);
-    }
-
-    private static void RemoveEntityIfPresent(int i, int j)
-    {
-        Point16 pos = new(i, j);
-        if (!TileEntity.ByPosition.TryGetValue(pos, out var te)) return;
-
-        switch (te)
+        Tile tile = Main.tile[i, j];
+        ref var data = ref tile.Get<MinesweeperData>();
+        if (data.HasMine && !data.HasFlag)
         {
-            case MineTileEntity mine:
-                mine.Kill(i, j);
-                TriggerMine(new Point(i, j)); // trigger the mine explosion
-                break;
-            case FlagTileEntity flag:
-                flag.Kill(i, j);
-                break;
-            default: return;                         // some other TE, ignore
+            TriggerMine(i, j);
+             // clear the mine data after triggering
+            //Update data to turn it into number or empty space
         }
-
-        // Tell clients the TE is gone
-        if (Main.netMode == NetmodeID.Server)
-            NetMessage.SendData(MessageID.TileEntitySharing,
-                                 number: i, number2: j);  // kill packet
+        else if (data.HasFlag && !data.HasMine)
+        {
+            TriggerMine(i, j);
+            //Update data to turn it into number or empty space
+        }
+        data.Clear();
     }
 
-    private static void TriggerMine(Point tilePos)
+    private static void TriggerMine(int i, int j)
     {
-        // remove the mine entity first
-        if (MineTileEntity.TryGet(tilePos, out var mt))
-            mt.Kill(tilePos.X, tilePos.Y);
-
         // centre of the tile in world coords
-        Vector2 centre = new((tilePos.X + 0.5f) * 16f, (tilePos.Y + 0.5f) * 16f);
+        Vector2 centre = new((i + 0.5f) * 16f, (j + 0.5f) * 16f);
 
         Projectile.NewProjectile(
-            new EntitySource_TileInteraction(Main.LocalPlayer, tilePos.X, tilePos.Y),
+            new EntitySource_TileInteraction(Main.LocalPlayer, i, j),
             centre,
             Vector2.Zero,
             ModContent.ProjectileType<MineExplosion>(),
