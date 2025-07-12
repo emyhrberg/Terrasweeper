@@ -1,11 +1,12 @@
 ﻿using JulyJam.Common.BuilderToggles;
+using JulyJam.Common.Configs;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace JulyJam.Common.Systems
 {
-    internal class MinesweeperElementsDrawSystem : ModSystem
+    internal class MinesweeperDrawSystem : ModSystem
     {
         public override void PostDrawTiles()
         {
@@ -52,7 +53,7 @@ namespace JulyJam.Common.Systems
                     bool isTileSolid = JJUtils.IsTileSolid(tile);
 
                     // Mines
-                    if (data.HasMine && !data.HasFlag && isTileSolid)
+                    if (data.HasMine && !data.HasFlag && isTileSolid && Conf.C.showMines)
                     {
                         Main.spriteBatch.Draw(
                             Ass.Minesweeper.Value,

@@ -32,7 +32,11 @@ Worldgen: {
 Configs: {
 	MinesWorldGenConfig: {
 		DisplayName: World Generation Config
-		Headers.Worldgen: World generation
+
+		Headers: {
+			Worldgen: World generation
+			Debugging: Debugging Header
+		}
 
 		numMines: {
 			Label: Number of mines
@@ -41,6 +45,16 @@ Configs: {
 				Max number of mines to place in the world
 				Actual value may be lower depending on world size
 				'''
+		}
+
+		showMines: {
+			Label: show Mines
+			Tooltip: ""
+		}
+
+		ratioOfMines: {
+			Label: ratio Of Mines
+			Tooltip: ""
 		}
 	}
 }

@@ -17,6 +17,10 @@ public class MineFlagGlobalTile : GlobalTile
         if (fail || effectOnly) return; // tile survived or just an effect
 
         Tile tile = Main.tile[i, j];
+        if (!JJUtils.IsTileSolid(tile))
+        {
+            return;
+        }
         ref var data = ref tile.Get<MinesweeperData>();
         if (data.HasMine && !data.HasFlag)
         {

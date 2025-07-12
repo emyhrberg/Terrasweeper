@@ -44,7 +44,7 @@ namespace JulyJam.Common.Systems
         {
             ref var data = ref Main.tile[x, y].Get<MinesweeperData>();
             Main.NewText("data: " + data.data);
-            Main.NewText("mines: " + data.NumMines);
+            Main.NewText("mines: " + data.TileNumber);
         }
     }
 
@@ -56,69 +56,31 @@ namespace JulyJam.Common.Systems
         {
             progress.Message = MinesweeperWorldGen.WorldgenMinesPassMessage.Value;
 
-            //int spawnX = Main.spawnTileX - 5;
-            //int spawnY = Main.spawnTileY;
-            int numMines = ModContent.GetInstance<MinesWorldGenConfig>().numMines;
-            Math.Clamp(numMines, 0, (Main.maxTilesX * Main.maxTilesY) / 2);
+            int ratioOfMines = Conf.C.ratioOfMines;
 
             // Place mines
-            for(int i = 0; i < numMines; i++)
-            {
-                int x = Main.rand.Next(Main.maxTilesX);
-                int y = Main.rand.Next(Main.maxTilesY);
-                if (JJUtils.CanPlaceMine(Main.tile[x, y]))
-                {
-                    //WorldGen.PlaceTile(x, y, TileID.BorealWood, forced: true); // testing code
-                    ref var data = ref Main.tile[x, y].Get<MinesweeperData>();
-                    data.HasMine = true;
-                }
-                else continue;
-            }
-
-            // Place everything else
-            progress.Message = MinesweeperWorldGen.WorldgenHintTilesPassMessage.Value;
-
-            /*//test code, delete on release
-            int[] hintTiles = [
-                TileID.Stone,           // 0 mines
-                TileID.CopperBrick,     // 1 mine
-                TileID.TinBrick,        // 2 mines
-                TileID.IronBrick,       // 3 mines
-                TileID.LeadBrick,       // 4 mines
-                TileID.SilverBrick,     // 5 mines
-                TileID.TungstenBrick,   // 6 mines
-                TileID.GoldBrick,       // 7 mines
-                TileID.PlatinumBrick    // 8 mines
-            ];*/
-
             for (int j = 0; j < Main.maxTilesY; j++)
             {
                 for (int i = 0; i < Main.maxTilesX; i++)
                 {
-                    ref var data = ref Main.tile[i, j].Get<MinesweeperData>();
-                    if (JJUtils.CanPlaceMine(Main.tile[i, j]) && !data.HasMine) // not a mine
+                    Tile tile = Framing.GetTileSafely(i, j);
+                    if (!JJUtils.CanPlaceMine(tile))
                     {
-                        int minesAround = 0;
-                        for(int j2 = -1; j2 <= 1; j2++)
-                        {
-                            for(int i2 = -1; i2 <= 1; i2++)
-                            {
-                                if(WorldGen.InWorld(i + i2, j + j2))
-                                {
-                                    ref var surroundingData = ref Main.tile[i + i2, j + j2].Get<MinesweeperData>();
-                                    if (surroundingData.HasMine)
-                                    {
-                                        minesAround += 1;
-                                    }
-                                }
-                            }
-                        }
-                        //if(minesAround > 0) WorldGen.PlaceTile(i, j, hintTiles[minesAround], forced: true); // testing code
-                        data.NumMines = minesAround;
+                        continue;
                     }
+                    ref var data = ref tile.Get<MinesweeperData>();
+                    bool hasMine = Main.rand.Next(100) < ratioOfMines;
+                    data.HasMine = hasMine;
+                    if(hasMine)
+                    {
+                        MinesweeperData.UpdateNumbersOfMines3x3(i, j);
+                    }
+                    
                 }
-
             }
+
+            // Place everything else
+            progress.Message = MinesweeperWorldGen.WorldgenHintTilesPassMessage.Value;
         }
     }
 }
