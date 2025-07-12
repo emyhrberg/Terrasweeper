@@ -16,22 +16,15 @@ namespace JulyJam.Helpers
         // Add assets here
         // public static Asset<Texture2D> EditorIcon;
         public static Asset<Texture2D> Mine;
-        // This bool automatically initializes all specified assets
-        public static bool Initialized { get; set; }
+        public static Asset<Texture2D> Flag;
 
         static Ass()
         {
-            foreach (FieldInfo field in typeof(Ass).GetFields())
-            {
+            foreach (var field in typeof(Ass).GetFields())
                 if (field.FieldType == typeof(Asset<Texture2D>))
-                {
-                    string modName = "JulyJam";
-                    string path = field.Name;
-                    var asset = ModContent.Request<Texture2D>($"{modName}/Assets/{path}", AssetRequestMode.AsyncLoad);
-                    field.SetValue(null, asset);
-                }
-            }
+                    field.SetValue(null, ModContent.Request<Texture2D>($"JulyJam/Assets/{field.Name}"));
         }
+        public static bool Initialized { get; set; }
     }
 
     /// <summary>
@@ -39,9 +32,6 @@ namespace JulyJam.Helpers
     /// </summary>
     public class LoadAssets : ModSystem
     {
-        public override void Load()
-        {
-            _ = Ass.Initialized;
-        }
+        public override void Load() => _ = Ass.Initialized;
     }
 }
