@@ -13,7 +13,6 @@ namespace JulyJam.Content.Items
 {
     internal class MineItem : ModItem
     {
-        public override string Texture => "JulyJam/Assets/Mine";
         public override void SetDefaults()
         {
             Item.width = 16;
