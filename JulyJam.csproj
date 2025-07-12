@@ -9,9 +9,6 @@
 	</PropertyGroup>
 
 	<!-- References -->
-	<ItemGroup>
-		
-	</ItemGroup>
 
     <!-- Publicize tModLoader for easy access to private fields -->
 	<ItemGroup>
