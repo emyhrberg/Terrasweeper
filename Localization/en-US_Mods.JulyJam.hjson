@@ -23,4 +23,24 @@ Items: {
 }
 
 Projectiles.MineExplosion.DisplayName: Mine Explosion
-Worldgen.WorldgenMinesPassMessage: Adding mines...
+
+Worldgen: {
+	WorldgenMinesPassMessage: Adding mines...
+	WorldgenHintTilesPassMessage: Sweeping mines...
+}
+
+Configs: {
+	MinesWorldGenConfig: {
+		DisplayName: World Generation Config
+		Headers.Worldgen: World generation
+
+		numMines: {
+			Label: Number of mines
+			Tooltip:
+				'''
+				Max number of mines to place in the world
+				Actual value may be lower depending on world size
+				'''
+		}
+	}
+}
