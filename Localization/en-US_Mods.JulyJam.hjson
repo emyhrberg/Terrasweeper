@@ -1,6 +1,20 @@
 BuilderToggles: {
 	NumbersVisibleBuilderToggle: {
-		Terrasweeper Numbers: On
-		Terrasweeper Numbers: Off
+		OnText: Mine sweeper numbers on
+		OffText: Mine sweeper numbers off
 	}
 }
+
+Items: {
+	FlagPlacer: {
+		DisplayName: Flag Placer
+		Tooltip: Place a flag on a tile
+	}
+
+	MinePlacer: {
+		DisplayName: Mine Placer
+		Tooltip: Place a mine on a tile
+	}
+}
+
+Projectiles.MineExplosion.DisplayName: Mine Explosion
