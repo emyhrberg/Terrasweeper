@@ -27,6 +27,11 @@ namespace JulyJam.Common.Systems
             get => TileDataPacking.GetBit(data, 1);
             set => data = (byte)TileDataPacking.SetBit(value, data, 1);
         }
+        public int NumMines
+        {
+            get => (int)data >> 3;
+            set => data = (byte)(value << 3);
+        }
 
         public void Clear()
         {
