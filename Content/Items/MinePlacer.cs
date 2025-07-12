@@ -47,6 +47,7 @@ namespace JulyJam.Content.Items
             //MineTileEntity.Toggle(tilePos);
             ref var data = ref Main.tile[tilePos].Get<MinesweeperData>();
             data.HasMine = !data.HasMine;
+            MinesweeperData.UpdateNumbersOfMines3x3(tilePos.X, tilePos.Y);
 
             SoundEngine.PlaySound(SoundID.Grab, player.Center);
             return true;

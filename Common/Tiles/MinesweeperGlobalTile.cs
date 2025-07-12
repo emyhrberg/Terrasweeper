@@ -20,16 +20,22 @@ public class MineFlagGlobalTile : GlobalTile
         ref var data = ref tile.Get<MinesweeperData>();
         if (data.HasMine && !data.HasFlag)
         {
+            data.ClearMineFlagData();
             TriggerMine(i, j);
-             // clear the mine data after triggering
-            //Update data to turn it into number or empty space
+            MinesweeperData.UpdateNumbersOfMines3x3(i, j);
         }
         else if (data.HasFlag && !data.HasMine)
         {
+            data.ClearMineFlagData();
             TriggerMine(i, j);
-            //Update data to turn it into number or empty space
+            MinesweeperData.UpdateNumbersOfMines3x3(i, j);
         }
-        data.ClearMineFlagData();
+        else if (data.HasMine && data.HasFlag)
+        {
+            // if the tile has a mine and a flag, we just remove the flag
+            data.ClearMineFlagData();
+            MinesweeperData.UpdateNumbersOfMines3x3(i, j);
+        }
     }
 
     private static void TriggerMine(int i, int j)

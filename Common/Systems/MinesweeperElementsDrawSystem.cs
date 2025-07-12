@@ -1,10 +1,6 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using JulyJam.Common.BuilderToggles;
+﻿using JulyJam.Common.BuilderToggles;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace JulyJam.Common.Systems
@@ -13,11 +9,11 @@ namespace JulyJam.Common.Systems
     {
         public override void PostDrawTiles()
         {
-            base.PostDrawTiles();;
+            base.PostDrawTiles(); ;
             if (NumbersVisibleState.Visible)
                 DrawMinesweeperElements();
 
-            
+
         }
 
         public void DrawMinesweeperElements()
@@ -50,34 +46,65 @@ namespace JulyJam.Common.Systems
                 for (int j = tileStartY + screenOverdrawOffset.Y; j < tileEndY - screenOverdrawOffset.Y; j++)
                 {
                     var tile = Main.tile[i, j];
-                    /*
-                    if (tile.HasTile && !Main.tileFrameImportant[tile.TileType])
-                    {
-                        continue;
-                    }
 
-                    Vector2 drawPos = new(i * 16 - Main.screenPosition.X, j * 16 - Main.screenPosition.Y);
-                    Main.spriteBatch.Draw(
-                        Ass.Minesweeper.Value,
-                        drawPos,
-                        new Rectangle(18, 0, 16, 16),
-                        Lighting.GetColor(i, j), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);*/
                     ref var data = ref tile.Get<MinesweeperData>();
                     Vector2 drawPos = new(i * 16 - Main.screenPosition.X, j * 16 - Main.screenPosition.Y);
-                    if (data.HasMine && !data.HasFlag)
+                    bool isTileSolid = JJUtils.IsTileSolid(tile);
+
+                    // Mines
+                    if (data.HasMine && !data.HasFlag && isTileSolid)
                     {
                         Main.spriteBatch.Draw(
                             Ass.Minesweeper.Value,
                             drawPos,
                             MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.Mine),
                             Lighting.GetColor(i, j), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-                    }else if (data.HasFlag)
+                    }
+                    // Flag
+                    else if (data.HasFlag && isTileSolid)
                     {
                         Main.spriteBatch.Draw(
                             Ass.Minesweeper.Value,
                             drawPos,
                             MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.Flag),
                             Lighting.GetColor(i, j), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                    }
+                    // Error data on tile
+                    else if ((data.HasFlag || data.HasMine) && !isTileSolid)
+                    {
+                        Main.spriteBatch.Draw(
+                            Ass.Minesweeper.Value,
+                            drawPos,
+                            MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.Nine),
+                            Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                        Log.Warn($"Wrong data on tile!");
+                    }
+                    else if (!isTileSolid)
+                    {
+                        // Nothing, no mines near tile
+                        if (data.TileNumber == 0)
+                        {
+                            continue;
+                        }
+                        // numbers from 1 to 8
+                        if (data.TileNumber > 0 && data.TileNumber < 9)
+                        {
+                            Main.spriteBatch.Draw(
+                            Ass.Minesweeper.Value,
+                            drawPos,
+                            MinesweeperTextures.GetRectangle((MinesweeperTexturesEnum)data.TileNumber),
+                            Lighting.GetColor(i, j), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                        }
+                        // Error data on tile
+                        else
+                        {
+                            Main.spriteBatch.Draw(
+                            Ass.Minesweeper.Value,
+                            drawPos,
+                            MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.Nine),
+                            Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                            Log.Warn($"Wrong data on tile!");
+                        }
                     }
 
                 }

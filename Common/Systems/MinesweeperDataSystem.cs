@@ -35,11 +35,48 @@ namespace JulyJam.Common.Systems
             get => (byte)TileDataPacking.Unpack(data, 4, 4);
             set => data = (byte)TileDataPacking.Pack(value, data, 4, 4);
         }
-
         public void ClearMineFlagData()
         {
             HasMine = false;
             HasFlag = false;
+        }
+
+        public void UpdateNumbersOfMines(int x, int y)
+        {
+            // update the number of mines around this tile
+            int mineCount = 0;
+            for (int i = -1; i <= 1; i++)
+            {
+                for (int j = -1; j <= 1; j++)
+                {
+                    Tile neighborTile = Framing.GetTileSafely(x+i, y+j);
+                    ref var data = ref neighborTile.Get<MinesweeperData>();
+                    if (neighborTile.HasTile && data.HasMine)
+                    {
+                        mineCount++;
+                    }
+                }
+            }
+            if(mineCount > 9)
+            {
+                mineCount = 9;
+                Log.Warn($"Mine count exceeded 9 at ({x}, {y}). Clamping to 9.");
+            }
+            TileNumber = (byte)mineCount;
+        }
+
+        public static void UpdateNumbersOfMines3x3(int x, int y)
+        {
+            // update the number of mines around this tile
+            for (int i = -1; i <= 1; i++)
+            {
+                for (int j = -1; j <= 1; j++)
+                {
+                    Tile neighborTile = Framing.GetTileSafely(x + i, y + j);
+                    ref var data = ref neighborTile.Get<MinesweeperData>();
+                    data.UpdateNumbersOfMines(x + i, y + j);
+                }
+            }
         }
     }
     class MinesweeperDataSystem : ModSystem
