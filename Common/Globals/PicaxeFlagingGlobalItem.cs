@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using JulyJam.Common.BuilderToggles;
-using JulyJam.Common.Systems;
 using Terraria;
 using Terraria.ModLoader;
+using Terrasweeper.Common.BuilderToggles;
 using Terrasweeper.Common.Systems;
 
 namespace Terrasweeper.Common.Globals
