@@ -23,6 +23,7 @@ public class MinesweeperGlobalTile : GlobalTile
         }
         ref var data = ref tile.Get<MinesweeperData>();
         bool unsolvedMine = data.MineStatus == MineStatus.UnsolvedMine;
+        // Fail Mine
         if (unsolvedMine && !data.HasFlag)
         {
             data.ClearMineFlagData();
@@ -30,12 +31,14 @@ public class MinesweeperGlobalTile : GlobalTile
             JJUtils.Explode(i, j);
             MinesweeperData.UpdateNumbersOfMines3x3(i, j);
         }
+        // Fail Flag
         else if (data.HasFlag && !data.HasMine)
         {
             data.ClearMineFlagData();
             JJUtils.Explode(i, j);
             MinesweeperData.UpdateNumbersOfMines3x3(i, j);
         }
+        // Solve Mine
         else if (unsolvedMine && data.HasFlag)
         {
             data.ClearMineFlagData();

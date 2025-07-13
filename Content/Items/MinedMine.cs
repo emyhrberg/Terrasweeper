@@ -23,11 +23,9 @@ namespace JulyJam.Content.Items
             Item.useStyle = ItemUseStyleID.Swing;
             Item.useAnimation = 15;
             Item.useTime = 15;
-            Item.UseSound = SoundID.Dig;
             Item.noMelee = true;
             Item.rare = ItemRarityID.Blue;
             Item.value = Item.buyPrice(silver: 1);
-            Item.consumable = true;
         }
 
         /*
