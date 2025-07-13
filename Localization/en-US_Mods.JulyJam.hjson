@@ -51,6 +51,7 @@ Items: {
 Projectiles: {
 	MineExplosion.DisplayName: Mine Explosion
 	FlagBombProjectile.DisplayName: Flag Bomb
+	MinedMineProjectile.DisplayName: Mined Mine
 }
 
 Worldgen: {

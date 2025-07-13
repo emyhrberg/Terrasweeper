@@ -10,6 +10,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using JulyJam.Content.Projectiles;
 
 namespace JulyJam.Content.Items
 {
@@ -26,6 +27,11 @@ namespace JulyJam.Content.Items
             Item.noMelee = true;
             Item.rare = ItemRarityID.Blue;
             Item.value = Item.buyPrice(silver: 1);
+            Item.shoot = ModContent.ProjectileType<MinedMineProjectile>();
+            Item.damage = 80;
+            Item.DamageType = DamageClass.Ranged;
+            Item.knockBack = 8f;
+            Item.shootSpeed = 5f;
             ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<FlaggedFlag>();
         }
 
