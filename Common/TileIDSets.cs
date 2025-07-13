@@ -25,7 +25,8 @@ namespace JulyJam.Common
                 TileID.CrackedPinkDungeonBrick,
                 TileID.MushroomVines,
                 TileID.CorruptVines,
-                TileID.AshVines
+                TileID.AshVines,
+                TileID.Cactus
             );
     }
 }

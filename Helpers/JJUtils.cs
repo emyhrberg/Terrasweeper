@@ -19,6 +19,10 @@ namespace JulyJam.Helpers
 
         public static bool CanPlaceMine(Tile tile)
         {
+            if (Main.getGoodWorld)
+            {
+                if (tile.TileType == TileID.Ash || tile.TileType == TileID.AshGrass) return false;
+            }
             return IsTileSolid(tile) && !TileID.Sets.Falling[tile.TileType] && TileIDSets.CanPlaceMine[tile.TileType];
         }
     }
