@@ -11,7 +11,6 @@ namespace JulyJam.Common
         public static bool[] CanPlaceMine = TileID.Sets.Factory.CreateNamedSet(CanPlaceMineSetKey)
             .Description("Tiles that can have mines")
             .RegisterBoolSet(true,
-                TileID.FossilOre,
                 TileID.DesertFossil
             );
     }

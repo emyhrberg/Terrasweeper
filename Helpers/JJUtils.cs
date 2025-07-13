@@ -17,7 +17,7 @@ namespace JulyJam.Helpers
 
         public static bool IsTileSolidForMine(Tile tile)
         {
-            return tile.HasTile && !Main.tileFrameImportant[tile.TileType] &&
+            bool result = tile.HasTile && !Main.tileFrameImportant[tile.TileType] &&
                 TileIDSets.CanPlaceMine[tile.TileType] &&
                 !TileID.Sets.IsVine[tile.TileType] &&
                 !TileID.Sets.IsBeam[tile.TileType] &&
@@ -40,6 +40,12 @@ namespace JulyJam.Helpers
                 (TileID.Sets.TouchDamageImmediate[tile.TileType] == 0) &&
                 !TileID.Sets.IsAContainer[tile.TileType] &&
                 !Main.tileCut[tile.TileType];
+            if (Main.getGoodWorld || WorldGen.getGoodWorldGen)
+            {
+                result &= tile.type != TileID.Ash; // Ash is not solid in ftw worlds
+                result &= tile.type != TileID.AshGrass;
+            }
+            return result;
 
 
         }
