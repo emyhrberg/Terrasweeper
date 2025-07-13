@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -37,7 +38,7 @@ namespace JulyJam.Common.Systems
             get => (byte)TileDataPacking.Unpack(data, 4, 4);
             set => data = (byte)TileDataPacking.Pack(value, data, 4, 4);
         }
-        public bool HasMine => MineStatus != MineStatus.None;
+        public bool HasOrAtLeastHadMine => MineStatus != MineStatus.None;
         public void ClearMineFlagData()
         {
             MineStatus = MineStatus.None;
@@ -54,7 +55,7 @@ namespace JulyJam.Common.Systems
                 {
                     Tile neighborTile = Framing.GetTileSafely(x+i, y+j);
                     ref var data = ref neighborTile.Get<MinesweeperData>();
-                    if (data.HasMine)
+                    if (data.HasOrAtLeastHadMine)
                     {
                         mineCount++;
                     }
@@ -95,6 +96,10 @@ namespace JulyJam.Common.Systems
     {
         public override void SaveWorldData(TagCompound tag)
         {
+            if(Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                return;
+            }
             using MemoryStream data = new(Main.maxTilesX);
             // 'fastest' compression level is likely good enough
             using (DeflateStream ds = new(data, CompressionLevel.Fastest, leaveOpen: true))
@@ -113,6 +118,10 @@ namespace JulyJam.Common.Systems
         }
         public override void LoadWorldData(TagCompound tag)
         {
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                return;
+            }
             if (tag.TryGet("MinesweeperData", out byte[] data))
             {
                 using (BinaryReader reader = new(new DeflateStream(new MemoryStream(data), CompressionMode.Decompress), Encoding.UTF8))
@@ -148,5 +157,8 @@ namespace JulyJam.Common.Systems
                 Log.Warn("No MinesweeperData found in world data. This is normal for new worlds or worlds that haven't been played yet.");
             }
         }
+
     }
+
+
 }

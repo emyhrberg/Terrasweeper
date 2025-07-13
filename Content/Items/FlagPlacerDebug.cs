@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 namespace JulyJam.Content.Items
 {
     /// <summary>Left-click toggles a flag on the tile under the cursor.</summary>
-    public class FlagPlacer : ModItem
+    public class FlagPlacerDebug : ModItem
     {
         public override void SetStaticDefaults()
         {

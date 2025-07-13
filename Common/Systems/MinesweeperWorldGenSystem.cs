@@ -10,7 +10,7 @@ using Terraria.WorldBuilding;
 
 namespace JulyJam.Common.Systems
 {
-    public class MinesweeperWorldGen : ModSystem
+    public class MinesweeperWorldGenSystem : ModSystem
     {
         public static LocalizedText WorldgenMinesPassMessage { get; private set; }
         public static LocalizedText WorldgenHintTilesPassMessage { get; private set; }
@@ -54,7 +54,7 @@ namespace JulyJam.Common.Systems
 
         protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
         {
-            progress.Message = MinesweeperWorldGen.WorldgenMinesPassMessage.Value;
+            progress.Message = MinesweeperWorldGenSystem.WorldgenMinesPassMessage.Value;
 
             // int ratioOfMines = Conf.C.ratioOfMines;
             int ratioOfMines = 17;
@@ -81,7 +81,7 @@ namespace JulyJam.Common.Systems
             }
 
             // Place everything else
-            progress.Message = MinesweeperWorldGen.WorldgenHintTilesPassMessage.Value;
+            progress.Message = MinesweeperWorldGenSystem.WorldgenHintTilesPassMessage.Value;
         }
     }
 }
