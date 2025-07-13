@@ -1,4 +1,5 @@
 ﻿using JulyJam.Common.Systems;
+using JulyJam.Content.Dusts;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -51,6 +52,10 @@ namespace JulyJam.Content.Projectiles
                 Main.dust[dustIndex].velocity *= 5f;
                 dustIndex = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100, default(Color), 1.5f);
                 Main.dust[dustIndex].velocity *= 3f;
+            }
+            for(int i = 0; i < 8; i++)
+            {
+                Dust.NewDust(Projectile.Center, 0, 0, ModContent.DustType<FlagDust>());
             }
             int goreIndex = Gore.NewGore(Projectile.Center, default(Vector2), Main.rand.Next(61, 64));
             Main.gore[goreIndex].velocity *= 0.4f;
