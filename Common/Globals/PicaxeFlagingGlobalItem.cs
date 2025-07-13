@@ -1,4 +1,5 @@
-﻿using JulyJam.Common.Systems;
+﻿using JulyJam.Common.BuilderToggles;
+using JulyJam.Common.Systems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace JulyJam.Common.Globals
     {
         public override bool AltFunctionUse(Item item, Player player)
         {
-            if (item.pick <= 0)
+            if (item.pick <= 0 || ModContent.GetInstance<NumbersTransparencyBuilderToggle>().CurrentState == 2)
             {
                 return false;
             }
