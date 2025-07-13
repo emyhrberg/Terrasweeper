@@ -20,6 +20,11 @@ Items: {
 		DisplayName: Mine Item
 		Tooltip: ""
 	}
+
+	MinedMine: {
+		DisplayName: Mined Mine
+		Tooltip: ""
+	}
 }
 
 Projectiles.MineExplosion.DisplayName: Mine Explosion
