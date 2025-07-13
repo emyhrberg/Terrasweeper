@@ -7,7 +7,7 @@ namespace JulyJam.Content.Projectiles;
 
 public class MineExplosion : ModProjectile
 {
-    private const int RadiusPx = 48;
+    private const int RadiusPx = 300;
 
     public override void SetDefaults()
     {
@@ -21,7 +21,7 @@ public class MineExplosion : ModProjectile
         Projectile.friendly = false; 
         Projectile.penetrate = -1;
         Projectile.tileCollide = false;
-        Projectile.timeLeft = 2;     
+        Projectile.timeLeft = 2;
         Projectile.DamageType = DamageClass.Generic;
 
         Projectile.usesLocalNPCImmunity = true;
@@ -51,12 +51,12 @@ public class MineExplosion : ModProjectile
     {
         SoundEngine.PlaySound(SoundID.Item62, Projectile.Center);
 
-        for (int i = 0; i < 60; i++)
+        for (int i = 0; i < 100; i++)
         {
             var d = Dust.NewDustPerfect(
                 Projectile.Center,
                 DustID.Smoke,
-                Main.rand.NextVector2Circular(8f, 8f));
+                Main.rand.NextVector2Circular(20f, 20f));
 
             d.scale = 2f;
             d.noGravity = true;
