@@ -1,10 +1,10 @@
-using JulyJam.Common.PacketHandlers;
 using System.IO;
 using Terraria.ModLoader;
+using Terrasweeper.Common.PacketHandlers;
 
-namespace JulyJam
+namespace Terrasweeper
 {
-    public class JulyJam : Mod
+    public class Terrasweeper : Mod
     {
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {

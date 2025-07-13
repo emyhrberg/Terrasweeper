@@ -1,11 +1,11 @@
-﻿using JulyJam.Common.Globals;
-using JulyJam.Content.Projectiles;
-using Terraria;
+﻿using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terrasweeper.Common.Globals;
+using Terrasweeper.Content.Projectiles;
 
-namespace JulyJam.Helpers
+namespace Terrasweeper.Helpers
 {
     internal static class JJUtils
     {

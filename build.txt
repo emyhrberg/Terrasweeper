@@ -1,3 +1,6 @@
-displayName = Terrasweeper: Terraria x Minesweeper
+displayName = Terrasweeper
 author = Erky, Cotlim and Cronus
-version = 0.9
+version = 0.9.1
+buildIgnore = Assets/Photoshop*, Assets/Workshop*
+side = both
+includeSource = true

@@ -1,10 +1,10 @@
-﻿using JulyJam.Common.BuilderToggles;
-using JulyJam.Common.Configs;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
+using Terrasweeper.Common.BuilderToggles;
+using Terrasweeper.Common.Configs;
 
-namespace JulyJam.Common.Systems
+namespace Terrasweeper.Common.Systems
 {
     internal class MinesweeperDrawSystem : ModSystem
     {
@@ -51,7 +51,7 @@ namespace JulyJam.Common.Systems
                     bool isTileSolidForNumbers = JJUtils.IsTileSolidForNumbers(tile);
                     bool unsolvedMine = data.MineStatus == MineStatus.UnsolvedMine;
 
-                    // get builder toggle
+                    // get numbers transparency
                     int state = ModContent.GetInstance<NumbersTransparencyBuilderToggle>().CurrentState;
                     float opacity = 0f;
                     if (state == 0) // 100%
@@ -62,8 +62,14 @@ namespace JulyJam.Common.Systems
                         opacity = 0f; // 0%
                     Color color = Lighting.GetColor(i, j) * opacity;
 
+                    // get show mines builder toggle
+                    int showMinesState = ModContent.GetInstance<NumbersTransparencyBuilderToggle>().CurrentState;
+                    bool showMines = false;
+                    if (showMinesState == 0)
+                        showMines = true;
+
                     // Mines (only debug)
-                    if (unsolvedMine && !data.HasFlag && isTileSolidForMine && Conf.C.ShowMines)
+                    if (unsolvedMine && !data.HasFlag && isTileSolidForMine && showMines)
                     {
                         Main.spriteBatch.Draw(
                             Ass.Minesweeper.Value,

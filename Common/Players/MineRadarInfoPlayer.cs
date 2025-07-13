@@ -1,8 +1,8 @@
-using JulyJam.Content.InfoDisplays;
 using Terraria;
 using Terraria.ModLoader;
+using Terrasweeper.Content.InfoDisplays;
 
-namespace JulyJam.Common.Players
+namespace Terrasweeper.Common.Players
 {
     /// <summary>
     /// ModPlayer class coupled with <seealso cref="MineRadarInfoDisplay"/> and Mine Radar accessory to show how to add a new info accessory.

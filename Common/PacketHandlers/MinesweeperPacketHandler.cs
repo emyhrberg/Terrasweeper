@@ -1,16 +1,16 @@
-﻿using System.IO;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using JulyJam.Common.Systems;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using System;
-using System.IO.Compression;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terrasweeper.Common.Systems;
 
-namespace JulyJam.Common.PacketHandlers
+namespace Terrasweeper.Common.PacketHandlers
 {
     internal class MinesweeperPacketHandler : BasePacketHandler
     {

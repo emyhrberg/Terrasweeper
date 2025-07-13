@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.ModLoader;
 
-namespace JulyJam.Helpers
+namespace Terrasweeper.Helpers
 {
     /// <summary>
     /// Static class to hold all assets used in the mod.
@@ -22,7 +22,7 @@ namespace JulyJam.Helpers
         {
             foreach (var field in typeof(Ass).GetFields())
                 if (field.FieldType == typeof(Asset<Texture2D>))
-                    field.SetValue(null, ModContent.Request<Texture2D>($"JulyJam/Assets/{field.Name}"));
+                    field.SetValue(null, ModContent.Request<Texture2D>($"Terrasweeper/Assets/{field.Name}"));
         }
         public static bool Initialized { get; set; }
     }
@@ -30,7 +30,8 @@ namespace JulyJam.Helpers
 
     public static class MinesweeperTextures
     {
-        public static Rectangle GetRectangle(MinesweeperTexturesEnum mte) {
+        public static Rectangle GetRectangle(MinesweeperTexturesEnum mte)
+        {
             return new Rectangle(18 * (int)mte, 0, 16, 16);
         }
 

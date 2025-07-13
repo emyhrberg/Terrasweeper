@@ -1,0 +1,69 @@
+BuilderToggles: {
+	NumbersTransparencyBuilderToggle: {
+		Transparency0: Minesweeper numbers 0%
+		Transparency50: Minesweeper numbers 50%
+		Transparency100: Minesweeper numbers 100%
+	}
+}
+
+Items: {
+	MinesweeperTrophy: {
+		DisplayName: Minesweeper Trophy
+		Tooltip: You're an expert mine sweeper!
+	}
+
+	FlagBomb: {
+		DisplayName: Flag Bomb
+		Tooltip: A small explosion that will flag nearby mines
+	}
+
+	MineRadarInfoAccessory: {
+		DisplayName: Mine Radar
+		Tooltip: Detects mines around you
+	}
+
+	Flag: {
+		DisplayName: Flag
+		Tooltip: "A minesweeper flag"
+	}
+
+	MinePlacerDebug: {
+		DisplayName: Mine Placer (Debug)
+		Tooltip: "Only for debugging"
+	}
+
+	Mine: {
+		DisplayName: Mine
+		Tooltip: "A minesweeper mine dug up from the ground"
+	}
+}
+
+Projectiles: {
+	MineExplosion.DisplayName: Mine Explosion
+	FlagBombProjectile.DisplayName: Flag Bomb
+}
+
+Worldgen: {
+	WorldgenMinesPassMessage: Adding mines...
+	WorldgenHintTilesPassMessage: Sweeping mines...
+}
+
+InfoDisplays: {
+	MineRadarInfoDisplay: {
+		DisplayName: Mine Count
+		MinesNearby: "{0} mines nearby!"
+		NoMines: No mines nearby
+	}
+}
+
+Configs: {
+	TerrasweeperConfig: {
+		DisplayName: Terrasweeper Config
+		Headers.Debugging: Debugging Header
+
+		WorldGenMineRatio: {
+			Label: World Gen Mine Ratio
+			Tooltip: ""
+		}
+	}
+}

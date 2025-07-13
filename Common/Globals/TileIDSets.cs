@@ -1,7 +1,7 @@
-﻿using Terraria.ModLoader;
-using Terraria.ID;
+﻿using Terraria.ID;
+using Terraria.ModLoader;
 
-namespace JulyJam.Common.Globals
+namespace Terrasweeper.Common.Globals
 {
     [ReinitializeDuringResizeArrays]
     public static class TileIDSets

@@ -1,10 +1,10 @@
-using JulyJam.Common.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terrasweeper.Common.Systems;
 
-namespace JulyJam.Content.Items
+namespace Terrasweeper.Content.Items
 {
     /// <summary>Left-click toggles a mine on the tile under the cursor.</summary>
     public class MinePlacerDebug : ModItem

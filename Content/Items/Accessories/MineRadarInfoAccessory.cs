@@ -1,11 +1,11 @@
-﻿using JulyJam.Common.Players;
-using JulyJam.Common.Systems;
-using JulyJam.Content.InfoDisplays;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terrasweeper.Common.Players;
+using Terrasweeper.Common.Systems;
+using Terrasweeper.Content.InfoDisplays;
 
-namespace JulyJam.Content.Items.Accessories
+namespace Terrasweeper.Content.Items.Accessories
 {
     /// <summary>
     /// ModItem that shows how many mines are nearby.
@@ -53,7 +53,7 @@ namespace JulyJam.Content.Items.Accessories
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<MinedMine>(), 10)
+                .AddIngredient(ModContent.ItemType<Mine>(), 10)
                 .AddTile(TileID.WorkBenches)
                 .Register();
         }

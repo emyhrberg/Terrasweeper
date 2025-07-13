@@ -3,7 +3,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace JulyJam.Content.Projectiles;
+namespace Terrasweeper.Content.Projectiles;
 
 public class MineExplosion : ModProjectile
 {
@@ -17,8 +17,8 @@ public class MineExplosion : ModProjectile
         Projectile.damage = 50;
         Projectile.knockBack = 3f;
 
-        Projectile.hostile = true;  
-        Projectile.friendly = false; 
+        Projectile.hostile = true;
+        Projectile.friendly = false;
         Projectile.penetrate = -1;
         Projectile.tileCollide = false;
         Projectile.timeLeft = 2;
@@ -27,7 +27,7 @@ public class MineExplosion : ModProjectile
         Projectile.usesLocalNPCImmunity = true;
         Projectile.localNPCHitCooldown = -1;
 
-        Projectile.hide = true;       
+        Projectile.hide = true;
     }
 
     public override void SetStaticDefaults()

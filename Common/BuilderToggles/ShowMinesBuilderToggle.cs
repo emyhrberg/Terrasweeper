@@ -3,43 +3,32 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace Terrasweeper.Common.BuilderToggles
 {
-    public class NumbersTransparencyBuilderToggle : BuilderToggle
+    public class ShowMinesBuilderToggle : BuilderToggle
     {
-        public static LocalizedText Transparency0 { get; private set; }
-        public static LocalizedText Transparency50 { get; private set; }
-        public static LocalizedText Transparency100 { get; private set; }
+        public override bool Active() => false;
 
-        public override bool Active() => true; // change to false when on release build
-
-        public override int NumberOfStates => 3;
+        public override int NumberOfStates => 2;
 
         public override void SetStaticDefaults()
         {
-            Transparency0 = this.GetLocalization(nameof(Transparency0));
-            Transparency50 = this.GetLocalization(nameof(Transparency50));
-            Transparency100 = this.GetLocalization(nameof(Transparency100));
         }
 
         public override string DisplayValue()
         {
             if (CurrentState == 0)
-                return Transparency100.Value;
-            else if (CurrentState == 1)
-                return Transparency50.Value;
+                return "Show Mines On";
             else
-                return Transparency0.Value;
+                return "Show Mines Off";
         }
 
         public override bool OnLeftClick(ref SoundStyle? sound)
         {
             // Toggle visibility between the states
             CurrentState = (CurrentState + 1) % NumberOfStates;
-
 
             sound = SoundID.MenuTick;
             return true; // Returning true will actually toggle the state.

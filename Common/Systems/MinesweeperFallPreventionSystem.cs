@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 
-namespace JulyJam.Common.Systems
+namespace Terrasweeper.Common.Systems
 {
     internal class MinesweeperFallPreventionSystem : ModSystem
     {

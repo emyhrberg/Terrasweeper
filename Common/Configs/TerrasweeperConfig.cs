@@ -3,9 +3,9 @@ using System.ComponentModel;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
-namespace JulyJam.Common.Configs
+namespace Terrasweeper.Common.Configs
 {
-    public class MinesWorldGenConfig : ModConfig
+    public class TerrasweeperConfig : ModConfig
     {
         public override ConfigScope Mode => ConfigScope.ServerSide;
 
@@ -13,9 +13,6 @@ namespace JulyJam.Common.Configs
         [DefaultValue(10)]
         [Range(0, 100)]
         public int WorldGenMineRatio;
-
-        [DefaultValue(false)]
-        public bool ShowMines;
     }
 
     public static class Conf
@@ -34,13 +31,13 @@ namespace JulyJam.Common.Configs
 
         // Instance of the Config class
         // Use it like 'Conf.C.YourConfigField' for easy access to the config values
-        public static MinesWorldGenConfig C
+        public static TerrasweeperConfig C
         {
             get
             {
                 try
                 {
-                    return ModContent.GetInstance<MinesWorldGenConfig>();
+                    return ModContent.GetInstance<TerrasweeperConfig>();
                 }
                 catch (Exception ex)
                 {

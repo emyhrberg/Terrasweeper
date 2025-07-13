@@ -1,13 +1,13 @@
-﻿using JulyJam.Common.PacketHandlers;
-using JulyJam.Common.Systems;
-using JulyJam.Content.Dusts;
-using System;
+﻿using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terrasweeper.Common.PacketHandlers;
+using Terrasweeper.Common.Systems;
+using Terrasweeper.Content.Dusts;
 
-namespace JulyJam.Content.Projectiles
+namespace Terrasweeper.Content.Projectiles
 {
     public class FlagBombProjectile : ModProjectile
     {
@@ -39,14 +39,14 @@ namespace JulyJam.Content.Projectiles
             if (minJ < 0) minJ = 0;
             if (maxJ > Main.maxTilesY) maxJ = Main.maxTilesY;
             MarkTiles(Projectile.Center, blastRadius, minI, maxI, minJ, maxJ);
-            
+
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
-            for(int i = 0; i < 20; i++)
+            for (int i = 0; i < 20; i++)
             {
                 int dustIndex = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, 0, 0, 100, default(Color), 1.5f);
                 Main.dust[dustIndex].velocity *= 1.4f;
             }
-            for(int i = 0; i < 10; i++)
+            for (int i = 0; i < 10; i++)
             {
                 int dustIndex = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, 0, 0, 100, default(Color), 2.5f);
                 Main.dust[dustIndex].noGravity = true;
@@ -54,7 +54,7 @@ namespace JulyJam.Content.Projectiles
                 dustIndex = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100, default(Color), 1.5f);
                 Main.dust[dustIndex].velocity *= 3f;
             }
-            for(int i = 0; i < 8; i++)
+            for (int i = 0; i < 8; i++)
             {
                 Dust.NewDust(Projectile.Center, 0, 0, ModContent.DustType<FlagDust>());
             }
@@ -78,9 +78,9 @@ namespace JulyJam.Content.Projectiles
 
         private void MarkTiles(Vector2 compareSpot, int radius, int minI, int maxI, int minJ, int maxJ)
         {
-            for(int i = minI; i <= maxI; i++)
+            for (int i = minI; i <= maxI; i++)
             {
-                for(int j = minJ; j <= maxJ; j++)
+                for (int j = minJ; j <= maxJ; j++)
                 {
                     float distX = Math.Abs((float)i - compareSpot.X / 16f);
                     float distY = Math.Abs((float)j - compareSpot.Y / 16f);

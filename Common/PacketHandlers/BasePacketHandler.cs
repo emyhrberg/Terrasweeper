@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using Terraria.ModLoader;
-namespace JulyJam.Common.PacketHandlers
+namespace Terrasweeper.Common.PacketHandlers
 {
     // Reference:
     // https://github.com/tModLoader/tModLoader/wiki/intermediate-netcode#good-practice-managing-many-packets
@@ -24,7 +24,7 @@ namespace JulyJam.Common.PacketHandlers
         // It will be used to send data to the client and server.
         protected ModPacket GetPacket(byte packetType)
         {
-            var p = ModContent.GetInstance<JulyJam>().GetPacket();
+            var p = ModContent.GetInstance<Terrasweeper>().GetPacket();
             p.Write(HandlerType);
             p.Write(packetType);
             return p;

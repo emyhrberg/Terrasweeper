@@ -1,5 +1,4 @@
-﻿using JulyJam.Common.PacketHandlers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,8 +7,9 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terrasweeper.Common.PacketHandlers;
 
-namespace JulyJam.Common.Systems
+namespace Terrasweeper.Common.Systems
 {
     public class MinesweeperSyncSystem : ModSystem
     {

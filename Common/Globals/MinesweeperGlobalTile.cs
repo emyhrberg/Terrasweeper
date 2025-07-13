@@ -1,14 +1,13 @@
-﻿using JulyJam.Common.Systems;
-using JulyJam.Content.Items;
-using JulyJam.Content.Projectiles;
-
-using Terraria;
+﻿using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Terrasweeper.Common.Systems;
+using Terrasweeper.Content.Items;
+using Terrasweeper.Content.Projectiles;
 
-namespace JulyJam.Common.Globals;
+namespace Terrasweeper.Common.Globals;
 
 public class MinesweeperGlobalTile : GlobalTile
 {
@@ -46,7 +45,7 @@ public class MinesweeperGlobalTile : GlobalTile
             Item.NewItem(
                 new EntitySource_TileInteraction(Main.LocalPlayer, i, j),
                 new Vector2(i * 16f, j * 16f),
-                ModContent.ItemType<MinedMine>(),
+                ModContent.ItemType<Mine>(),
                 1);
             MinesweeperData.UpdateNumbersOfMines3x3(i, j);
         }
@@ -60,7 +59,7 @@ public class MinesweeperGlobalTile : GlobalTile
     {
         Tile tile = Main.tile[i, j];
         ref var data = ref tile.Get<MinesweeperData>();
-        if(data.data == 0)
+        if (data.data == 0)
         {
             return base.CanReplace(i, j, type, tileTypeBeingPlaced);
         }

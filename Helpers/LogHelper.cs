@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using Terraria.ModLoader;
 
-namespace JulyJam.Helpers
+namespace Terrasweeper.Helpers
 {
     public static class Log
     {
@@ -68,7 +68,7 @@ namespace JulyJam.Helpers
             {
                 try
                 {
-                    return ModLoader.GetMod("JulyJam");
+                    return ModLoader.GetMod("Terrasweeper");
                 }
                 catch (Exception ex)
                 {

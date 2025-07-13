@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using JulyJam.Common.Configs;
 using Microsoft.Xna.Framework.Input;
 using Terraria;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
+using Terrasweeper.Common.Configs;
 
-namespace JulyJam.Common.Systems
+namespace Terrasweeper.Common.Systems
 {
     public class MinesweeperWorldGenSystem : ModSystem
     {
@@ -23,7 +23,7 @@ namespace JulyJam.Common.Systems
 
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
-            tasks.Insert(tasks.Count, new WorldgenMinesPass("JulyJam Add mines", 100f));
+            tasks.Insert(tasks.Count, new WorldgenMinesPass("Terrasweeper Add mines", 100f));
         }
 
         // testing-related methods, delete on release

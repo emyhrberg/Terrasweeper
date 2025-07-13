@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace JulyJam.Common.PacketHandlers
+namespace Terrasweeper.Common.PacketHandlers
 {
     internal class ModNetHandler
     {

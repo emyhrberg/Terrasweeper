@@ -1,9 +1,9 @@
-﻿using JulyJam.Content.Projectiles;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terrasweeper.Content.Projectiles;
 
-namespace JulyJam.Content.Items
+namespace Terrasweeper.Content.Items
 {
     public class FlagBomb : ModItem
     {
@@ -16,7 +16,7 @@ namespace JulyJam.Content.Items
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient<FlaggedFlag>(20);
+            recipe.AddIngredient<Flag>(20);
             recipe.AddIngredient(ItemID.Bomb);
             recipe.Register();
         }

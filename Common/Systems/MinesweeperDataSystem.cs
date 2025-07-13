@@ -1,5 +1,4 @@
-﻿using JulyJam.Common.PacketHandlers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -12,8 +11,9 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Terrasweeper.Common.PacketHandlers;
 
-namespace JulyJam.Common.Systems
+namespace Terrasweeper.Common.Systems
 {
     public struct MinesweeperData : ITileData
     {
@@ -53,7 +53,7 @@ namespace JulyJam.Common.Systems
             {
                 for (int j = -1; j <= 1; j++)
                 {
-                    Tile neighborTile = Framing.GetTileSafely(x+i, y+j);
+                    Tile neighborTile = Framing.GetTileSafely(x + i, y + j);
                     ref var data = ref neighborTile.Get<MinesweeperData>();
                     if (data.HasOrAtLeastHadMine)
                     {
@@ -61,7 +61,7 @@ namespace JulyJam.Common.Systems
                     }
                 }
             }
-            if(mineCount > 9)
+            if (mineCount > 9)
             {
                 mineCount = 9;
                 Log.Warn($"Mine count exceeded 9 at ({x}, {y}). Clamping to 9.");
@@ -96,7 +96,7 @@ namespace JulyJam.Common.Systems
     {
         public override void SaveWorldData(TagCompound tag)
         {
-            if(Main.netMode == NetmodeID.MultiplayerClient)
+            if (Main.netMode == NetmodeID.MultiplayerClient)
             {
                 return;
             }

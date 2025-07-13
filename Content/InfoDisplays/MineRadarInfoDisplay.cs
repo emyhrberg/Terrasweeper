@@ -1,10 +1,10 @@
-﻿using JulyJam.Common.Players;
-using JulyJam.Content.Items.Accessories;
-using Terraria;
+﻿using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terrasweeper.Common.Players;
+using Terrasweeper.Content.Items.Accessories;
 
-namespace JulyJam.Content.InfoDisplays
+namespace Terrasweeper.Content.InfoDisplays
 {
     /// <summary>
     /// InfoDisplay that shows how many mines are nearby.
@@ -40,6 +40,11 @@ namespace JulyJam.Content.InfoDisplays
             {
                 displayColor = Color.White;
                 // displayShadowColor = Color.Black;
+                // if minecount is exactly 1, remove the 's' from the text
+                if (mineCount == 1)
+                {
+                    return MinesNearbyText.Format(mineCount).Replace("s", string.Empty); // "1 mine nearby"
+                }
                 return MinesNearbyText.Format(mineCount); // "5 mines nearby"
             }
             else

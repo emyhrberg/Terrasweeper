@@ -1,8 +1,8 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
 
-namespace JulyJam.Content.Dusts
+namespace Terrasweeper.Content.Dusts
 {
     public class FlagDust : ModDust
     {
