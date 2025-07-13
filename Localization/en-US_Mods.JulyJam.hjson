@@ -24,7 +24,22 @@ Items: {
 
 	MinedMine: {
 		DisplayName: Mined Mine
-		Tooltip: ""
+		Tooltip: A disarmed mine, dug from the ground
+	}
+
+	MinesweeperTrophy: {
+		DisplayName: Minesweeper Trophy
+		Tooltip: You're an expert mine sweeper!
+	}
+
+	FlaggedFlag: {
+		DisplayName: Flagged Flag
+		Tooltip: A non-functional flag for marking mines
+	}
+
+	FlagBomb: {
+		DisplayName: Flag Bomb
+		Tooltip: A small explosion that will mark nearby mines
 	}
 
 	MineRadarInfoAccessory: {
@@ -33,7 +48,10 @@ Items: {
 	}
 }
 
-Projectiles.MineExplosion.DisplayName: Mine Explosion
+Projectiles: {
+	MineExplosion.DisplayName: Mine Explosion
+	FlagBombProjectile.DisplayName: Flag Bomb
+}
 
 Worldgen: {
 	WorldgenMinesPassMessage: Adding mines...
