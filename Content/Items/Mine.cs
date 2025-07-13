@@ -1,6 +1,7 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terrasweeper.Content.Projectiles;
 
 namespace Terrasweeper.Content.Items
 {
@@ -18,6 +19,14 @@ namespace Terrasweeper.Content.Items
             Item.rare = ItemRarityID.Blue;
             Item.value = Item.buyPrice(silver: 1);
             ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<Flag>();
+
+            // Projectile stuff
+            Item.shoot = ModContent.ProjectileType<MinedMineProjectile>();
+            Item.damage = 80;
+            Item.DamageType = DamageClass.Ranged;
+            Item.knockBack = 8f;
+            Item.shootSpeed = 5f;
+            Item.consumable = true;
         }
     }
 }
