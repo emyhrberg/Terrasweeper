@@ -22,6 +22,7 @@ public class MinesweeperGlobalTile : GlobalTile
         }
         ref var data = ref tile.Get<MinesweeperData>();
         bool unsolvedMine = data.MineStatus == MineStatus.UnsolvedMine;
+
         // Fail Mine
         if (unsolvedMine && !data.HasFlag)
         {
