@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JulyJam.Common.PacketHandlers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -77,6 +78,7 @@ namespace JulyJam.Common.Systems
                     Tile neighborTile = Framing.GetTileSafely(x + i, y + j);
                     ref var data = ref neighborTile.Get<MinesweeperData>();
                     data.UpdateNumbersOfMines(x + i, y + j);
+                    ModNetHandler.minesweeperPacketHandler.SendSingleTile(x + i, y + j);
                 }
             }
         }

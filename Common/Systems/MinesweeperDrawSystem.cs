@@ -50,11 +50,12 @@ namespace JulyJam.Common.Systems
 
                     ref var data = ref tile.Get<MinesweeperData>();
                     Vector2 drawPos = new(i * 16 - Main.screenPosition.X, j * 16 - Main.screenPosition.Y);
-                    bool isTileSolid = JJUtils.IsTileSolidForMine(tile);
+                    bool isTileSolidForMine = JJUtils.IsTileSolidForMine(tile);
+                    bool isTileSolidForNumbers = JJUtils.IsTileSolidForNumbers(tile);
                     bool unsolvedMine = data.MineStatus == MineStatus.UnsolvedMine;
 
                     // Mines (only debug)
-                    if (unsolvedMine && !data.HasFlag && isTileSolid && Conf.C.showMines)
+                    if (unsolvedMine && !data.HasFlag && isTileSolidForMine && Conf.C.showMines)
                     {
                         Main.spriteBatch.Draw(
                             Ass.Minesweeper.Value,
@@ -81,7 +82,7 @@ namespace JulyJam.Common.Systems
                             Lighting.GetColor(i, j), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                     }
                     // Flag
-                    else if (data.HasFlag && isTileSolid)
+                    else if (data.HasFlag && isTileSolidForMine)
                     {
                         Main.spriteBatch.Draw(
                             Ass.Minesweeper.Value,
@@ -90,7 +91,7 @@ namespace JulyJam.Common.Systems
                             Lighting.GetColor(i, j), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                     }
                     // Error data on tile
-                    else if ((data.HasFlag || unsolvedMine) && !isTileSolid)
+                    else if ((data.HasFlag || unsolvedMine) && !isTileSolidForMine)
                     {
                         Main.spriteBatch.Draw(
                             Ass.Minesweeper.Value,
@@ -100,7 +101,7 @@ namespace JulyJam.Common.Systems
                         Log.Warn($"Wrong data on tile!");
                     }
                     // Numbers
-                    else if (!isTileSolid)
+                    else if (!isTileSolidForNumbers)
                     {
                         // Nothing, no mines near tile
                         if (data.TileNumber == 0)
@@ -110,11 +111,13 @@ namespace JulyJam.Common.Systems
                         // numbers from 1 to 8
                         if (data.TileNumber > 0 && data.TileNumber < 9)
                         {
+                            Color color = Lighting.GetColor(i, j);
+                            color.A = (byte)(255f * (float)Conf.C.ElementsTransparentsy / 100f);
                             Main.spriteBatch.Draw(
                             Ass.Minesweeper.Value,
                             drawPos,
                             MinesweeperTextures.GetRectangle((MinesweeperTexturesEnum)data.TileNumber),
-                            Lighting.GetColor(i, j), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                            color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                         }
                         // Error data on tile
                         else

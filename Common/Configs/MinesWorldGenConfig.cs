@@ -9,14 +9,19 @@ namespace JulyJam.Common.Configs
     {
         public override ConfigScope Mode => ConfigScope.ServerSide;
 
-        [Header("Worldgen")]
+
+        [Header("Debugging")]
         [DefaultValue(10)]
         [Range(0, 100)]
         public int ratioOfMines;
 
-        [Header("Debugging")]
         [DefaultValue(false)]
         public bool showMines;
+
+        [Header("Minesweeper")]
+        [Range(0, 100)]
+        [DefaultValue(25)]
+        public int ElementsTransparentsy;
     }
 
     public static class Conf

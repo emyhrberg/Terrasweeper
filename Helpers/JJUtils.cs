@@ -46,8 +46,29 @@ namespace JulyJam.Helpers
                 result &= tile.type != TileID.AshGrass;
             }
             return result;
+        }
 
-
+        public static bool IsTileSolidForNumbers(Tile tile)
+        {
+            bool result = tile.HasTile && !Main.tileFrameImportant[tile.TileType] &&
+                !TileID.Sets.IsVine[tile.TileType] &&
+                !TileID.Sets.IsBeam[tile.TileType] &&
+                !TileID.Sets.BasicChest[tile.TileType] &&
+                !TileID.Sets.BasicDresser[tile.TileType] &&
+                !TileID.Sets.CountsAsGemTree[tile.TileType] &&
+                !TileID.Sets.IsATreeTrunk[tile.TileType] &&
+                !TileID.Sets.CommonSapling[tile.TileType] &&
+                !TileID.Sets.Paintings[tile.TileType] &&
+                !TileID.Sets.CanBeSatOnForNPCs[tile.TileType] &&
+                !TileID.Sets.CanBeSatOnForPlayers[tile.TileType] &&
+                !TileID.Sets.CanBeSleptIn[tile.TileType] &&
+                !TileID.Sets.Platforms[tile.TileType] &&
+                !TileID.Sets.NotReallySolid[tile.TileType] &&
+                !TileID.Sets.BreakableWhenPlacing[tile.TileType] &&
+                !TileID.Sets.TouchDamageBleeding[tile.TileType] &&
+                !TileID.Sets.IsAContainer[tile.TileType] &&
+                !Main.tileCut[tile.TileType];
+            return result;
         }
 
         public static void Explode(int i, int j)

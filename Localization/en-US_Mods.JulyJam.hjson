@@ -41,6 +41,7 @@ Configs: {
 		Headers: {
 			Worldgen: World generation
 			Debugging: Debugging Header
+			Minesweeper: Minesweeper Header
 		}
 
 		numMines: {
@@ -59,6 +60,11 @@ Configs: {
 
 		ratioOfMines: {
 			Label: ratio Of Mines
+			Tooltip: ""
+		}
+
+		ElementsTransparentsy: {
+			Label: Elements Transparentsy
 			Tooltip: ""
 		}
 	}
