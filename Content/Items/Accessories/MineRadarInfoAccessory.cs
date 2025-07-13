@@ -42,7 +42,7 @@ namespace JulyJam.Content.Items.Accessories
                     if ((x - px) * (x - px) + (y - py) * (y - py) > radius * radius) continue;
 
                     ref var data = ref Main.tile[x, y].Get<MinesweeperData>();
-                    if (data.HasOrAtLeastHadMine)
+                    if (data.MineStatus == MineStatus.UnsolvedMine)
                         mineCount++;
                 }
             }

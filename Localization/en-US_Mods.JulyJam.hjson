@@ -56,6 +56,11 @@ Items: {
 		DisplayName: Mine Placer Debug
 		Tooltip: ""
 	}
+
+	BiggerMinesweeperTrophy: {
+		DisplayName: Bigger Minesweeper Trophy
+		Tooltip: ""
+	}
 }
 
 Projectiles: {

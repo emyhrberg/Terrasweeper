@@ -17,8 +17,8 @@ namespace JulyJam.Content.Items
     {
         public override void SetDefaults()
         {
-            Item.width = 26;
-            Item.height = 26;
+            Item.width = 16;
+            Item.height = 20;
             Item.maxStack = 999;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.useAnimation = 15;
