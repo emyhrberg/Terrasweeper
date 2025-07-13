@@ -79,7 +79,7 @@ namespace Terrasweeper.Common.Systems
                     {
                         data.MineStatus = MineStatus.UnsolvedMine;
                         MinesweeperData.UpdateNumbersOfMines3x3(i, j);
-                        WorldGen.PlaceTile(i, j, TileID.BoneBlock, forced: true); // testing code
+                        //WorldGen.PlaceTile(i, j, TileID.BoneBlock, forced: true); // testing code
                         minesAdded++; // testing code
                     }
 
@@ -88,23 +88,21 @@ namespace Terrasweeper.Common.Systems
 
             // Place everything else
             progress.Message = MinesweeperWorldGenSystem.WorldgenHintTilesPassMessage.Value;
-            Console.WriteLine("Mines added: " + minesAdded); // testing code
+            Log.Info("Mines added: " + minesAdded); // testing code
         }
 
         private int MakeMineRatio()
         {
             int value = 12; // Baseline value, Normal or Journey, medium, no special seed
-            if (WorldGen.GetWorldSize() == WorldGen.WorldSize.Small) value -= 2;
-            if (WorldGen.GetWorldSize() == WorldGen.WorldSize.Large) value += 6;
-            if (Main.expertMode) value += 8; // 20 mines for Expert
-            if (Main.masterMode) value += 5; // 25 mines for Master
-            if (Main.noTrapsWorld) value += 10; // +10 for no traps
+            if (Main.expertMode) value += 3; // 15 mines for Expert
+            if (Main.masterMode) value += 5; // 17 mines for Master
+            if (Main.noTrapsWorld) value += 7; // +7 for no traps
             if (Main.getGoodWorld)
             {
-                if (Main.masterMode) value += 12; // a whopping 37 for legendary
-                else value += 10; // or a +10 on other difficulties
+                if (Main.masterMode) value += 7; // a whopping +12 (5+7) for legendary
+                else value += 5; // or a +5 on other difficulties
             }
-            if (Main.zenithWorld) value += 5; // another +5 for zenith
+            if (Main.zenithWorld) value += 3; // another +3 for zenith
             return value; // Value can go from 10 (Journey/Classic, Small, no special seed) to 48 (Master, Large, Zenith)
         }
     }
