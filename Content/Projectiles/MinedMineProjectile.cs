@@ -1,10 +1,10 @@
-﻿using JulyJam.Content.Dusts;
-using Terraria;
+﻿using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terrasweeper.Content.Dusts;
 
-namespace JulyJam.Content.Projectiles
+namespace Terrasweeper.Content.Projectiles
 {
     public class MinedMineProjectile : ModProjectile
     {
@@ -34,10 +34,10 @@ namespace JulyJam.Content.Projectiles
             if (Projectile.ai[0] > 10f)
             {
                 Projectile.ai[0] = 10f;
-                if(Projectile.velocity.Y == 0f && Projectile.velocity.X != 0f)
+                if (Projectile.velocity.Y == 0f && Projectile.velocity.X != 0f)
                 {
                     Projectile.velocity.X *= 0.96f;
-                    if(Projectile.velocity.X > -0.01 && Projectile.velocity.X < 0.01)
+                    if (Projectile.velocity.X > -0.01 && Projectile.velocity.X < 0.01)
                     {
                         Projectile.velocity.X = 0f;
                         Projectile.netUpdate = true;

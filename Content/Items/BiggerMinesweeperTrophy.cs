@@ -1,9 +1,9 @@
-﻿using JulyJam.Content.Tiles;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terrasweeper.Content.Tiles;
 
-namespace JulyJam.Content.Items
+namespace Terrasweeper.Content.Items
 {
     public class BiggerMinesweeperTrophy : ModItem
     {
