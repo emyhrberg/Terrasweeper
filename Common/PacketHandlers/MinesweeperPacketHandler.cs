@@ -31,6 +31,8 @@ namespace JulyJam.Common.PacketHandlers
 
         public void SendSingleTile(int x, int y, int toClient = -1, int ignoreClient = -1)
         {
+            if(Main.netMode == NetmodeID.SinglePlayer)
+                return;
             ModPacket packet = GetPacket(SyncSingleTile);
             packet.Write((short)x);
             packet.Write((short)y);
