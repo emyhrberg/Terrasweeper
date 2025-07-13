@@ -50,7 +50,7 @@ namespace JulyJam.Common.Systems
 
                     ref var data = ref tile.Get<MinesweeperData>();
                     Vector2 drawPos = new(i * 16 - Main.screenPosition.X, j * 16 - Main.screenPosition.Y);
-                    bool isTileSolid = JJUtils.IsTileSolid(tile);
+                    bool isTileSolid = JJUtils.IsTileSolidForMine(tile);
                     bool unsolvedMine = data.MineStatus == MineStatus.UnsolvedMine;
 
                     // Mines (only debug)

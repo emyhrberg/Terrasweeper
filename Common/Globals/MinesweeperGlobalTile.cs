@@ -17,7 +17,7 @@ public class MinesweeperGlobalTile : GlobalTile
         if (fail || effectOnly) return; // tile survived or just an effect
 
         Tile tile = Main.tile[i, j];
-        if (!JJUtils.IsTileSolid(tile))
+        if (!JJUtils.IsTileSolidForMine(tile))
         {
             return;
         }

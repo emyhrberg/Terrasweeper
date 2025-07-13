@@ -64,7 +64,7 @@ namespace JulyJam.Common.Systems
                 for (int i = 0; i < Main.maxTilesX; i++)
                 {
                     Tile tile = Framing.GetTileSafely(i, j);
-                    if (!JJUtils.CanPlaceMine(tile))
+                    if (!JJUtils.IsTileSolidForMine(tile))
                     {
                         continue;
                     }

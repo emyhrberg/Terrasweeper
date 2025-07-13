@@ -15,14 +15,33 @@ namespace JulyJam.Helpers
             && player.position.Y / 16f - Player.tileRangeY - player.inventory[player.selectedItem].tileBoost - player.blockRange <= y
             && (player.position.Y + player.height) / 16f + Player.tileRangeY + player.inventory[player.selectedItem].tileBoost - 2f + player.blockRange >= y;
 
-        public static bool IsTileSolid(Tile tile)
+        public static bool IsTileSolidForMine(Tile tile)
         {
-            return tile.HasTile && !Main.tileFrameImportant[tile.TileType];
-        }
+            return tile.HasTile && !Main.tileFrameImportant[tile.TileType] &&
+                TileIDSets.CanPlaceMine[tile.TileType] &&
+                !TileID.Sets.IsVine[tile.TileType] &&
+                !TileID.Sets.IsBeam[tile.TileType] &&
+                !TileID.Sets.BasicChest[tile.TileType] &&
+                !TileID.Sets.BasicDresser[tile.TileType] &&
+                !TileID.Sets.CountsAsGemTree[tile.TileType] &&
+                !TileID.Sets.IsATreeTrunk[tile.TileType] &&
+                !TileID.Sets.CommonSapling[tile.TileType] &&
+                !TileID.Sets.CrackedBricks[tile.TileType] &&
+                !TileID.Sets.Paintings[tile.TileType] &&
+                !TileID.Sets.Boulders[tile.TileType] &&
+                !TileID.Sets.CanBeSatOnForNPCs[tile.TileType] &&
+                !TileID.Sets.CanBeSatOnForPlayers[tile.TileType] &&
+                !TileID.Sets.CanBeSleptIn[tile.TileType] &&
+                !TileID.Sets.Platforms[tile.TileType] &&
+                !TileID.Sets.Leaves[tile.TileType] &&
+                !TileID.Sets.NotReallySolid[tile.TileType] &&
+                !TileID.Sets.BreakableWhenPlacing[tile.TileType] &&
+                !TileID.Sets.TouchDamageBleeding[tile.TileType] &&
+                (TileID.Sets.TouchDamageImmediate[tile.TileType] == 0) &&
+                !TileID.Sets.IsAContainer[tile.TileType] &&
+                !Main.tileCut[tile.TileType];
 
-        public static bool CanPlaceMine(Tile tile)
-        {
-            return IsTileSolid(tile) && !TileID.Sets.Falling[tile.TileType] && TileIDSets.CanPlaceMine[tile.TileType];
+
         }
 
         public static void Explode(int i, int j)

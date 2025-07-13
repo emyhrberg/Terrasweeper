@@ -59,7 +59,7 @@ namespace JulyJam.Content.Items
             Tile tile = Framing.GetTileSafely(i, j);
             ref var data = ref tile.Get<MinesweeperData>();
 
-            if ((!JJUtils.IsTileSolid(tile) && !data.HasMine) || !JJUtils.WithinPlacementRange(player, i, j))
+            if ((!JJUtils.IsTileSolidForMine(tile) && !data.HasMine) || !JJUtils.WithinPlacementRange(player, i, j))
             {
                 return false;
             }

@@ -11,21 +11,8 @@ namespace JulyJam.Common
         public static bool[] CanPlaceMine = TileID.Sets.Factory.CreateNamedSet(CanPlaceMineSetKey)
             .Description("Tiles that can have mines")
             .RegisterBoolSet(true,
-                TileID.Spikes,
-                TileID.Cobweb,
-                TileID.Vines,
-                TileID.JungleVines,
-                TileID.HallowedVines,
-                TileID.BreakableIce,
-                TileID.CrimsonVines,
-                TileID.WoodenSpikes,
-                TileID.VineFlowers,
-                TileID.CrackedBlueDungeonBrick,
-                TileID.CrackedGreenDungeonBrick,
-                TileID.CrackedPinkDungeonBrick,
-                TileID.MushroomVines,
-                TileID.CorruptVines,
-                TileID.AshVines
+                TileID.FossilOre,
+                TileID.DesertFossil
             );
     }
 }
