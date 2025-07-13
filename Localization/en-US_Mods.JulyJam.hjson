@@ -3,6 +3,12 @@ BuilderToggles: {
 		OnText: Mine sweeper numbers on
 		OffText: Mine sweeper numbers off
 	}
+
+	NumbersTransparencyBuilderToggle: {
+		Transparency0: Minesweeper numbers 0%
+		Transparency50: Minesweeper numbers 50%
+		Transparency100: Minesweeper numbers 100%
+	}
 }
 
 Items: {

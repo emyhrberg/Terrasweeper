@@ -10,17 +10,14 @@ namespace JulyJam.Common.Systems
     {
         public override void PostDrawTiles()
         {
-            base.PostDrawTiles(); ;
-            if (NumbersVisibleState.Visible)
-                DrawMinesweeperElements();
+            base.PostDrawTiles();
 
-
+            DrawMinesweeperElements();
         }
 
         public void DrawMinesweeperElements()
         {
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
-
 
             Vector2 zero2 = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
             int tileStartX = (int)((Main.screenPosition.X - zero2.X) / 16f - 1f);
@@ -64,7 +61,7 @@ namespace JulyJam.Common.Systems
                             Lighting.GetColor(i, j), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                     }
                     // Solved Mine
-                    else if(data.MineStatus == MineStatus.Solved)
+                    else if (data.MineStatus == MineStatus.Solved)
                     {
                         Main.spriteBatch.Draw(
                             Ass.Minesweeper.Value,
@@ -111,13 +108,25 @@ namespace JulyJam.Common.Systems
                         // numbers from 1 to 8
                         if (data.TileNumber > 0 && data.TileNumber < 9)
                         {
+                            // get builder toggle
+                            int state = ModContent.GetInstance<NumbersTransparencyBuilderToggle>().CurrentState;
+                            float opacity = 0f;
+                            if (state == 0) // 100%
+                                opacity = 1f;
+                            else if (state == 1) // 50%
+                                opacity = 0.2f;
+                            else if (state == 2)
+                                opacity = 0f; // 
+
+
                             Color color = Lighting.GetColor(i, j);
-                            color.A = (byte)(255f * (float)Conf.C.ElementsTransparentsy / 100f);
+                            //color.A = (byte)(255f * (float)Conf.C.ElementsTransparentsy / 100f);
+
                             Main.spriteBatch.Draw(
                             Ass.Minesweeper.Value,
                             drawPos,
                             MinesweeperTextures.GetRectangle((MinesweeperTexturesEnum)data.TileNumber),
-                            color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                            color*opacity, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                         }
                         // Error data on tile
                         else
@@ -125,7 +134,7 @@ namespace JulyJam.Common.Systems
                             Main.spriteBatch.Draw(
                             Ass.Minesweeper.Value,
                             drawPos,
-                            MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.Nine),
+                            MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.Nine), // 9
                             Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                             Log.Warn($"Wrong data on tile!");
                         }
