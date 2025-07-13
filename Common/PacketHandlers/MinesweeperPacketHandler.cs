@@ -61,7 +61,10 @@ namespace JulyJam.Common.PacketHandlers
             Main.tile[x, y].Get<MinesweeperData>().data = data;
 
             if (Main.netMode == NetmodeID.Server)
+            {
                 SendSingleTile(x, y, -1, fromWho);
+            }
+
         }
 
         // Only MP client

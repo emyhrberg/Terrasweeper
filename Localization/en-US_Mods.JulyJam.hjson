@@ -46,6 +46,16 @@ Items: {
 		DisplayName: Mine Radar
 		Tooltip: Detects mines around you
 	}
+
+	FlagPlacerDebug: {
+		DisplayName: Flag Placer Debug
+		Tooltip: ""
+	}
+
+	MinePlacerDebug: {
+		DisplayName: Mine Placer Debug
+		Tooltip: ""
+	}
 }
 
 Projectiles: {

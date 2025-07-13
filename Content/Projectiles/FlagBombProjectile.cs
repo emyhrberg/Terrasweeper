@@ -1,4 +1,5 @@
-﻿using JulyJam.Common.Systems;
+﻿using JulyJam.Common.PacketHandlers;
+using JulyJam.Common.Systems;
 using JulyJam.Content.Dusts;
 using System;
 using Terraria;
@@ -88,9 +89,10 @@ namespace JulyJam.Content.Projectiles
                     {
                         Tile tile = Framing.GetTileSafely(i, j);
                         ref var data = ref tile.Get<MinesweeperData>();
-                        if (data.HasMine)
+                        if (data.MineStatus == MineStatus.UnsolvedMine)
                         {
                             data.HasFlag = true;
+                            ModNetHandler.minesweeperPacketHandler.SendSingleTile(i, j);
                         }
                     }
                 }

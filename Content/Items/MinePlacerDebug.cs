@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 namespace JulyJam.Content.Items
 {
     /// <summary>Left-click toggles a mine on the tile under the cursor.</summary>
-    public class MinePlacer : ModItem
+    public class MinePlacerDebug : ModItem
     {
         public override void SetStaticDefaults()
         {
@@ -38,7 +38,7 @@ namespace JulyJam.Content.Items
             ref var data = ref tile.Get<MinesweeperData>();
 
             // Set the mine status
-            data.MineStatus = data.HasMine ? MineStatus.None : MineStatus.UnsolvedMine;
+            data.MineStatus = data.HasOrAtLeastHadMine ? MineStatus.None : MineStatus.UnsolvedMine;
 
             // Update the mine count around this tile
             MinesweeperData.UpdateNumbersOfMines3x3(i, j);
@@ -59,7 +59,7 @@ namespace JulyJam.Content.Items
             Tile tile = Framing.GetTileSafely(i, j);
             ref var data = ref tile.Get<MinesweeperData>();
 
-            if ((!JJUtils.IsTileSolidForMine(tile) && !data.HasMine) || !JJUtils.WithinPlacementRange(player, i, j))
+            if ((!JJUtils.IsTileSolidForMine(tile) && !data.HasOrAtLeastHadMine) || !JJUtils.WithinPlacementRange(player, i, j))
             {
                 return false;
             }

@@ -1,4 +1,4 @@
-﻿using JulyJam.Common;
+﻿using JulyJam.Common.Globals;
 using JulyJam.Content.Projectiles;
 using Terraria;
 using Terraria.DataStructures;
@@ -17,33 +17,39 @@ namespace JulyJam.Helpers
 
         public static bool IsTileSolidForMine(Tile tile)
         {
-            bool result = tile.HasTile && !Main.tileFrameImportant[tile.TileType] &&
-                TileIDSets.CanPlaceMine[tile.TileType] &&
-                !TileID.Sets.IsVine[tile.TileType] &&
-                !TileID.Sets.IsBeam[tile.TileType] &&
-                !TileID.Sets.BasicChest[tile.TileType] &&
-                !TileID.Sets.BasicDresser[tile.TileType] &&
-                !TileID.Sets.CountsAsGemTree[tile.TileType] &&
-                !TileID.Sets.IsATreeTrunk[tile.TileType] &&
-                !TileID.Sets.CommonSapling[tile.TileType] &&
-                !TileID.Sets.CrackedBricks[tile.TileType] &&
-                !TileID.Sets.Paintings[tile.TileType] &&
-                !TileID.Sets.Boulders[tile.TileType] &&
-                !TileID.Sets.CanBeSatOnForNPCs[tile.TileType] &&
-                !TileID.Sets.CanBeSatOnForPlayers[tile.TileType] &&
-                !TileID.Sets.CanBeSleptIn[tile.TileType] &&
-                !TileID.Sets.Platforms[tile.TileType] &&
-                !TileID.Sets.Leaves[tile.TileType] &&
-                !TileID.Sets.NotReallySolid[tile.TileType] &&
-                !TileID.Sets.BreakableWhenPlacing[tile.TileType] &&
-                !TileID.Sets.TouchDamageBleeding[tile.TileType] &&
-                (TileID.Sets.TouchDamageImmediate[tile.TileType] == 0) &&
-                !TileID.Sets.IsAContainer[tile.TileType] &&
-                !Main.tileCut[tile.TileType];
+            bool result = tile.HasTile && IsTileSolidForMine(tile.TileType);
+            return result;
+        }
+
+        public static bool IsTileSolidForMine(int tileID)
+        {
+            bool result = !Main.tileFrameImportant[tileID] &&
+                TileIDSets.CanPlaceMine[tileID] &&
+                !TileID.Sets.IsVine[tileID] &&
+                !TileID.Sets.IsBeam[tileID] &&
+                !TileID.Sets.BasicChest[tileID] &&
+                !TileID.Sets.BasicDresser[tileID] &&
+                !TileID.Sets.CountsAsGemTree[tileID] &&
+                !TileID.Sets.IsATreeTrunk[tileID] &&
+                !TileID.Sets.CommonSapling[tileID] &&
+                !TileID.Sets.CrackedBricks[tileID] &&
+                !TileID.Sets.Paintings[tileID] &&
+                !TileID.Sets.Boulders[tileID] &&
+                !TileID.Sets.CanBeSatOnForNPCs[tileID] &&
+                !TileID.Sets.CanBeSatOnForPlayers[tileID] &&
+                !TileID.Sets.CanBeSleptIn[tileID] &&
+                !TileID.Sets.Platforms[tileID] &&
+                !TileID.Sets.Leaves[tileID] &&
+                !TileID.Sets.NotReallySolid[tileID] &&
+                !TileID.Sets.BreakableWhenPlacing[tileID] &&
+                !TileID.Sets.TouchDamageBleeding[tileID] &&
+                (TileID.Sets.TouchDamageImmediate[tileID] == 0) &&
+                !TileID.Sets.IsAContainer[tileID] &&
+                !Main.tileCut[tileID];
             if (Main.getGoodWorld || WorldGen.getGoodWorldGen)
             {
-                result &= tile.type != TileID.Ash; // Ash is not solid in ftw worlds
-                result &= tile.type != TileID.AshGrass;
+                result &= tileID != TileID.Ash; // Ash is not solid in ftw worlds
+                result &= tileID != TileID.AshGrass;
             }
             return result;
         }

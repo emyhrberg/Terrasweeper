@@ -32,7 +32,7 @@ public class MinesweeperGlobalTile : GlobalTile
             MinesweeperData.UpdateNumbersOfMines3x3(i, j);
         }
         // Fail Flag
-        else if (data.HasFlag && !data.HasMine)
+        else if (data.HasFlag && !data.HasOrAtLeastHadMine)
         {
             data.ClearMineFlagData();
             JJUtils.Explode(i, j);
@@ -50,9 +50,20 @@ public class MinesweeperGlobalTile : GlobalTile
                 1);
             MinesweeperData.UpdateNumbersOfMines3x3(i, j);
         }
-        else if (!unsolvedMine && data.HasMine && data.HasFlag)
+        else if (!unsolvedMine && data.HasOrAtLeastHadMine && data.HasFlag)
         {
             data.HasFlag = false; // remove the flag
         }
+    }
+
+    public override bool CanReplace(int i, int j, int type, int tileTypeBeingPlaced)
+    {
+        Tile tile = Main.tile[i, j];
+        ref var data = ref tile.Get<MinesweeperData>();
+        if(data.data == 0)
+        {
+            return base.CanReplace(i, j, type, tileTypeBeingPlaced);
+        }
+        return JJUtils.IsTileSolidForMine(tileTypeBeingPlaced);
     }
 }

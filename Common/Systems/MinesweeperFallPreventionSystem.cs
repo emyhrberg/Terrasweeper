@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace JulyJam.Common.Systems
 {
-    internal class Hooks : ModSystem
+    internal class MinesweeperFallPreventionSystem : ModSystem
     {
         public override void Load()
         {

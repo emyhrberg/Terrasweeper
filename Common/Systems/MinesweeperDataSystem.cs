@@ -38,7 +38,7 @@ namespace JulyJam.Common.Systems
             get => (byte)TileDataPacking.Unpack(data, 4, 4);
             set => data = (byte)TileDataPacking.Pack(value, data, 4, 4);
         }
-        public bool HasMine => MineStatus != MineStatus.None;
+        public bool HasOrAtLeastHadMine => MineStatus != MineStatus.None;
         public void ClearMineFlagData()
         {
             MineStatus = MineStatus.None;
@@ -55,7 +55,7 @@ namespace JulyJam.Common.Systems
                 {
                     Tile neighborTile = Framing.GetTileSafely(x+i, y+j);
                     ref var data = ref neighborTile.Get<MinesweeperData>();
-                    if (data.HasMine)
+                    if (data.HasOrAtLeastHadMine)
                     {
                         mineCount++;
                     }
