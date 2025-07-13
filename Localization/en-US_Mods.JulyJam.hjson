@@ -25,6 +25,11 @@ Items: {
 		DisplayName: Mined Mine
 		Tooltip: ""
 	}
+
+	MinesweeperTrophy: {
+		DisplayName: Minesweeper Trophy
+		Tooltip: ""
+	}
 }
 
 Projectiles.MineExplosion.DisplayName: Mine Explosion
