@@ -13,7 +13,7 @@ using Terraria.ModLoader.IO;
 
 namespace JulyJam.Content.Items
 {
-    internal class MinedMine : ModItem
+    internal class FlaggedFlag : ModItem
     {
         public override void SetDefaults()
         {
@@ -26,7 +26,7 @@ namespace JulyJam.Content.Items
             Item.noMelee = true;
             Item.rare = ItemRarityID.Blue;
             Item.value = Item.buyPrice(silver: 1);
-            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<FlaggedFlag>();
+            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<MinedMine>();
         }
 
         /*
