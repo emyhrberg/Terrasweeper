@@ -32,6 +32,7 @@ namespace JulyJam.Content.Items
             Item.DamageType = DamageClass.Ranged;
             Item.knockBack = 8f;
             Item.shootSpeed = 5f;
+            Item.consumable = true;
             ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<FlaggedFlag>();
         }
 
