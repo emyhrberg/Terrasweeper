@@ -22,9 +22,11 @@ public class MinesweeperGlobalTile : GlobalTile
             return;
         }
         ref var data = ref tile.Get<MinesweeperData>();
-        if (data.HasMine && !data.HasFlag)
+        bool unsolvedMine = data.MineStatus == MineStatus.UnsolvedMine;
+        if (unsolvedMine && !data.HasFlag)
         {
             data.ClearMineFlagData();
+            data.MineStatus = MineStatus.Failed;
             JJUtils.Explode(i, j);
             MinesweeperData.UpdateNumbersOfMines3x3(i, j);
         }
@@ -34,17 +36,20 @@ public class MinesweeperGlobalTile : GlobalTile
             JJUtils.Explode(i, j);
             MinesweeperData.UpdateNumbersOfMines3x3(i, j);
         }
-        else if (data.HasMine && data.HasFlag)
+        else if (unsolvedMine && data.HasFlag)
         {
-            // if the tile has a mine and a flag, we just remove the flag
             data.ClearMineFlagData();
-            fail = true;
+            data.MineStatus = MineStatus.Solved;
             Item.NewItem(
                 new EntitySource_TileInteraction(Main.LocalPlayer, i, j),
                 new Vector2(i * 16f, j * 16f),
                 ModContent.ItemType<MinedMine>(),
                 1);
             MinesweeperData.UpdateNumbersOfMines3x3(i, j);
+        }
+        else if (!unsolvedMine && data.HasMine && data.HasFlag)
+        {
+            data.HasFlag = false; // remove the flag
         }
     }
 }

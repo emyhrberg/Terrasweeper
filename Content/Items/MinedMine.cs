@@ -30,6 +30,7 @@ namespace JulyJam.Content.Items
             Item.consumable = true;
         }
 
+        /*
         public override bool? UseItem(Player player)
         {
             int i = Player.tileTargetX;
@@ -67,6 +68,6 @@ namespace JulyJam.Content.Items
                 return false;
             }
             return true;
-        }
+        }*/
     }
 }

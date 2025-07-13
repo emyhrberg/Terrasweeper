@@ -70,9 +70,9 @@ namespace JulyJam.Common.Systems
                     }
                     ref var data = ref tile.Get<MinesweeperData>();
                     bool hasMine = Main.rand.Next(100) < ratioOfMines;
-                    data.HasMine = hasMine;
-                    if(hasMine)
+                    if (hasMine)
                     {
+                        data.MineStatus = MineStatus.UnsolvedMine;
                         MinesweeperData.UpdateNumbersOfMines3x3(i, j);
                     }
                     

@@ -51,14 +51,33 @@ namespace JulyJam.Common.Systems
                     ref var data = ref tile.Get<MinesweeperData>();
                     Vector2 drawPos = new(i * 16 - Main.screenPosition.X, j * 16 - Main.screenPosition.Y);
                     bool isTileSolid = JJUtils.IsTileSolid(tile);
+                    bool unsolvedMine = data.MineStatus == MineStatus.UnsolvedMine;
 
-                    // Mines
-                    if (data.HasMine && !data.HasFlag && isTileSolid && Conf.C.showMines)
+                    // Mines (only debug)
+                    if (unsolvedMine && !data.HasFlag && isTileSolid && Conf.C.showMines)
                     {
                         Main.spriteBatch.Draw(
                             Ass.Minesweeper.Value,
                             drawPos,
                             MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.Mine),
+                            Lighting.GetColor(i, j), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                    }
+                    // Solved Mine
+                    else if(data.MineStatus == MineStatus.Solved)
+                    {
+                        Main.spriteBatch.Draw(
+                            Ass.Minesweeper.Value,
+                            drawPos,
+                            MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.SolvedMine),
+                            Lighting.GetColor(i, j), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                    }
+                    // Failed Mine
+                    else if (data.MineStatus == MineStatus.Failed)
+                    {
+                        Main.spriteBatch.Draw(
+                            Ass.Minesweeper.Value,
+                            drawPos,
+                            MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.FailedMine),
                             Lighting.GetColor(i, j), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                     }
                     // Flag
@@ -71,7 +90,7 @@ namespace JulyJam.Common.Systems
                             Lighting.GetColor(i, j), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                     }
                     // Error data on tile
-                    else if ((data.HasFlag || data.HasMine) && !isTileSolid)
+                    else if ((data.HasFlag || unsolvedMine) && !isTileSolid)
                     {
                         Main.spriteBatch.Draw(
                             Ass.Minesweeper.Value,
@@ -80,6 +99,7 @@ namespace JulyJam.Common.Systems
                             Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                         Log.Warn($"Wrong data on tile!");
                     }
+                    // Numbers
                     else if (!isTileSolid)
                     {
                         // Nothing, no mines near tile

@@ -31,25 +31,38 @@ namespace JulyJam.Content.Items
 
         public override bool? UseItem(Player player)
         {
-            if (player.whoAmI != Main.myPlayer) // ignore other clients
-                return null;
+            // Get the tile under the cursor
+            int i = Player.tileTargetX;
+            int j = Player.tileTargetY;
+            Tile tile = Main.tile[i, j];
+            ref var data = ref tile.Get<MinesweeperData>();
 
-            // convert to mouse to tile coords
-            Vector2 worldPos = Main.MouseWorld;
-            player.LimitPointToPlayerReachableArea(ref worldPos); // limit to player reach
-            Point tilePos = worldPos.ToTileCoordinates();
-            Tile tile = Main.tile[tilePos];
+            // Set the mine status
+            data.MineStatus = data.HasMine ? MineStatus.None : MineStatus.UnsolvedMine;
 
-
-            if (!tile.HasTile || Main.tileFrameImportant[tile.TileType])
-                return false; // only toggle if the tile exists and not a frameimportant
-
-            //MineTileEntity.Toggle(tilePos);
-            ref var data = ref Main.tile[tilePos].Get<MinesweeperData>();
-            data.HasMine = !data.HasMine;
-            MinesweeperData.UpdateNumbersOfMines3x3(tilePos.X, tilePos.Y);
+            // Update the mine count around this tile
+            MinesweeperData.UpdateNumbersOfMines3x3(i, j);
 
             SoundEngine.PlaySound(SoundID.Grab, player.Center);
+            return true;
+        }
+
+        public override bool CanUseItem(Player player)
+        {
+            // Check if the player is the local player
+            if (player.whoAmI != Main.myPlayer)
+                return false;
+
+            // Getting the tile under the cursor
+            int i = Player.tileTargetX;
+            int j = Player.tileTargetY;
+            Tile tile = Framing.GetTileSafely(i, j);
+            ref var data = ref tile.Get<MinesweeperData>();
+
+            if ((!JJUtils.IsTileSolid(tile) && !data.HasMine) || !JJUtils.WithinPlacementRange(player, i, j))
+            {
+                return false;
+            }
             return true;
         }
 

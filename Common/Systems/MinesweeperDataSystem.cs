@@ -16,28 +16,30 @@ namespace JulyJam.Common.Systems
     public struct MinesweeperData : ITileData
     {
         // n - Number of mines in the 3x3 area around this tile
-        // m - Whether this tile is a mine
+        // m - Enum of Mine status
         // f - Whether this tile is flagged by the player
-        // nnnn0mf0
+        // nnnnmmf0
         public byte data;
-        public bool HasMine
-        {
-            get => TileDataPacking.GetBit(data, 2);
-            set => data = (byte)TileDataPacking.SetBit(value, data, 2);
-        }
         public bool HasFlag
         {
             get => TileDataPacking.GetBit(data, 1);
             set => data = (byte)TileDataPacking.SetBit(value, data, 1);
+        }
+
+        public MineStatus MineStatus
+        {
+            get => (MineStatus)TileDataPacking.Unpack(data, 2, 2);
+            set => data = (byte)TileDataPacking.Pack((byte)value, data, 2, 2);
         }
         public byte TileNumber // from 0 to 9
         {
             get => (byte)TileDataPacking.Unpack(data, 4, 4);
             set => data = (byte)TileDataPacking.Pack(value, data, 4, 4);
         }
+        public bool HasMine => MineStatus != MineStatus.None;
         public void ClearMineFlagData()
         {
-            HasMine = false;
+            MineStatus = MineStatus.None;
             HasFlag = false;
         }
 
@@ -51,7 +53,7 @@ namespace JulyJam.Common.Systems
                 {
                     Tile neighborTile = Framing.GetTileSafely(x+i, y+j);
                     ref var data = ref neighborTile.Get<MinesweeperData>();
-                    if (neighborTile.HasTile && data.HasMine)
+                    if (data.HasMine)
                     {
                         mineCount++;
                     }
@@ -78,6 +80,14 @@ namespace JulyJam.Common.Systems
                 }
             }
         }
+    }
+
+    public enum MineStatus : byte
+    {
+        None = 0, // no mine
+        UnsolvedMine = 1, // not yet solved by the player
+        Solved = 2, // solved by the player
+        Failed = 3 // failed by the player
     }
     class MinesweeperDataSystem : ModSystem
     {

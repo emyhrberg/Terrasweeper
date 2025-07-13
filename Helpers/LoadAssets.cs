@@ -48,6 +48,8 @@ namespace JulyJam.Helpers
         Eight = 8,
         Nine = 9,
         Flag = 10,
+        SolvedMine = 11,
+        FailedMine = 12,
     }
     /// <summary>
     /// System that automatically initializes assets
