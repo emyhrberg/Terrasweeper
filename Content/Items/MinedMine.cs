@@ -1,10 +1,10 @@
-﻿using JulyJam.Common.Systems;
-using JulyJam.Common.Globals;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using JulyJam.Common.Globals;
+using JulyJam.Common.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -19,7 +19,7 @@ namespace JulyJam.Content.Items
         {
             Item.width = 26;
             Item.height = 26;
-            Item.maxStack = 999;
+            Item.maxStack = 9999;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.useAnimation = 15;
             Item.useTime = 15;

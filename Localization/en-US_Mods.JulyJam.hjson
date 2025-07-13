@@ -1,9 +1,4 @@
 BuilderToggles: {
-	NumbersVisibleBuilderToggle: {
-		OnText: Mine sweeper numbers on
-		OffText: Mine sweeper numbers off
-	}
-
 	NumbersTransparencyBuilderToggle: {
 		Transparency0: Minesweeper numbers 0%
 		Transparency50: Minesweeper numbers 50%
@@ -30,6 +25,11 @@ Items: {
 	MinedMine: {
 		DisplayName: Mined Mine
 		Tooltip: ""
+	}
+
+	MineRadarInfoAccessory: {
+		DisplayName: Mine Radar
+		Tooltip: Detects mines around you
 	}
 }
 
@@ -59,19 +59,27 @@ Configs: {
 				'''
 		}
 
-		showMines: {
-			Label: show Mines
+		ShowMines: {
+			Label: Show Mines
 			Tooltip: ""
 		}
 
-		ratioOfMines: {
+		WorldGenRatioOfMines: {
 			Label: ratio Of Mines
-			Tooltip: ""
+			Tooltip: The ratio (1-100) of mines generated in a new world
 		}
 
-		ElementsTransparentsy: {
-			Label: Elements Transparentsy
+		WorldGenMineRatio: {
+			Label: World Gen Mine Ratio
 			Tooltip: ""
 		}
+	}
+}
+
+InfoDisplays: {
+	MineRadarInfoDisplay: {
+		DisplayName: Mine Count
+		MinesNearby: "{0} mines nearby!"
+		NoMines: No mines nearby
 	}
 }

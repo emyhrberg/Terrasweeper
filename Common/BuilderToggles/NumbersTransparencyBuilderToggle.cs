@@ -10,15 +10,6 @@ namespace JulyJam.Common.BuilderToggles
 {
     public class NumbersTransparencyBuilderToggle : BuilderToggle
     {
-        // THIS IS UNUSED REMOVE IT!_
-        public enum VisibilityState
-        {
-            Transparency100,
-            Transparency50,
-            Transparency0
-        }
-        public VisibilityState visibility;
-
         public static LocalizedText Transparency0 { get; private set; }
         public static LocalizedText Transparency50 { get; private set; }
         public static LocalizedText Transparency100 { get; private set; }

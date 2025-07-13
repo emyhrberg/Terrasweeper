@@ -51,14 +51,25 @@ namespace JulyJam.Common.Systems
                     bool isTileSolidForNumbers = JJUtils.IsTileSolidForNumbers(tile);
                     bool unsolvedMine = data.MineStatus == MineStatus.UnsolvedMine;
 
+                    // get builder toggle
+                    int state = ModContent.GetInstance<NumbersTransparencyBuilderToggle>().CurrentState;
+                    float opacity = 0f;
+                    if (state == 0) // 100%
+                        opacity = 1f;
+                    else if (state == 1) // 50%
+                        opacity = 0.4f;
+                    else if (state == 2)
+                        opacity = 0f; // 0%
+                    Color color = Lighting.GetColor(i, j) * opacity;
+
                     // Mines (only debug)
-                    if (unsolvedMine && !data.HasFlag && isTileSolidForMine && Conf.C.showMines)
+                    if (unsolvedMine && !data.HasFlag && isTileSolidForMine && Conf.C.ShowMines)
                     {
                         Main.spriteBatch.Draw(
                             Ass.Minesweeper.Value,
                             drawPos,
                             MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.Mine),
-                            Lighting.GetColor(i, j), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                            color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                     }
                     // Solved Mine
                     else if (data.MineStatus == MineStatus.Solved)
@@ -67,7 +78,7 @@ namespace JulyJam.Common.Systems
                             Ass.Minesweeper.Value,
                             drawPos,
                             MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.SolvedMine),
-                            Lighting.GetColor(i, j), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                            color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                     }
                     // Failed Mine
                     else if (data.MineStatus == MineStatus.Failed)
@@ -76,7 +87,7 @@ namespace JulyJam.Common.Systems
                             Ass.Minesweeper.Value,
                             drawPos,
                             MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.FailedMine),
-                            Lighting.GetColor(i, j), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                            color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                     }
                     // Flag
                     else if (data.HasFlag && isTileSolidForMine)
@@ -85,7 +96,7 @@ namespace JulyJam.Common.Systems
                             Ass.Minesweeper.Value,
                             drawPos,
                             MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.Flag),
-                            Lighting.GetColor(i, j), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                            color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                     }
                     // Error data on tile
                     else if ((data.HasFlag || unsolvedMine) && !isTileSolidForMine)
@@ -108,25 +119,11 @@ namespace JulyJam.Common.Systems
                         // numbers from 1 to 8
                         if (data.TileNumber > 0 && data.TileNumber < 9)
                         {
-                            // get builder toggle
-                            int state = ModContent.GetInstance<NumbersTransparencyBuilderToggle>().CurrentState;
-                            float opacity = 0f;
-                            if (state == 0) // 100%
-                                opacity = 1f;
-                            else if (state == 1) // 50%
-                                opacity = 0.2f;
-                            else if (state == 2)
-                                opacity = 0f; // 
-
-
-                            Color color = Lighting.GetColor(i, j);
-                            //color.A = (byte)(255f * (float)Conf.C.ElementsTransparentsy / 100f);
-
                             Main.spriteBatch.Draw(
                             Ass.Minesweeper.Value,
                             drawPos,
                             MinesweeperTextures.GetRectangle((MinesweeperTexturesEnum)data.TileNumber),
-                            color*opacity, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                            color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                         }
                         // Error data on tile
                         else

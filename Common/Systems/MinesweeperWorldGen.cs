@@ -1,7 +1,7 @@
-﻿using JulyJam.Common.Configs;
-using Microsoft.Xna.Framework.Input;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using JulyJam.Common.Configs;
+using Microsoft.Xna.Framework.Input;
 using Terraria;
 using Terraria.IO;
 using Terraria.Localization;
@@ -56,7 +56,8 @@ namespace JulyJam.Common.Systems
         {
             progress.Message = MinesweeperWorldGen.WorldgenMinesPassMessage.Value;
 
-            int ratioOfMines = Conf.C.ratioOfMines;
+            // int ratioOfMines = Conf.C.ratioOfMines;
+            int ratioOfMines = 17;
 
             // Place mines
             for (int j = 0; j < Main.maxTilesY; j++)
@@ -75,7 +76,7 @@ namespace JulyJam.Common.Systems
                         data.MineStatus = MineStatus.UnsolvedMine;
                         MinesweeperData.UpdateNumbersOfMines3x3(i, j);
                     }
-                    
+
                 }
             }
 
