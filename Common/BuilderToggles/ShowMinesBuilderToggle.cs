@@ -9,7 +9,7 @@ namespace Terrasweeper.Common.BuilderToggles
 {
     public class ShowMinesBuilderToggle : BuilderToggle
     {
-        public override bool Active() => false;
+        public override bool Active() => true;
 
         public override int NumberOfStates => 2;
 
@@ -37,7 +37,7 @@ namespace Terrasweeper.Common.BuilderToggles
 
         public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams)
         {
-            drawParams.Frame = drawParams.Texture.Frame(1, 3, 0, CurrentState);
+            drawParams.Frame = drawParams.Texture.Frame(1, 2, 0, CurrentState);
             return base.Draw(spriteBatch, ref drawParams);
         }
     }

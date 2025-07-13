@@ -17,7 +17,7 @@ namespace Terrasweeper.Content.Items
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient<MinedMine>(999);
+            recipe.AddIngredient<Mine>(999);
             recipe.AddTile(TileID.HeavyWorkBench);
             recipe.Register();
 

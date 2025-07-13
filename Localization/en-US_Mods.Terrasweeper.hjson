@@ -24,23 +24,29 @@ Items: {
 
 	Flag: {
 		DisplayName: Flag
-		Tooltip: "A minesweeper flag"
+		Tooltip: A minesweeper flag
 	}
 
 	MinePlacerDebug: {
 		DisplayName: Mine Placer (Debug)
-		Tooltip: "Only for debugging"
+		Tooltip: Only for debugging
 	}
 
 	Mine: {
 		DisplayName: Mine
-		Tooltip: "A minesweeper mine dug up from the ground"
+		Tooltip: A minesweeper mine dug up from the ground
+	}
+
+	BiggerMinesweeperTrophy: {
+		DisplayName: Bigger Minesweeper Trophy
+		Tooltip: "You're a master minesweeper!"
 	}
 }
 
 Projectiles: {
 	MineExplosion.DisplayName: Mine Explosion
 	FlagBombProjectile.DisplayName: Flag Bomb
+	MinedMineProjectile.DisplayName: Mined Mine Projectile
 }
 
 Worldgen: {

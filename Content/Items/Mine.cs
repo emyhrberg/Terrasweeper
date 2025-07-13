@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terrasweeper.Content.Projectiles;
@@ -27,6 +28,12 @@ namespace Terrasweeper.Content.Items
             Item.knockBack = 8f;
             Item.shootSpeed = 5f;
             Item.consumable = true;
+        }
+
+        public override bool? UseItem(Player player)
+        {
+            SoundEngine.PlaySound(SoundID.Item1, player.position);
+            return base.UseItem(player);
         }
     }
 }
