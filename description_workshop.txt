@@ -12,15 +12,16 @@ When generating a new world, mines will be scattered all around. Mines are accom
 
 [h2] Debugging [/h2] 
 [list]
-[*] [b]Mine Ratio[/b]: In config, set the ratio of number of mines to spawn when generating in a new world (1-100).
+[*] [b]Mine Ratio[/b]: In config, set the chance for a tile to contain a mine when generating a new world (1-100).
 [*] [b]Mine Visibility[/b]: In config, set the visibility of mines. Defaults to off.
 [*] [b]Opacity[/b]: In builder toggle, set the visibility of mines, numbers, and flags. Adjust to your liking between 0, 50 and 100 percent opacity on all minesweeper elements.
 [/list]
 
 [h2] Mod Jam [/h2] 
 [list]
-[*] [b] Date: [/b]: 2025-07-10 to 2025-07-13
-[*] [b] Theme: [/b]: Game Tribute - Introducing one new global mechanic
+[*] [b] Date: [/b] 2025-07-10 to 2025-07-13
+[*] [b] Theme: [/b] Game Tribute
+[*] [b] Our idea: [/b] Minesweeper is a classic old windows game. By generating mines everywhere in the world, we introduce a new global mechanic exposed to the player inspired by another game.
 [/list]
 
 [h2] Links [/h2]
