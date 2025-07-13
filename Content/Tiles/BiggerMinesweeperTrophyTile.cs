@@ -18,6 +18,7 @@ namespace JulyJam.Content.Tiles
             TileObjectData.newTile.CoordinateHeights = [16, 16, 16, 16, 16, 16];
             TileObjectData.newTile.Width = 6;
             TileObjectData.newTile.Height = 6;
+            TileObjectData.newTile.Origin = new(3, 3);
             TileObjectData.addTile(Type);
             AddMapEntry(new Color(120, 85, 60), Language.GetText("MapObject.Trophy"));
             DustType = DustID.WoodFurniture;
