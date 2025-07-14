@@ -11,11 +11,12 @@ namespace Terrasweeper.Common.Configs
 
         [Header("WorldGen")]
 
-        [DefaultValue(true)]
+        [CustomModConfigItem(typeof(MineSpawnChanceToggleConfigElement))]
+        [DefaultValue(false)]
         public bool CustomMinePer100TilesValue;
 
         [CustomModConfigItem(typeof(MineSpawnChanceConfigElement))]
-        [DefaultValue(10f)]
+        [DefaultValue(12f)]
         public float MinesPer100Tile;
 
         /// <summary> Config instance helper. Example: Config.C.YourValue </summary>

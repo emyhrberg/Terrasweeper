@@ -1,5 +1,25 @@
 Want to experience puzzles and more difficulty in your playthrough? Look no further, as Terrasweeper generates mines throughout your world and challenges you to figure out which tile is a mine with regular Minesweeper logic.
 
-How to play:  
-If you mine a wrongly flagged mine or a non-flagged mine - you [c/FF1919:explode!]
-Red mines means wrongly mined mine and blue flags means solved mine.
+How to play:
+Right click any tile with yout picaxe to flag it 
+If you mine wrongly flagged tile - you explode! 
+If you mine non-flagged mine - you explode!
+Succesfull mined mine drops Mined Mine, that are good weapon + allows you to craft some things 
+I wonder what happens if you shimmer them... 
+Red mines means wrongly mined mine and blue flags means solved mine. 
+They still counts as a mine for a numbers, so keep this in mind!
+
+Game also functional in Multiplayer!
+
+Good luck!
+
+Debugging:
+Debug tools are available: mine placer item and config for world gen settings.
+
+Mod Jam Info:
+Team: Erky, Cotlim, Cronus
+Theme: Game Tribute
+Date: 2025-07-10 to 2025-07-13 (60 hours)
+
+
+Developed By Erky, Cotlim and Cronus

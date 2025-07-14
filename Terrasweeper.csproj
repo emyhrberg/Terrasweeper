@@ -13,7 +13,7 @@
     <!-- Publicize tModLoader for easy access to private fields -->
 	<ItemGroup>
 		<PackageReference Include="Krafs.Publicizer" PrivateAssets="true" Version="2.2.1" />
-		<Publicize Include="tModLoader" IncludeVirtualMembers="false" IncludeCompilerGeneratedMembers="false" />
+		<Publicize Include="tModLoader" IncludeVirtualMembers="true" IncludeCompilerGeneratedMembers="false" />
 	</ItemGroup>
 
 </Project>

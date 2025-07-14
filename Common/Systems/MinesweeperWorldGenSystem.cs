@@ -32,7 +32,7 @@ namespace Terrasweeper.Common.Systems
     {
         public WorldgenMinesPass(string name, float loadWeight) : base(name, loadWeight) { }
 
-        protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
+        public override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = MinesweeperWorldGenSystem.WorldgenMinesPassMessage.Value;
 
@@ -41,33 +41,6 @@ namespace Terrasweeper.Common.Systems
 
             // Place everything else
             progress.Message = MinesweeperWorldGenSystem.WorldgenHintTilesPassMessage.Value;
-        }
-
-        // get dunked on, erky!
-        private void PlaceMinesEverywhere()
-        {
-            int minesAdded = 0; // testing code
-            for (int j = 0; j < Main.maxTilesY; j++)
-            {
-                for (int i = 0; i < Main.maxTilesX; i++)
-                {
-                    Tile tile = Framing.GetTileSafely(i, j);
-                    if (!JJUtils.IsTileSolidForMine(tile))
-                    {
-                        continue;
-                    }
-                    ref var data = ref tile.Get<MinesweeperData>();
-                    bool hasMine = WorldGen.genRand.Next(100) < Config.C.MinesPer100Tile;
-                    if (hasMine)
-                    {
-                        data.MineStatus = MineStatus.UnsolvedMine;
-                        MinesweeperData.UpdateNumbersOfMines3x3(i, j);
-                        minesAdded++; // testing code
-                    }
-
-                }
-            }
-            Log.Info("Total everywhere Mines added: " + minesAdded); // testing code
         }
 
         private void PlaceMines()
@@ -97,7 +70,6 @@ namespace Terrasweeper.Common.Systems
             Log.Info("Total select parts Mines added: " + minesAdded); // testing code
         }
 
-        // no you don't
         private int MakeMineRatio()
         {
             int value = 12; // Baseline value, Normal or Journey, medium, no special seed
