@@ -1,3 +1,3 @@
-Experience the classic game Minesweeper, now in Terraria!
+Experience Minesweeper in Terraria!
 
-When generating a new world, mines will be scattered all around. Mines are accompanied by numbers adjacent to them. If you find a number; tread lightly! You can [c/D30B09:flag] any tile using Flag Placer or right click any tile with any pickaxe. If the tile has a mine, you will pick up a new item. If you flag incorrectly and mine, you will explode!
+As you explore a newly generated world, hidden mines are scattered throughout the terrain. Numbers will appear on tiles adjacent to mines, giving you clues about their locations, so tread carefully!You can right-click any tile with a pickaxe to mark suspicious spots. If you uncover a mine, you’ll receive a special item. But beware: flagging incorrectly and then mining will trigger an explosion! Use logic and caution to clear areas, avoid hazards, and collect rewards. Can you sweep the world without setting off mines?
