@@ -9,7 +9,7 @@ namespace Terrasweeper.Common.BuilderToggles
 {
     public class ShowMinesBuilderToggle : BuilderToggle
     {
-        public override bool Active() => true;
+        public override bool Active() => false;
 
         public override int NumberOfStates => 2;
 
