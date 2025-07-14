@@ -46,7 +46,7 @@ public class MinesweeperGlobalTile : GlobalTile
             Item.NewItem(
                 new EntitySource_TileInteraction(Main.LocalPlayer, i, j),
                 new Vector2(i * 16f, j * 16f),
-                ModContent.ItemType<Mine>(),
+                ModContent.ItemType<MinedMine>(),
                 1);
             MinesweeperData.UpdateNumbersOfMines3x3(i, j);
         }

@@ -27,6 +27,14 @@ namespace Terrasweeper.Common.BuilderToggles
 
         public override void OnRightClick()
         {
+            // Toggle visibility between the states
+            CurrentState = (CurrentState + 1) % NumberOfStates;
+
+            Main.NewText($"{CurrentState}");
+
+            sound = SoundID.MenuTick;
+            return false; // Returning true will actually toggle the state.
+                          // * Returning false will not toggle the state, but will still play the sound. */
             CurrentState -= 1;
             if (CurrentState < 0)
             {

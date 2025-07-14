@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Terrasweeper.Content.Items
 {
-    internal class Flag : ModItem
+    internal class FlaggedFlag : ModItem
     {
         public override void SetDefaults()
         {
@@ -17,7 +17,7 @@ namespace Terrasweeper.Content.Items
             Item.noMelee = true;
             Item.rare = ItemRarityID.Blue;
             Item.value = Item.buyPrice(silver: 1);
-            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<Mine>();
+            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<MinedMine>();
         }
     }
 }

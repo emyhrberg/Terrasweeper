@@ -22,8 +22,8 @@ Items: {
 		Tooltip: Detects mines around you
 	}
 
-	Flag: {
-		DisplayName: Flag
+	FlaggedFlag: {
+		DisplayName: Flagged Flag
 		Tooltip: A minesweeper flag
 	}
 
@@ -32,13 +32,14 @@ Items: {
 		Tooltip: Only for debugging
 	}
 
-	Mine: {
-		DisplayName: Mine
+	MinedMine: {
+		DisplayName: Mined Mine
 		Tooltip: A minesweeper mine dug up from the ground
 	}
 
 	BiggerMinesweeperTrophy: {
 		DisplayName: Bigger Minesweeper Trophy
+		Tooltip: You're a master mine sweeper!
 		Tooltip: You're a master minesweeper!
 	}
 
@@ -51,6 +52,7 @@ Items: {
 Projectiles: {
 	MineExplosion.DisplayName: Mine Explosion
 	FlagBombProjectile.DisplayName: Flag Bomb
+	MinedMineProjectile.DisplayName: Mined Mine
 	MinedMineProjectile.DisplayName: Mined Mine Projectile
 	StickyFlagBombProjectile.DisplayName: Sticky Flag Bomb Projectile
 }
