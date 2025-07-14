@@ -9,7 +9,7 @@ namespace Terrasweeper.Content.Items
     {
         public override void SetDefaults()
         {
-            Item.CloneDefaults(ItemID.Bomb);
+            Item.CloneDefaults(ItemID.StickyBomb);
             Item.shoot = ModContent.ProjectileType<StickyFlagBombProjectile>();
         }
 
@@ -17,7 +17,7 @@ namespace Terrasweeper.Content.Items
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient<FlaggedFlag>(20);
-            recipe.AddIngredient(ItemID.Bomb);
+            recipe.AddIngredient(ItemID.StickyBomb);
             recipe.Register();
         }
     }
