@@ -1,6 +1,6 @@
 displayName = Terrasweeper
 author = Erky, Cotlim and Cronus
-version = 0.9.4
+version = 0.9.5
 buildIgnore = Assets/Photoshop*
 side = both
 includeSource = true
