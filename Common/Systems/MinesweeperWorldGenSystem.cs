@@ -26,27 +26,6 @@ namespace Terrasweeper.Common.Systems
         {
             tasks.Insert(tasks.Count, new WorldgenMinesPass("Terrasweeper Add mines", 100f));
         }
-
-        // testing-related methods, delete on release
-        public static bool JustPressed(Keys key)
-        {
-            return Main.keyState.IsKeyDown(key) && !Main.oldKeyState.IsKeyDown(key);
-        }
-
-        public override void PostUpdateWorld()
-        {
-            if (JustPressed(Keys.NumPad5))
-            {
-                TestMethod((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
-            }
-        }
-
-        private void TestMethod(int x, int y)
-        {
-            ref var data = ref Main.tile[x, y].Get<MinesweeperData>();
-            Main.NewText("data: " + data.data);
-            Main.NewText("mines: " + data.TileNumber);
-        }
     }
 
     public class WorldgenMinesPass : GenPass
@@ -59,7 +38,6 @@ namespace Terrasweeper.Common.Systems
 
             // int ratioOfMines = Conf.C.ratioOfMines;
             int ratioOfMines = MakeMineRatio();
-            Console.WriteLine("Mine ratio: " + ratioOfMines); // testing code
 
             // Place mines
             int minesAdded = 0; // testing code
@@ -79,7 +57,6 @@ namespace Terrasweeper.Common.Systems
                     {
                         data.MineStatus = MineStatus.UnsolvedMine;
                         MinesweeperData.UpdateNumbersOfMines3x3(i, j);
-                        //WorldGen.PlaceTile(i, j, TileID.BoneBlock, forced: true); // testing code
                         minesAdded++; // testing code
                     }
 
