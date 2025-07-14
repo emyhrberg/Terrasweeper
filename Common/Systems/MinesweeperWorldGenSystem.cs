@@ -32,7 +32,7 @@ namespace Terrasweeper.Common.Systems
     {
         public WorldgenMinesPass(string name, float loadWeight) : base(name, loadWeight) { }
 
-        protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
+        public override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = MinesweeperWorldGenSystem.WorldgenMinesPassMessage.Value;
 

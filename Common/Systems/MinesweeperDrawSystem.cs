@@ -62,8 +62,9 @@ namespace Terrasweeper.Common.Systems
                     Color color = Lighting.GetColor(i, j) * opacity;
 
                     // Mines (only debug)
+                    var mineVisibilityToggle = ModContent.GetInstance<ShowMinesBuilderToggle>();
                     if (unsolvedMine && !data.HasFlag && isTileSolidForMine &&
-                        ModContent.GetInstance<ShowMinesBuilderToggle>().CurrentState == 0)
+                        mineVisibilityToggle.CurrentState == 0 && mineVisibilityToggle.Active())
                     {
                         Main.spriteBatch.Draw(
                             Ass.Minesweeper.Value,

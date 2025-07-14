@@ -82,15 +82,20 @@ Configs: {
 				'''
 		}
 
-		MinesEverywhere: {
-			Label: Mines Everywhere
+		CustomMinePer100TilesValue: {
+			Label: Custom Mine Per 100 Tiles
 			Tooltip:
 				'''
-				On: Mines are scattered everywhere in your world
-				Off: Mines are only placed in a single line below your spawn (for debug purposes)
+				On: Amount of mines will be determined by the slider below.
+				Off: Amount of mines will be determined by the difficulty of the world.
 				'''
 		}
 
 		Headers.WorldGen: World Gen Header
+
+		MinesPer100Tile: {
+			Label: Mines Per 100 Tile
+			Tooltip: Set the value of mines in the world per 100 tiles!
+		}
 	}
 }
