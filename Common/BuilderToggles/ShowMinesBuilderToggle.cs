@@ -25,14 +25,15 @@ namespace Terrasweeper.Common.BuilderToggles
                 return "Show Mines Off";
         }
 
-        public override bool OnLeftClick(ref SoundStyle? sound)
+        public override void OnRightClick()
         {
-            // Toggle visibility between the states
-            CurrentState = (CurrentState + 1) % NumberOfStates;
+            CurrentState -= 1;
+            if (CurrentState < 0)
+            {
+                CurrentState = NumberOfStates - 1;
+            }
 
-            sound = SoundID.MenuTick;
-            return true; // Returning true will actually toggle the state.
-                         // * Returning false will not toggle the state, but will still play the sound. */
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
 
         public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams)
