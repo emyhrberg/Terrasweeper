@@ -6,7 +6,7 @@ using Terrasweeper.Content.Projectiles;
 
 namespace Terrasweeper.Content.Items
 {
-    internal class Mine : ModItem
+    internal class MinedMine : ModItem
     {
         public override void SetDefaults()
         {
@@ -19,7 +19,7 @@ namespace Terrasweeper.Content.Items
             Item.noMelee = true;
             Item.rare = ItemRarityID.Blue;
             Item.value = Item.buyPrice(silver: 1);
-            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<Flag>();
+            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<FlaggedFlag>();
 
             // Projectile stuff
             Item.shoot = ModContent.ProjectileType<MinedMineProjectile>();

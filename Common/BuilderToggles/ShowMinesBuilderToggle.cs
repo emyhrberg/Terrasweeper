@@ -30,8 +30,10 @@ namespace Terrasweeper.Common.BuilderToggles
             // Toggle visibility between the states
             CurrentState = (CurrentState + 1) % NumberOfStates;
 
+            Main.NewText($"{CurrentState}");
+
             sound = SoundID.MenuTick;
-            return true; // Returning true will actually toggle the state.
+            return false; // Returning true will actually toggle the state.
                          // * Returning false will not toggle the state, but will still play the sound. */
         }
 

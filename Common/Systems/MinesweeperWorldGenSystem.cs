@@ -72,12 +72,12 @@ namespace Terrasweeper.Common.Systems
         {
             int value = 12; // Baseline value, Normal or Journey, medium, no special seed
             if (Main.expertMode) value += 3; // 15 mines for Expert
-            if (Main.masterMode) value += 5; // 17 mines for Master
+            if (Main.masterMode) value += 2; // 17 mines for Master
             if (Main.noTrapsWorld) value += 7; // +7 for no traps
             if (Main.getGoodWorld)
             {
-                if (Main.masterMode) value += 7; // a whopping +12 (5+7) for legendary
-                else value += 5; // or a +5 on other difficulties
+                if (Main.masterMode) value += 4; // a whopping im tired of counting for legendary
+                else value += 3; // or a +3 on other difficulties
             }
             if (Main.zenithWorld) value += 3; // another +3 for zenith
             return value; // Value can go from 10 (Journey/Classic, Small, no special seed) to 48 (Master, Large, Zenith)

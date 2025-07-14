@@ -53,7 +53,7 @@ namespace Terrasweeper.Content.Items.Accessories
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<Mine>(), 10)
+                .AddIngredient(ModContent.ItemType<MinedMine>(), 10)
                 .AddTile(TileID.WorkBenches)
                 .Register();
         }
