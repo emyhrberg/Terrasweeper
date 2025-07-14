@@ -3,6 +3,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terrasweeper.Common.Globals;
+using Terrasweeper.Common.PacketHandlers;
 using Terrasweeper.Content.Projectiles;
 
 namespace Terrasweeper.Helpers
@@ -81,13 +82,24 @@ namespace Terrasweeper.Helpers
         {
             // centre of the tile in world coords
             Vector2 centre = new((i + 0.5f) * 16f, (j + 0.5f) * 16f);
+            if (Main.netMode == NetmodeID.SinglePlayer)
+            {
+                CreateExplosion(i, j, centre);
+            }
+            else if (Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                ModNetHandler.minesweeperPacketHandler.SendExplosion(i, j, centre);
+            }
+        }
 
+        public static void CreateExplosion(int i, int j, Vector2 centre)
+        {
             Projectile.NewProjectile(
-                new EntitySource_TileBreak(i, j),
-                centre,
-                Vector2.Zero,
-                ModContent.ProjectileType<MineExplosion>(),
-                500, 3f);
+                            new EntitySource_TileBreak(i, j),
+                            centre,
+                            Vector2.Zero,
+                            ModContent.ProjectileType<MineExplosion>(),
+                            500, 3f);
         }
     }
 }

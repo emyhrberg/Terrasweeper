@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -17,6 +18,7 @@ namespace Terrasweeper.Common.PacketHandlers
         public const byte SyncSingleTile = 0;
         public const byte ResyncRequest = 1;
         public const byte RegionCompressedData = 2;
+        public const byte Explosion = 3;
 
         private readonly Dictionary<int, ChunkBuffer> chunkBuffers = new();
 
@@ -35,11 +37,12 @@ namespace Terrasweeper.Common.PacketHandlers
                 case RegionCompressedData:
                     ReceiveRegionCompressed(reader, fromWho);
                     break;
+                case Explosion:
+                    ReceiveExplosion(reader, fromWho);
+                    break;
+
             }
         }
-
-
-        // --- SINGLE TILE ---
 
         public void SendSingleTile(int x, int y, int toClient = -1, int ignoreClient = -1)
         {
@@ -98,7 +101,7 @@ namespace Terrasweeper.Common.PacketHandlers
         }
 
         // Only Server
-        private void SendCompressedRegion(int xStart, int yStart, int width, int height, int toClient)
+        public void SendCompressedRegion(int xStart, int yStart, int width, int height, int toClient)
         {
             if (Main.netMode != NetmodeID.Server)
             {
@@ -164,7 +167,31 @@ namespace Terrasweeper.Common.PacketHandlers
             Log.Info($"Received and applied MinesweeperData for region {xStart},{yStart} {width}x{height}");
         }
 
+        public void SendExplosion(int i, int j, Vector2 centre, int toClient = -1, int ignoreClient = -1)
+        {
+            if (Main.netMode != NetmodeID.MultiplayerClient)
+            {
+                return;
+            }
+            ModPacket packet = GetPacket(Explosion);
+            packet.Write(i);
+            packet.Write(j);
+            packet.WriteVector2(centre);
+            packet.Send(toClient, ignoreClient);
+        }
 
+        // Only Server
+        private void ReceiveExplosion(BinaryReader reader, int fromWho)
+        {
+            if (Main.netMode != NetmodeID.Server)
+            {
+                return;
+            }
+            int i = reader.ReadInt32();
+            int j = reader.ReadInt32();
+            Vector2 centre = reader.ReadVector2();
+            JJUtils.CreateExplosion(i, j, centre);
+        }
     }
     public class ChunkBuffer
     {
