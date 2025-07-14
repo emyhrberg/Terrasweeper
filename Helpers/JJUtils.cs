@@ -83,11 +83,11 @@ namespace Terrasweeper.Helpers
             Vector2 centre = new((i + 0.5f) * 16f, (j + 0.5f) * 16f);
 
             Projectile.NewProjectile(
-                new EntitySource_TileInteraction(Main.LocalPlayer, i, j),
+                new EntitySource_TileBreak(i, j),
                 centre,
                 Vector2.Zero,
                 ModContent.ProjectileType<MineExplosion>(),
-                50, 3f, 255);
+                500, 3f);
         }
     }
 }

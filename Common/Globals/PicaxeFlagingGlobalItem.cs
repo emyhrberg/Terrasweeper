@@ -1,6 +1,7 @@
 using Terraria;
 using Terraria.ModLoader;
 using Terrasweeper.Common.BuilderToggles;
+using Terrasweeper.Common.PacketHandlers;
 using Terrasweeper.Common.Systems;
 
 namespace Terrasweeper.Common.Globals
@@ -26,6 +27,7 @@ namespace Terrasweeper.Common.Globals
             }
             ref var data = ref tile.Get<MinesweeperData>();
             data.HasFlag = !data.HasFlag;
+            ModNetHandler.minesweeperPacketHandler.SendSingleTile(i, j);
             return false;
         }
     }

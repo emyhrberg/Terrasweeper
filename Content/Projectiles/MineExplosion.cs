@@ -23,6 +23,7 @@ public class MineExplosion : ModProjectile
         Projectile.tileCollide = false;
         Projectile.timeLeft = 5;
         Projectile.DamageType = DamageClass.Generic;
+        Projectile.aiStyle = -1;
 
         Projectile.usesLocalNPCImmunity = true;
         Projectile.localNPCHitCooldown = -1;
@@ -33,27 +34,21 @@ public class MineExplosion : ModProjectile
     public override void AI()
     {
         base.AI();
-        //if (Projectile.localAI[0] == 0f)
-        //{
-        //    Projectile.localAI[0] = 1f;
-        //    Projectile.Damage();               
-        //}
-        //Projectile.frame = Projectile.timeLeft == 1 ? 1 : 0;
-    }
-
-    public override void OnKill(int timeLeft)
-    {
-        SoundEngine.PlaySound(SoundID.Item62, Projectile.Center);
-
-        for (int i = 0; i < 100; i++)
+        if (Projectile.localAI[0] == 0f)
         {
-            var d = Dust.NewDustPerfect(
-                Projectile.Center,
-                DustID.Smoke,
-                Main.rand.NextVector2Circular(20f, 20f));
+            Projectile.localAI[0] = 1f;
+            SoundEngine.PlaySound(SoundID.Item62, Projectile.Center);
 
-            d.scale = 2f;
-            d.noGravity = true;
+            for (int i = 0; i < 100; i++)
+            {
+                var d = Dust.NewDustPerfect(
+                    Projectile.Center,
+                    DustID.Smoke,
+                    Main.rand.NextVector2Circular(20f, 20f));
+
+                d.scale = 2f;
+                d.noGravity = true;
+            }
         }
     }
 }
