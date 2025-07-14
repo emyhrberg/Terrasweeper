@@ -1,25 +1,15 @@
 [h1] Terrasweeper [/h1]
+Want to experience puzzles and more difficulty in your playthrough? Look no further, as Terrasweeper generates mines throughout your world and challenges you to figure out which tile is a mine with regular Minesweeper logic.
 
-[h2] How to play [/h2] 
-When generating a world, new [i] mines [/i] are scattered around the world. Mines are accompanied by numbers adjacent to them. If you find a minesweeper number; tread lightly! You can [i] flag [/i] any tile by right clicking it with a pickaxe. If the tile has a mine, you will pick up a mine. If you flag incorrectly and mine, you will explode!
+[h1] How to play [/h1]
+If you mine a wrongly flagged mine or a non-flagged mine - you explode! Red mines means wrongly mined mine and blue flags means solved mine.
 
-[h2] Items [/h2] 
-[list]
-[*] [b]Mine[/b]: A mine that has been found in the world by flagging and mining a tile with a mine.
-[*] [b]Flag[/b]: Shimmer a mine to get this item.
-[/list]
-[*] [b]Mine Radar[/b]: A radar that can detect nearby mines in the world.
-[/list]
+Good luck!
 
-[h2] Mod Jam [/h2] 
-[list]
-[*] [b] Date: [/b] 2025-07-10 to 2025-07-13
-[*] [b] Theme: [/b] Game Tribute
-[*] [b] Our idea: [/b] Minesweeper is a classic old windows game. By generating mines everywhere in the world, we introduce a new global mechanic exposed to the player inspired by another game.
-[/list]
+[h2] Mod Jam Info [/h2] 
+[b] Team: [/b] Erky, Cotlim, Cronus
+[b] Theme: [/b] Game Tribute
+[b] Date: [/b] 2025-07-10 to 2025-07-13 (60 hours)
 
 [h2] Links [/h2]
-[list]
-[*] Source code hosted at: [url=https://github.com/emyhrberg/Terrasweeper] GitHub [/url]
-[*] Got questions or suggestions? Join us at: [url=https://discord.gg/JWbYUktRPV] Discord [/url]
-[/list]
+[url=https://github.com/emyhrberg/Terrasweeper] GitHub [/url] | [url=https://discord.gg/JWbYUktRPV] Discord [/url]

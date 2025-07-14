@@ -1,3 +1,5 @@
-Experience Minesweeper in Terraria!
+Want to experience puzzles and more difficulty in your playthrough? Look no further, as Terrasweeper generates mines throughout your world and challenges you to figure out which tile is a mine with regular Minesweeper logic.
 
-As you explore a newly generated world, hidden mines are scattered throughout the terrain. Numbers will appear on tiles adjacent to mines, giving you clues about their locations, so tread carefully!You can right-click any tile with a pickaxe to mark suspicious spots. If you uncover a mine, you’ll receive a special item. But beware: flagging incorrectly and then mining will trigger an explosion! Use logic and caution to clear areas, avoid hazards, and collect rewards. Can you sweep the world without setting off mines?
+How to play:  
+If you mine a wrongly flagged mine or a non-flagged mine - you [c/FF1919:explode!]
+Red mines means wrongly mined mine and blue flags means solved mine.

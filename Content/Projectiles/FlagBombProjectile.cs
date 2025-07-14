@@ -15,7 +15,9 @@ namespace Terrasweeper.Content.Projectiles
         {
             Projectile.CloneDefaults(ItemID.Bomb);
             Projectile.aiStyle = ProjAIStyleID.Explosive;
-            Projectile.timeLeft = 180;
+            Projectile.timeLeft = 180; // 60 ticks = 1 second
+            Projectile.width = 22;
+            Projectile.height = 30;
         }
 
         public override void PrepareBombToBlow()

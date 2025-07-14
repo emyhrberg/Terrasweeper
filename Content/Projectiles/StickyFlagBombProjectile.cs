@@ -14,8 +14,14 @@ namespace Terrasweeper.Content.Projectiles
         public override void SetDefaults()
         {
             Projectile.CloneDefaults(ItemID.StickyBomb);
-            Projectile.aiStyle = ProjAIStyleID.StickProjectile;
+            Projectile.aiStyle = ProjAIStyleID.Explosive;
+
+            Projectile.friendly = true;
+            Projectile.tileCollide = true;
+            Projectile.penetrate = -1;
             Projectile.timeLeft = 180;
+            Projectile.width = 22;
+            Projectile.height = 30;
         }
 
         public override void PrepareBombToBlow()
@@ -23,6 +29,12 @@ namespace Terrasweeper.Content.Projectiles
             Projectile.Resize(128, 128);
             Projectile.damage = 100;
             Projectile.knockBack = 8f;
+        }
+
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            Projectile.velocity = new(0, 0);
+            return false; // make it stick to the tile by setting velocity 0
         }
 
         public override void OnKill(int timeLeft)
