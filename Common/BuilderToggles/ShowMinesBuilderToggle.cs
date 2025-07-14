@@ -9,12 +9,13 @@ namespace Terrasweeper.Common.BuilderToggles
 {
     public class ShowMinesBuilderToggle : BuilderToggle
     {
-        public override bool Active() => false;
+        public override bool Active() => true;
 
         public override int NumberOfStates => 2;
 
         public override void SetStaticDefaults()
         {
+            //CurrentState = 1; // ??
         }
 
         public override string DisplayValue()
