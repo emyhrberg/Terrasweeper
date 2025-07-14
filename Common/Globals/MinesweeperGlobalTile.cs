@@ -43,11 +43,17 @@ public class MinesweeperGlobalTile : GlobalTile
         {
             data.ClearMineFlagData();
             data.MineStatus = MineStatus.Solved;
-            Item.NewItem(
+            int item = Item.NewItem(
                 new EntitySource_TileInteraction(Main.LocalPlayer, i, j),
                 new Vector2(i * 16f, j * 16f),
                 ModContent.ItemType<MinedMine>(),
-                1);
+                1, false);
+            NetMessage.SendData(
+                        MessageID.SyncItem,
+                        number: item
+                    );
+
+
             MinesweeperData.UpdateNumbersOfMines3x3(i, j);
         }
         else if (!unsolvedMine && data.HasOrAtLeastHadMine && data.HasFlag)
