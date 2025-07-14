@@ -39,7 +39,6 @@ Items: {
 
 	BiggerMinesweeperTrophy: {
 		DisplayName: Bigger Minesweeper Trophy
-		Tooltip: You're a master mine sweeper!
 		Tooltip: You're a master minesweeper!
 	}
 
@@ -52,7 +51,6 @@ Items: {
 Projectiles: {
 	MineExplosion.DisplayName: Mine Explosion
 	FlagBombProjectile.DisplayName: Flag Bomb
-	MinedMineProjectile.DisplayName: Mined Mine
 	MinedMineProjectile.DisplayName: Mined Mine Projectile
 	StickyFlagBombProjectile.DisplayName: Sticky Flag Bomb Projectile
 }
