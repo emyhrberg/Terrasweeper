@@ -24,7 +24,7 @@ namespace Terrasweeper.Common.Systems
 
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
-            tasks.Insert(tasks.Count-1, new WorldgenMinesPass("Terrasweeper Add mines", 100f));
+            tasks.Insert(tasks.Count - 1, new WorldgenMinesPass("Terrasweeper Add mines", 100f));
         }
     }
 
@@ -37,15 +37,13 @@ namespace Terrasweeper.Common.Systems
             progress.Message = MinesweeperWorldGenSystem.WorldgenMinesPassMessage.Value;
 
             // Main world generation code here
-            if (Config.C.MinesEverywhere)
-                PlaceMinesEverywhere();
-            else
-                PlaceMinesInSelectParts();
+            PlaceMines();
 
             // Place everything else
             progress.Message = MinesweeperWorldGenSystem.WorldgenHintTilesPassMessage.Value;
         }
 
+        // get dunked on, erky!
         private void PlaceMinesEverywhere()
         {
             int minesAdded = 0; // testing code
@@ -59,7 +57,7 @@ namespace Terrasweeper.Common.Systems
                         continue;
                     }
                     ref var data = ref tile.Get<MinesweeperData>();
-                    bool hasMine = WorldGen.genRand.Next(100) < Config.C.MineSpawnChance;
+                    bool hasMine = WorldGen.genRand.Next(100) < Config.C.MinesPer100Tile;
                     if (hasMine)
                     {
                         data.MineStatus = MineStatus.UnsolvedMine;
@@ -72,26 +70,22 @@ namespace Terrasweeper.Common.Systems
             Log.Info("Total everywhere Mines added: " + minesAdded); // testing code
         }
 
-        private void PlaceMinesInSelectParts()
+        private void PlaceMines()
         {
+            int minPer100Tiles = Config.C.CustomMinePer100TilesValue ? (int)Config.C.MinesPer100Tile : MakeMineRatio();
             int minesAdded = 0; // testing code
-            int startX = Main.spawnTileX - 16;
-            int endX = Main.spawnTileX + 16;
-            int startY = Main.spawnTileY;
-            int endY = startY + 100;
 
-            for (int j = startY; j < endY && j < Main.maxTilesY; j++)
+            for (int j = 0; j < Main.maxTilesY; j++)
             {
-                for (int i = startX; i <= endX && i < Main.maxTilesX; i++)
+                for (int i = 0; i < Main.maxTilesX; i++)
                 {
-                    if (i < 0) continue; // Prevent out-of-bounds
                     Tile tile = Framing.GetTileSafely(i, j);
                     if (!JJUtils.IsTileSolidForMine(tile))
                     {
                         continue;
                     }
                     ref var data = ref tile.Get<MinesweeperData>();
-                    bool hasMine = WorldGen.genRand.Next(100) < Config.C.MineSpawnChance;
+                    bool hasMine = WorldGen.genRand.Next(100) < minPer100Tiles;
                     if (hasMine)
                     {
                         data.MineStatus = MineStatus.UnsolvedMine;
@@ -103,7 +97,7 @@ namespace Terrasweeper.Common.Systems
             Log.Info("Total select parts Mines added: " + minesAdded); // testing code
         }
 
-        // sorry cotlim
+        // no you don't
         private int MakeMineRatio()
         {
             int value = 12; // Baseline value, Normal or Journey, medium, no special seed

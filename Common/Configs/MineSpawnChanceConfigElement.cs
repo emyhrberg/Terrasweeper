@@ -10,7 +10,7 @@ namespace Terrasweeper.Common.Configs
         public MineSpawnChanceConfigElement() : base()
         {
             Min = 0f;
-            Max = 50f;
+            Max = 100f;
             Increment = 1f;
         }
 
