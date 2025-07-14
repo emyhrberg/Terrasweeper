@@ -7,7 +7,6 @@ using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
-using Terrasweeper.Common.Configs;
 
 namespace Terrasweeper.Common.Systems
 {

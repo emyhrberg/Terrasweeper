@@ -2,7 +2,6 @@
 using Terraria;
 using Terraria.ModLoader;
 using Terrasweeper.Common.BuilderToggles;
-using Terrasweeper.Common.Configs;
 
 namespace Terrasweeper.Common.Systems
 {
