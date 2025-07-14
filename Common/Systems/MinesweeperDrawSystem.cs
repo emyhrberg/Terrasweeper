@@ -63,7 +63,7 @@ namespace Terrasweeper.Common.Systems
 
                     // Mines (only debug)
                     if (unsolvedMine && !data.HasFlag && isTileSolidForMine && 
-                        ModContent.GetInstance<ShowMinesBuilderToggle>().CurrentState == 0)
+                        ModContent.GetInstance<ShowMinesBuilderToggle>().CurrentState == 0 && false)
                     {
                         Main.spriteBatch.Draw(
                             Ass.Minesweeper.Value,
