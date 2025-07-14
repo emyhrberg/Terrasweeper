@@ -1,10 +1,17 @@
 [h1] Terrasweeper [/h1]
 Want to experience puzzles and more difficulty in your playthrough? Look no further, as Terrasweeper generates mines throughout your world and challenges you to figure out which tile is a mine with regular Minesweeper logic.
 
-[h1] How to play [/h1]
-If you mine a wrongly flagged mine or a non-flagged mine - you explode! Red mines means wrongly mined mine and blue flags means solved mine.
+[h2] How to play [/h2]
+If you mine a wrongly flagged mine or a non-flagged mine - you explode! Red mines means wrongly mined mine and blue flags means solved mine. 
 
+Supports multiplayer!
 Good luck!
+
+[h2] Debugging [/h2]
+Debug tools are available: mine placer item, builder toggles for mine visibility and opacity, and config for world gen settings.
+
+[h2] World Gen Preview [/h2]
+https://i.imgur.com/QSK86Lw.mp4
 
 [h2] Mod Jam Info [/h2] 
 [b] Team: [/b] Erky, Cotlim, Cronus

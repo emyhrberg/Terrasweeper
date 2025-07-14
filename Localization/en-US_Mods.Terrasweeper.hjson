@@ -9,7 +9,7 @@ BuilderToggles: {
 Items: {
 	MinesweeperTrophy: {
 		DisplayName: Minesweeper Trophy
-		Tooltip: You're an expert mine sweeper!
+		Tooltip: You're a minesweeper!
 	}
 
 	FlagBomb: {
@@ -29,7 +29,7 @@ Items: {
 
 	MinePlacerDebug: {
 		DisplayName: Mine Placer (Debug)
-		Tooltip: Only for debugging
+		Tooltip: A debugging tool that places a mine on a tile
 	}
 
 	MinedMine: {
@@ -44,7 +44,7 @@ Items: {
 
 	StickyFlagBomb: {
 		DisplayName: Sticky Flag Bomb
-		Tooltip: ""
+		Tooltip: A small sticky explosion that will flag nearby mines
 	}
 }
 
@@ -69,13 +69,28 @@ InfoDisplays: {
 }
 
 Configs: {
-	TerrasweeperConfig: {
-		DisplayName: Terrasweeper Config
-		Headers.Debugging: Debugging Header
+	Config: {
+		DisplayName: Config
+		WorldGenHeader: World Generation Settings
 
-		WorldGenMineRatio: {
-			Label: World Gen Mine Ratio
-			Tooltip: ""
+		MineSpawnChance: {
+			Label: Mine Spawn Chance
+			Tooltip:
+				'''
+				The chance in percent for a mine to be spawned on any given tile
+				(0 means 0% chance for mines, 100% means a mine would be guaranteed to spawn on all tiles)
+				'''
 		}
+
+		MinesEverywhere: {
+			Label: Mines Everywhere
+			Tooltip:
+				'''
+				On: Mines are scattered everywhere in your world
+				Off: Mines are only placed in a single line below your spawn (for debug purposes)
+				'''
+		}
+
+		Headers.WorldGen: World Gen Header
 	}
 }

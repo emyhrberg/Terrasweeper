@@ -7,6 +7,7 @@ using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
+using Terrasweeper.Common.Configs;
 
 namespace Terrasweeper.Common.Systems
 {
@@ -23,7 +24,7 @@ namespace Terrasweeper.Common.Systems
 
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
-            tasks.Insert(tasks.Count, new WorldgenMinesPass("Terrasweeper Add mines", 100f));
+            tasks.Insert(tasks.Count-1, new WorldgenMinesPass("Terrasweeper Add mines", 100f));
         }
     }
 
@@ -35,10 +36,18 @@ namespace Terrasweeper.Common.Systems
         {
             progress.Message = MinesweeperWorldGenSystem.WorldgenMinesPassMessage.Value;
 
-            // int ratioOfMines = Conf.C.ratioOfMines;
-            int ratioOfMines = MakeMineRatio();
+            // Main world generation code here
+            if (Config.C.MinesEverywhere)
+                PlaceMinesEverywhere();
+            else
+                PlaceMinesInSelectParts();
 
-            // Place mines
+            // Place everything else
+            progress.Message = MinesweeperWorldGenSystem.WorldgenHintTilesPassMessage.Value;
+        }
+
+        private void PlaceMinesEverywhere()
+        {
             int minesAdded = 0; // testing code
             for (int j = 0; j < Main.maxTilesY; j++)
             {
@@ -50,8 +59,7 @@ namespace Terrasweeper.Common.Systems
                         continue;
                     }
                     ref var data = ref tile.Get<MinesweeperData>();
-                    //bool hasMine = Main.rand.Next(100) < ratioOfMines;
-                    bool hasMine = WorldGen.genRand.Next(100) < ratioOfMines;
+                    bool hasMine = WorldGen.genRand.Next(100) < Config.C.MineSpawnChance;
                     if (hasMine)
                     {
                         data.MineStatus = MineStatus.UnsolvedMine;
@@ -61,12 +69,41 @@ namespace Terrasweeper.Common.Systems
 
                 }
             }
-
-            // Place everything else
-            progress.Message = MinesweeperWorldGenSystem.WorldgenHintTilesPassMessage.Value;
-            Log.Info("Mines added: " + minesAdded); // testing code
+            Log.Info("Total everywhere Mines added: " + minesAdded); // testing code
         }
 
+        private void PlaceMinesInSelectParts()
+        {
+            int minesAdded = 0; // testing code
+            int startX = Main.spawnTileX - 16;
+            int endX = Main.spawnTileX + 16;
+            int startY = Main.spawnTileY;
+            int endY = startY + 100;
+
+            for (int j = startY; j < endY && j < Main.maxTilesY; j++)
+            {
+                for (int i = startX; i <= endX && i < Main.maxTilesX; i++)
+                {
+                    if (i < 0) continue; // Prevent out-of-bounds
+                    Tile tile = Framing.GetTileSafely(i, j);
+                    if (!JJUtils.IsTileSolidForMine(tile))
+                    {
+                        continue;
+                    }
+                    ref var data = ref tile.Get<MinesweeperData>();
+                    bool hasMine = WorldGen.genRand.Next(100) < Config.C.MineSpawnChance;
+                    if (hasMine)
+                    {
+                        data.MineStatus = MineStatus.UnsolvedMine;
+                        MinesweeperData.UpdateNumbersOfMines3x3(i, j);
+                        minesAdded++;
+                    }
+                }
+            }
+            Log.Info("Total select parts Mines added: " + minesAdded); // testing code
+        }
+
+        // sorry cotlim
         private int MakeMineRatio()
         {
             int value = 12; // Baseline value, Normal or Journey, medium, no special seed
@@ -75,7 +112,7 @@ namespace Terrasweeper.Common.Systems
             if (Main.noTrapsWorld) value += 7; // +7 for no traps
             if (Main.getGoodWorld)
             {
-                if (Main.masterMode) value += 4; // a whopping im tired of counting for legendary
+                if (Main.masterMode) value += 4; // a whopping im tired of counting for legendary <-- lmao
                 else value += 3; // or a +3 on other difficulties
             }
             if (Main.zenithWorld) value += 3; // another +3 for zenith
