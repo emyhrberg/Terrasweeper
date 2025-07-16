@@ -1,14 +1,18 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria;
+using Terraria.GameContent;
 using Terraria.Localization;
+using Terraria.ModLoader.Config.UI;
 using Terraria.ModLoader.UI;
+using Terraria.UI;
 
 namespace Terrasweeper.Common.Configs
 {
-    class MineSpawnChanceConfigElement : LockedSliderElement<float>
+    class MineSpawnChanceConfigElement : FloatElement
     {
         public static MineSpawnChanceToggleConfigElement element;
-
-        public float Value { get; set; }
+        private bool IsLocked => !element?.Value ?? true;
 
         // ctor
         public MineSpawnChanceConfigElement() : base()
@@ -16,24 +20,48 @@ namespace Terrasweeper.Common.Configs
             Min = 0f;
             Max = 100f;
             Increment = 1f;
+            TextDisplayFunction = () => Language.GetTextValue("Mods.Terrasweeper.ConfigTest.T", GetValue());
         }
 
-        public override int NumberTicks => (int)((Max - Min) / Increment);
-
-        public override float TickIncrement => Increment;
-
-        public override float Proportion { get => (Value - Min) / (Max - Min); set => Value = MathHelper.Lerp(Min, Max, value); }
+        public override float Proportion
+        {
+            get => base.Proportion;
+            set
+            {
+                if (!IsLocked)
+                    base.Proportion = value;
+            }
+        }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            backgroundColor = element.Value ? UICommon.DefaultUIBlue : Color.Gray;
             TextDisplayFunction = () => Language.GetTextValue("Mods.Terrasweeper.ConfigTest.T", GetValue());
 
+            if (IsLocked)
+            {
+                backgroundColor = Color.Gray;
+                TooltipFunction = () => "Locked. Turn on Custom Mine Spawn Chance to set this slider.";
+            }
+            else
+            {
+                backgroundColor = UICommon.DefaultUIBlue;
+                TooltipFunction = null;
+            }
+        }
 
+        public override void DrawSelf(SpriteBatch sb)
+        {
+            base.DrawSelf(sb);
+        }
 
-            //TextDisplayFunction = () => $"Mine Spawn Chance: {GetValue()}%"; // NO, use Language instead
-
+        private void DrawLock(SpriteBatch sb)
+        {
+            // Draw lock
+            CalculatedStyle dims = GetDimensions();
+            Texture2D lockTex = Ass.Lock.Value;
+            Vector2 lockPos = new Vector2(dims.X + dims.Width - lockTex.Width - 10f, dims.Y + (dims.Height - lockTex.Height) * 0.5f);
+            sb.Draw(lockTex, lockPos, Color.White);
         }
     }
 }

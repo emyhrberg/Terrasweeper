@@ -16,7 +16,6 @@ namespace Terrasweeper.Common.Configs
         public bool CustomMinePer100TilesValue;
 
         [CustomModConfigItem(typeof(MineSpawnChanceConfigElement))]
-        [LockedElement(typeof(Config), nameof(CustomMinePer100TilesValue), false)]
         [DefaultValue(12f)]
         public float MinesPer100Tile;
 
