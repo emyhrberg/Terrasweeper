@@ -31,7 +31,7 @@ namespace Terrasweeper.Content.Projectiles
         {
             Projectile.TryGettingHitByOtherPlayersExplosives();
 
-            int blastRadius = 4;
+            int blastRadius = 5;
             int minI = (int)(Projectile.Center.X / 16f - (float)blastRadius);
             int maxI = (int)(Projectile.Center.X / 16f + (float)blastRadius);
             int minJ = (int)(Projectile.Center.Y / 16f - (float)blastRadius);
@@ -84,19 +84,13 @@ namespace Terrasweeper.Content.Projectiles
             {
                 for (int j = minJ; j <= maxJ; j++)
                 {
-                    float distX = Math.Abs((float)i - compareSpot.X / 16f);
-                    float distY = Math.Abs((float)j - compareSpot.Y / 16f);
-                    if (!(Math.Sqrt(distX * distX + distY * distY) < (double)radius)) continue;
-                    if (Main.tile[i, j].HasTile)
+                    float distX = i - compareSpot.X / 16f;
+                    float distY = j - compareSpot.Y / 16f;
+                    if (!(distX * distX + distY * distY <= radius * radius))
                     {
-                        Tile tile = Framing.GetTileSafely(i, j);
-                        ref var data = ref tile.Get<MinesweeperData>();
-                        if (data.MineStatus == MineStatus.UnsolvedMine)
-                        {
-                            data.HasFlag = true;
-                            ModNetHandler.minesweeperPacketHandler.SendSingleTile(i, j);
-                        }
+                        continue;
                     }
+                    JJUtils.SetFlagState(i, j, true);
                 }
             }
         }

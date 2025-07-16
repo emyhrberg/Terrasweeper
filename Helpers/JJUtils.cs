@@ -1,9 +1,11 @@
 ﻿using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terrasweeper.Common.Globals;
 using Terrasweeper.Common.PacketHandlers;
+using Terrasweeper.Common.Systems;
 using Terrasweeper.Content.Projectiles;
 
 namespace Terrasweeper.Helpers
@@ -15,6 +17,13 @@ namespace Terrasweeper.Helpers
             && (player.position.X + player.width) / 16f + Player.tileRangeX + player.inventory[player.selectedItem].tileBoost - 1f + player.blockRange >= x
             && player.position.Y / 16f - Player.tileRangeY - player.inventory[player.selectedItem].tileBoost - player.blockRange <= y
             && (player.position.Y + player.height) / 16f + Player.tileRangeY + player.inventory[player.selectedItem].tileBoost - 2f + player.blockRange >= y;
+
+        public static bool IsTileSolidForMine(int i, int j)
+        {
+
+            Tile tile = Framing.GetTileSafely(i, j);
+            return IsTileSolidForMine(tile); ;
+        }
 
         public static bool IsTileSolidForMine(Tile tile)
         {
@@ -100,6 +109,32 @@ namespace Terrasweeper.Helpers
                             Vector2.Zero,
                             ModContent.ProjectileType<MineExplosion>(),
                             500, 3f);
+        }
+
+        public static void SetFlagState(int i, int j, bool flagState)
+        {
+            if (!IsTileSolidForMine(i, j))
+            {
+                return;
+            }
+            Tile tile = Framing.GetTileSafely(i, j);
+            ref var data = ref tile.Get<MinesweeperData>();
+            data.HasFlag = flagState;
+            SoundEngine.PlaySound(SoundID.Tink, i * 16, j * 16);
+            ModNetHandler.minesweeperPacketHandler.SendSingleTile(i, j);
+        }
+
+        public static void ToggleFlagState(int i, int j)
+        {
+            if (!IsTileSolidForMine(i, j))
+            {
+                return;
+            }
+            Tile tile = Framing.GetTileSafely(i, j);
+            ref var data = ref tile.Get<MinesweeperData>();
+            data.HasFlag = !data.HasFlag;
+            SoundEngine.PlaySound(SoundID.Tink, i * 16, j * 16);
+            ModNetHandler.minesweeperPacketHandler.SendSingleTile(i, j);
         }
     }
 }

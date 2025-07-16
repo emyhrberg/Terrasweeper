@@ -1,4 +1,6 @@
 using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terrasweeper.Common.BuilderToggles;
 using Terrasweeper.Common.PacketHandlers;
@@ -16,19 +18,16 @@ namespace Terrasweeper.Common.Globals
             }
             int i = Player.tileTargetX;
             int j = Player.tileTargetY;
-            Tile tile = Framing.GetTileSafely(i, j);
-            if (!tile.HasTile)
-            {
-                return false;
-            }
+
             if (!JJUtils.WithinPlacementRange(player, i, j))
             {
                 return false;
             }
-            ref var data = ref tile.Get<MinesweeperData>();
-            data.HasFlag = !data.HasFlag;
-            ModNetHandler.minesweeperPacketHandler.SendSingleTile(i, j);
+
+            JJUtils.ToggleFlagState(i, j);
             return false;
         }
+
+        
     }
 }
