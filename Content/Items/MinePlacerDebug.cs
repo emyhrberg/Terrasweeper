@@ -1,3 +1,4 @@
+#if DEBUG
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -68,3 +69,4 @@ namespace Terrasweeper.Content.Items
 
     }
 }
+#endif

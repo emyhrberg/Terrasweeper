@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.ModLoader;
 using Terrasweeper.Common.BuilderToggles;
+using Terrasweeper.Content.Buffs;
 
 namespace Terrasweeper.Common.Systems
 {
@@ -63,9 +64,12 @@ namespace Terrasweeper.Common.Systems
 
                     // Mines (only debug)
                     var mineVisibilityToggle = ModContent.GetInstance<ShowMinesBuilderToggle>();
-                    if (unsolvedMine && !data.HasFlag && isTileSolidForMine &&
-                        mineVisibilityToggle.CurrentState == 0 && mineVisibilityToggle.Active())
+                    bool ShowDebugMines = mineVisibilityToggle.Active() && mineVisibilityToggle.CurrentState == 0;
+                    bool MineTile = unsolvedMine && !data.HasFlag && isTileSolidForMine;
+                    if (ShowDebugMines && MineTile || MineTile && Main.LocalPlayer.HasBuff(ModContent.BuffType<MinesVisibleBuff>()))
                     {
+                        // Unsolved Mine
+                        // Draw the mine if it is unsolved and the player has the MinesVisibleBuff
                         Main.spriteBatch.Draw(
                             Ass.Minesweeper.Value,
                             drawPos,

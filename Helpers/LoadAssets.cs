@@ -15,8 +15,9 @@ namespace Terrasweeper.Helpers
     public static class Ass
     {
         // Add assets here
-        // public static Asset<Texture2D> EditorIcon;
         public static Asset<Texture2D> Minesweeper;
+        public static Asset<Texture2D> Lock;
+        public static Asset<Texture2D> Gradient;
 
         static Ass()
         {
@@ -26,7 +27,6 @@ namespace Terrasweeper.Helpers
         }
         public static bool Initialized { get; set; }
     }
-
 
     public static class MinesweeperTextures
     {

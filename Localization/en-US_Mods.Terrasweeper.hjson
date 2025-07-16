@@ -46,6 +46,11 @@ Items: {
 		DisplayName: Sticky Flag Bomb
 		Tooltip: A small sticky explosion that will flag nearby mines
 	}
+
+	MinesweeperPotion: {
+		DisplayName: Minesweeper Potion
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -83,19 +88,32 @@ Configs: {
 		}
 
 		CustomMinePer100TilesValue: {
-			Label: Custom Mine Per 100 Tiles
+			Label: Custom Mine Spawn Chance
 			Tooltip:
 				'''
-				On: Amount of mines will be determined by the slider below.
-				Off: Amount of mines will be determined by the difficulty of the world.
+				On: Mine spawn chance will be determined by the slider below.
+				Off: Mine spawn chance will be determined by the difficulty of the world (Recommended).
 				'''
 		}
 
-		Headers.WorldGen: World Gen Header
+		Headers.WorldGen: World Generation Settings
 
 		MinesPer100Tile: {
-			Label: Mines Per 100 Tile
-			Tooltip: Set the value of mines in the world per 100 tiles!
+			Label: Mine spawn chance
+			Tooltip:
+				'''
+				Set the chance for a tile to become a minesweeper mine
+				(the number of mines per 100 tiles in the world).
+				'''
 		}
+	}
+}
+
+ConfigTest.T: Mine Spawn Chance: {0}%
+
+Buffs: {
+	MinesVisibleBuff: {
+		DisplayName: Mines Visible Buff
+		Description: Mods.Terrasweeper.Buffs.MinesVisibleBuff.Description
 	}
 }
