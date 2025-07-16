@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -8,6 +9,33 @@ namespace Terrasweeper.Content.Projectiles
 {
     public class MinedMineProjectile : ModProjectile
     {
+
+        private float Timer
+        {
+            get
+            {
+                return Projectile.ai[0];
+            }
+            set
+            {
+                Projectile.ai[0] = value;
+            }
+        }
+
+        private float Timer2
+        {
+            get
+            {
+                return Projectile.ai[1];
+            }
+            set
+            {
+                Projectile.ai[1] = value;
+            }
+
+        }
+
+
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.Explosive[Type] = true;
@@ -20,7 +48,8 @@ namespace Terrasweeper.Content.Projectiles
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 900;
+            Projectile.timeLeft = 999;
+            Projectile.DamageType = DamageClass.Ranged;
         }
 
         public override void AI()
@@ -30,34 +59,43 @@ namespace Terrasweeper.Content.Projectiles
                 Projectile.PrepareBombToBlow();
             }
 
-            Projectile.ai[0] += 1f;
-            if (Projectile.ai[0] > 10f)
+            Timer += 1f;
+            if (Timer > 10f)
             {
-                Projectile.ai[0] = 10f;
-                if (Projectile.velocity.Y == 0f && Projectile.velocity.X != 0f)
+                Timer = 10f;
+                if (CloseToZero(Projectile.velocity.Y) && !CloseToZero(Projectile.velocity.X))
                 {
                     Projectile.velocity.X *= 0.96f;
-                    if (Projectile.velocity.X > -0.01 && Projectile.velocity.X < 0.01)
+                    if (CloseToZero(Projectile.velocity.X))
                     {
                         Projectile.velocity.X = 0f;
                         Projectile.netUpdate = true;
                     }
                 }
-                Projectile.velocity.Y += 0.2f;
+                Projectile.velocity.Y += 0.3f;
             }
 
             Projectile.rotation += Projectile.velocity.X * 0.1f;
 
-            if (Projectile.velocity.X == 0)
+            if (CloseToZero(Projectile.velocity.X))
             {
-                Projectile.ai[1] += 1;
-                if (Projectile.ai[1] == 180)
+                if (Timer2 < 180)
                 {
-                    // Increase damage after 3 seconds after moving (hopefully)
+                    Timer2++;
+                }
+                Projectile.alpha = (int)(200f * Timer2 / 180f);
+                if (Timer2 == 180)
+                {
+                    Timer2++;
                     SoundEngine.PlaySound(SoundID.Item53, Projectile.Center);
-                    Projectile.damage = 120;
+                    Projectile.damage = (int)(Projectile.damage * 1.5f);
                 }
             }
+        }
+
+        private bool CloseToZero(float i)
+        {
+            return Math.Abs(i) <= 0.05f;
         }
 
         public override void PrepareBombToBlow()
