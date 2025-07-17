@@ -13,7 +13,7 @@ namespace Terrasweeper.Content.Projectiles
     {
         public override void SetDefaults()
         {
-            Projectile.CloneDefaults(ItemID.Bomb);
+            Projectile.CloneDefaults(ProjectileID.Bomb);
             Projectile.aiStyle = ProjAIStyleID.Explosive;
             Projectile.timeLeft = 180; // 60 ticks = 1 second
             Projectile.width = 22;
