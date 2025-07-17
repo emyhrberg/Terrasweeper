@@ -34,7 +34,15 @@ namespace Terrasweeper.Content.Items
             Item.value = Item.buyPrice(silver: 1);
             Item.buffType = ModContent.BuffType<MinesVisibleBuff>(); // Specify an existing buff to be applied when used.
             const int tick = 60; // 1 second = 60 ticks
-            Item.buffTime = 30 * tick; // 30 seconds duration
+            Item.buffTime = 2 * tick; // 5 seconds duration
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ModContent.ItemType<MinedMine>(), 20)
+                .AddTile(TileID.WorkBenches)
+                .Register();
         }
     }
 }

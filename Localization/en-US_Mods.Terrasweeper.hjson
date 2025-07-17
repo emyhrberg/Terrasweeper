@@ -91,8 +91,8 @@ Configs: {
 			Label: Custom Mine Spawn Chance
 			Tooltip:
 				'''
+				Off: Mine spawn chance will be determined by the difficulty of the world (Default).
 				On: Mine spawn chance will be determined by the slider below.
-				Off: Mine spawn chance will be determined by the difficulty of the world (Recommended).
 				'''
 		}
 
@@ -109,11 +109,18 @@ Configs: {
 	}
 }
 
-ConfigTest.T: Mine Spawn Chance: {0}%
+ConfigTest: {
+	Text: Mine Spawn Chance: {0}%
+	Tooltip:
+		'''
+		Set the chance for a tile to become a minesweeper mine
+		(the number of mines per 100 tiles in the world).
+		'''
+}
 
 Buffs: {
 	MinesVisibleBuff: {
-		DisplayName: Mines Visible Buff
-		Description: Mods.Terrasweeper.Buffs.MinesVisibleBuff.Description
+		DisplayName: Mines Visible
+		Description: Shows the location of all mines
 	}
 }

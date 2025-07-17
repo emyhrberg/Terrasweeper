@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terrasweeper.Common.BuilderToggles;
 using Terrasweeper.Content.Buffs;
@@ -13,6 +14,55 @@ namespace Terrasweeper.Common.Systems
             base.PostDrawTiles();
 
             DrawMinesweeperElements();
+        }
+
+        public override void PostUpdateWorld()
+        {
+            if (!Main.LocalPlayer.HasBuff(ModContent.BuffType<MinesVisibleBuff>()))
+                return;                                   // nothing to do
+
+            Vector2 offScreen = Main.drawToScreen ? Vector2.Zero : new(Main.offScreenRange);
+            int startX = (int)((Main.screenPosition.X - offScreen.X) / 16f) - 1;
+            int startY = (int)((Main.screenPosition.Y - offScreen.Y) / 16f) - 1;
+            int endX = (int)((Main.screenPosition.X + Main.screenWidth + offScreen.X) / 16f) + 2;
+            int endY = (int)((Main.screenPosition.Y + Main.screenHeight + offScreen.Y) / 16f) + 5;
+
+            startX = Utils.Clamp(startX, 0, Main.maxTilesX);
+            endX = Utils.Clamp(endX, 0, Main.maxTilesX);
+            startY = Utils.Clamp(startY, 0, Main.maxTilesY);
+            endY = Utils.Clamp(endY, 0, Main.maxTilesY);
+
+            Point overdraw = Main.GetScreenOverdrawOffset();
+
+            for (int i = startX + overdraw.X; i < endX - overdraw.X; i++)
+            {
+                for (int j = startY + overdraw.Y; j < endY - overdraw.Y; j++)
+                {
+                    var tile = Main.tile[i, j];
+                    ref var data = ref tile.Get<MinesweeperData>();
+
+                    if (data.MineStatus != MineStatus.UnsolvedMine || !JJUtils.IsTileSolidForMine(tile))
+                        continue;
+
+                    // periodic dust (¼ chance per frame per tile)
+                    if (Main.rand.NextBool(40))
+                    {
+                        Dust d = Dust.NewDustDirect(
+                            Position: new Vector2(i * 16, j * 16),
+                            Width: 16, Height: 16,
+                            DustID.TreasureSparkle,                 // same gold-spelunker dust
+                            SpeedX: 0f, SpeedY: 0f, Alpha: 150,
+                            newColor: default,
+                            Scale: 0.05f);
+                        d.fadeIn = 1.50f;
+                        d.velocity *= 0.10f;
+                        d.noLight = false;     // let the dust itself cast tiny light
+                    }
+
+                    // steady “glow” so the tile pops in dark caves
+                    Lighting.AddLight(i, j, r: 0.65f, g: 0.55f, b: 0.15f); // warm gold-yellow
+                }
+            }
         }
 
         public void DrawMinesweeperElements()

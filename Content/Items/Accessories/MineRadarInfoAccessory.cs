@@ -28,7 +28,7 @@ namespace Terrasweeper.Content.Items.Accessories
         // This is the main hook that allows for our info display to actually work with this accessory. 
         public override void UpdateInfoAccessory(Player player)
         {
-            int radius = 125;
+            int radius = 25;
             int mineCount = 0;
             int px = (int)(player.Center.X / 16f);
             int py = (int)(player.Center.Y / 16f);

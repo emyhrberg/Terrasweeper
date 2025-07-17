@@ -20,7 +20,7 @@ namespace Terrasweeper.Common.Configs
             Min = 0f;
             Max = 100f;
             Increment = 1f;
-            TextDisplayFunction = () => Language.GetTextValue("Mods.Terrasweeper.ConfigTest.T", GetValue());
+            TextDisplayFunction = () => Language.GetTextValue("Mods.Terrasweeper.ConfigTest.Text", GetValue());
         }
 
         public override float Proportion
@@ -36,7 +36,7 @@ namespace Terrasweeper.Common.Configs
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            TextDisplayFunction = () => Language.GetTextValue("Mods.Terrasweeper.ConfigTest.T", GetValue());
+            //TextDisplayFunction = () => Language.GetTextValue("Mods.Terrasweeper.ConfigTest.Text", GetValue());
 
             if (IsLocked)
             {
@@ -46,12 +46,14 @@ namespace Terrasweeper.Common.Configs
             else
             {
                 backgroundColor = UICommon.DefaultUIBlue;
-                TooltipFunction = null;
+                TooltipFunction = () => Language.GetTextValue("Mods.Terrasweeper.ConfigTest.Tooltip");
             }
         }
 
         public override void DrawSelf(SpriteBatch sb)
         {
+            if (IsLocked) return;
+
             base.DrawSelf(sb);
         }
 

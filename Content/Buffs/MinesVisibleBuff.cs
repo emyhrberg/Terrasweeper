@@ -1,10 +1,12 @@
 ﻿using Terraria;
-using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
+using Terrasweeper.Content.Items;
 
 namespace Terrasweeper.Content.Buffs
 {
+    /// <summary>
+    /// This buff is applied to the player when they use the <see cref="MinesweeperPotion"/> 
+    /// </summary>
     internal class MinesVisibleBuff : ModBuff
     {
         // public override LocalizedText Description => Language.GetText("BuffDescription." + Type);
@@ -12,9 +14,6 @@ namespace Terrasweeper.Content.Buffs
         public override void Update(Player player, ref int buffIndex)
         {
             base.Update(player, ref buffIndex);
-
-            // This buff makes mines visible to the player
-
         }
     }
 }
