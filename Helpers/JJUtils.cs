@@ -33,29 +33,13 @@ namespace Terrasweeper.Helpers
 
         public static bool IsTileSolidForMine(int tileID)
         {
-            bool result = !Main.tileFrameImportant[tileID] &&
+            bool result =
+                IsTileSolidForNumbers(tileID) &&
                 TileIDSets.CanPlaceMine[tileID] &&
-                !TileID.Sets.IsVine[tileID] &&
-                !TileID.Sets.IsBeam[tileID] &&
-                !TileID.Sets.BasicChest[tileID] &&
-                !TileID.Sets.BasicDresser[tileID] &&
-                !TileID.Sets.CountsAsGemTree[tileID] &&
-                !TileID.Sets.IsATreeTrunk[tileID] &&
-                !TileID.Sets.CommonSapling[tileID] &&
                 !TileID.Sets.CrackedBricks[tileID] &&
-                !TileID.Sets.Paintings[tileID] &&
                 !TileID.Sets.Boulders[tileID] &&
-                !TileID.Sets.CanBeSatOnForNPCs[tileID] &&
-                !TileID.Sets.CanBeSatOnForPlayers[tileID] &&
-                !TileID.Sets.CanBeSleptIn[tileID] &&
-                !TileID.Sets.Platforms[tileID] &&
                 !TileID.Sets.Leaves[tileID] &&
-                !TileID.Sets.NotReallySolid[tileID] &&
-                !TileID.Sets.BreakableWhenPlacing[tileID] &&
-                !TileID.Sets.TouchDamageBleeding[tileID] &&
-                (TileID.Sets.TouchDamageImmediate[tileID] == 0) &&
-                !TileID.Sets.IsAContainer[tileID] &&
-                !Main.tileCut[tileID];
+                (TileID.Sets.TouchDamageImmediate[tileID] == 0);
             if (Main.getGoodWorld || WorldGen.getGoodWorldGen)
             {
                 result &= tileID != TileID.Ash; // Ash is not solid in ftw worlds
@@ -66,24 +50,30 @@ namespace Terrasweeper.Helpers
 
         public static bool IsTileSolidForNumbers(Tile tile)
         {
-            bool result = tile.HasTile && !Main.tileFrameImportant[tile.TileType] &&
-                !TileID.Sets.IsVine[tile.TileType] &&
-                !TileID.Sets.IsBeam[tile.TileType] &&
-                !TileID.Sets.BasicChest[tile.TileType] &&
-                !TileID.Sets.BasicDresser[tile.TileType] &&
-                !TileID.Sets.CountsAsGemTree[tile.TileType] &&
-                !TileID.Sets.IsATreeTrunk[tile.TileType] &&
-                !TileID.Sets.CommonSapling[tile.TileType] &&
-                !TileID.Sets.Paintings[tile.TileType] &&
-                !TileID.Sets.CanBeSatOnForNPCs[tile.TileType] &&
-                !TileID.Sets.CanBeSatOnForPlayers[tile.TileType] &&
-                !TileID.Sets.CanBeSleptIn[tile.TileType] &&
-                !TileID.Sets.Platforms[tile.TileType] &&
-                !TileID.Sets.NotReallySolid[tile.TileType] &&
-                !TileID.Sets.BreakableWhenPlacing[tile.TileType] &&
-                !TileID.Sets.TouchDamageBleeding[tile.TileType] &&
-                !TileID.Sets.IsAContainer[tile.TileType] &&
-                !Main.tileCut[tile.TileType];
+            bool result = tile.HasTile && IsTileSolidForNumbers(tile.TileType);
+            return result;
+        }
+
+        public static bool IsTileSolidForNumbers(int tileID)
+        {
+            bool result = !Main.tileFrameImportant[tileID] &&
+                !TileID.Sets.IsVine[tileID] &&
+                !TileID.Sets.IsBeam[tileID] &&
+                !TileID.Sets.BasicChest[tileID] &&
+                !TileID.Sets.BasicDresser[tileID] &&
+                !TileID.Sets.CountsAsGemTree[tileID] &&
+                !TileID.Sets.IsATreeTrunk[tileID] &&
+                !TileID.Sets.CommonSapling[tileID] &&
+                !TileID.Sets.Paintings[tileID] &&
+                !TileID.Sets.CanBeSatOnForNPCs[tileID] &&
+                !TileID.Sets.CanBeSatOnForPlayers[tileID] &&
+                !TileID.Sets.CanBeSleptIn[tileID] &&
+                !TileID.Sets.Platforms[tileID] &&
+                !TileID.Sets.NotReallySolid[tileID] &&
+                !TileID.Sets.BreakableWhenPlacing[tileID] &&
+                !TileID.Sets.TouchDamageBleeding[tileID] &&
+                !TileID.Sets.IsAContainer[tileID] &&
+                !Main.tileCut[tileID];
             return result;
         }
 
@@ -113,10 +103,7 @@ namespace Terrasweeper.Helpers
 
         public static void ToggleFlagState(int i, int j)
         {
-            if (!IsTileSolidForMine(i, j))
-            {
-                return;
-            }
+            
             Tile tile = Framing.GetTileSafely(i, j);
             ref var data = ref tile.Get<MinesweeperData>();
             data.HasFlag = !data.HasFlag;
