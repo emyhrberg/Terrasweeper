@@ -111,19 +111,6 @@ namespace Terrasweeper.Helpers
                             500, 3f);
         }
 
-        public static void SetFlagState(int i, int j, bool flagState)
-        {
-            if (!IsTileSolidForMine(i, j))
-            {
-                return;
-            }
-            Tile tile = Framing.GetTileSafely(i, j);
-            ref var data = ref tile.Get<MinesweeperData>();
-            data.HasFlag = flagState;
-            SoundEngine.PlaySound(SoundID.Tink, i * 16, j * 16);
-            ModNetHandler.minesweeperPacketHandler.SendSingleTile(i, j);
-        }
-
         public static void ToggleFlagState(int i, int j)
         {
             if (!IsTileSolidForMine(i, j))

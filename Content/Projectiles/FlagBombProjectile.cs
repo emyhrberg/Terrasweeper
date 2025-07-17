@@ -86,11 +86,17 @@ namespace Terrasweeper.Content.Projectiles
                 {
                     float distX = i - compareSpot.X / 16f;
                     float distY = j - compareSpot.Y / 16f;
-                    if (!(distX * distX + distY * distY <= radius * radius))
+                    if (!(distX * distX + distY * distY <= radius * radius) || !JJUtils.IsTileSolidForMine(i, j))
                     {
                         continue;
                     }
-                    JJUtils.SetFlagState(i, j, true);
+                    Tile tile = Framing.GetTileSafely(i, j);
+                    ref var data = ref tile.Get<MinesweeperData>();
+                    if (data.MineStatus == MineStatus.UnsolvedMine)
+                    {
+                        data.HasFlag = true;
+                        ModNetHandler.minesweeperPacketHandler.SendSingleTile(i, j);
+                    }
                 }
             }
         }
