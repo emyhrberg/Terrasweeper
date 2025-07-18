@@ -1,3 +1,4 @@
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -8,7 +9,7 @@ using Terrasweeper.Common.Systems;
 
 namespace Terrasweeper.Common.Globals
 {
-    internal class PicaxeFlagingGlobalItem : GlobalItem
+    internal class PicaxeMinesweeperGlobalItem : GlobalItem
     {
         public override bool AltFunctionUse(Item item, Player player)
         {
@@ -24,12 +25,14 @@ namespace Terrasweeper.Common.Globals
                 return false;
             }
 
+            // Flagging tile
             if (JJUtils.IsTileSolidForMine(i, j))
             {
                 JJUtils.ToggleFlagState(i, j);
                 ItemID.Sets.ItemsThatAllowRepeatedRightClick[item.type] = false;
             }
-            else // Mining in 3x3 if amount of flags / revealed mines == number on tile
+            // Mining in 3x3 if amount of flags + revealed mines == number on tile
+            else
             {
                 Tile tile = Framing.GetTileSafely(i, j);
                 if (JJUtils.IsTileSolidForNumbers(tile))
@@ -44,6 +47,7 @@ namespace Terrasweeper.Common.Globals
 
 
                 int countOfRevealedMinesAndFlaggedTilesArroundNumberedTile = 0;
+                float countOfSolidTiles = 0;
                 for (int si = i - 1; si <= i + 1; si++)
                 {
                     for (int sj = j - 1; sj <= j + 1; sj++)
@@ -58,6 +62,10 @@ namespace Terrasweeper.Common.Globals
                         {
                             countOfRevealedMinesAndFlaggedTilesArroundNumberedTile++;
                         }
+                        if (JJUtils.IsTileSolidForMine(tileSafely))
+                        {
+                            countOfSolidTiles++;
+                        }
                     }
                 }
                 if (data.TileNumber != countOfRevealedMinesAndFlaggedTilesArroundNumberedTile)
@@ -71,7 +79,7 @@ namespace Terrasweeper.Common.Globals
                     for (int sj = j - 1; sj <= j + 1; sj++)
                     {
                         Tile tileSafely = Framing.GetTileSafely(si, sj);
-                        Main.LocalPlayer.PickTile(si, sj, item.pick);
+                        Main.LocalPlayer.PickTile(si, sj, (int)Math.Ceiling(item.pick / countOfSolidTiles));
                         minedSomething = true;
                     }
                 }
