@@ -1,4 +1,4 @@
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terrasweeper.Common.Systems;
@@ -23,17 +23,13 @@ namespace Terrasweeper.Common.Configs
         {
             base.OnChanged();
 
-            Log.Info("Config changed with new mines per 100 tiles:" + MinesPer100Tile);
+            float targetValue = CustomMinePer100TilesValue
+                                    ? MinesPer100Tile
+                                    : WorldgenMinesPass.MakeMineRatio();     // your default
 
-            // Update ITD to the new mine spawn chance
-            if (CustomMinePer100TilesValue)
-            {
-                WorldgenMinesPass.PlaceMines((int)MinesPer100Tile);
-            }
-            else
-            {
-                WorldgenMinesPass.PlaceMines(WorldgenMinesPass.MakeMineRatio());
-            }
+            Log.Info("Config changed with new mine ratio: " + targetValue);
+
+            MinesweeperWorldHelper.AdjustMineDensity(targetValue);          // ← incremental fix-up
         }
 
         public static Config C => ModContent.GetInstance<Config>();

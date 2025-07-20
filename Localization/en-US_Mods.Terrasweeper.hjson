@@ -54,7 +54,7 @@ Items: {
 
 	MineRadarInfoAccessoryItem: {
 		DisplayName: Mine Radar
-		Tooltip: "Detects how many mines are around you"
+		Tooltip: Detects how many mines are around you
 	}
 
 	NineSummonConsumable: {
