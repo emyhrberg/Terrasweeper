@@ -1,5 +1,6 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace Terrasweeper.Common.Systems
 {
@@ -16,7 +17,7 @@ namespace Terrasweeper.Common.Systems
 
         private bool WorldGen_SpawnFallingBlockProjectile(On_WorldGen.orig_SpawnFallingBlockProjectile orig, int i, int j, Tile tileCache, Tile tileTopCache, Tile tileBottomCache, int type)
         {
-            if (Main.netMode == 1)
+            if (Main.netMode == NetmodeID.MultiplayerClient)
                 return false;
 
             if (tileCache == null || tileTopCache == null || tileBottomCache == null)
@@ -28,7 +29,6 @@ namespace Terrasweeper.Common.Systems
                 return false;
             }
             return orig(i, j, tileCache, tileTopCache, tileBottomCache, type);
-
         }
     }
 }

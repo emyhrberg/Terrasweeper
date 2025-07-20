@@ -1,7 +1,7 @@
-using System;
 using System.ComponentModel;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
+using Terrasweeper.Common.Systems;
 
 namespace Terrasweeper.Common.Configs
 {
@@ -19,7 +19,16 @@ namespace Terrasweeper.Common.Configs
         [DefaultValue(12f)]
         public float MinesPer100Tile;
 
-        /// <summary> Config instance helper. Example: Config.C.YourValue </summary>
+        public override void OnChanged()
+        {
+            base.OnChanged();
+
+            Log.Info("Config changed with new mines per 100 tiles:" + MinesPer100Tile);
+
+            // Update ITD to the new mine spawn chance
+            WorldgenMinesPass.PlaceMines((int) MinesPer100Tile);
+        }
+
         public static Config C => ModContent.GetInstance<Config>();
     }
 }

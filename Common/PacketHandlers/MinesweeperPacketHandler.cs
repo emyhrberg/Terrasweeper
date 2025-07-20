@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Net.Sockets;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Text;
 using Terraria;
 using Terraria.ID;
@@ -20,7 +16,7 @@ namespace Terrasweeper.Common.PacketHandlers
         public const byte RegionCompressedData = 2;
         public const byte Explosion = 3;
 
-        private readonly Dictionary<int, ChunkBuffer> chunkBuffers = new();
+        private readonly Dictionary<int, ChunkBuffer> chunkBuffers = [];
 
         public MinesweeperPacketHandler(byte handlerType) : base(handlerType) { }
 

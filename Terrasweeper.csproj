@@ -15,5 +15,8 @@
 		<PackageReference Include="Krafs.Publicizer" PrivateAssets="true" Version="2.2.1" />
 		<Publicize Include="tModLoader" IncludeVirtualMembers="true" IncludeCompilerGeneratedMembers="false" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Common\NewFolder\" />
+	</ItemGroup>
 
 </Project>

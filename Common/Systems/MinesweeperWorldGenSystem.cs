@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Input;
+﻿using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 using Terrasweeper.Common.Configs;
+using Terrasweeper.Common.PacketHandlers;
 
 namespace Terrasweeper.Common.Systems
 {
@@ -36,38 +34,70 @@ namespace Terrasweeper.Common.Systems
         {
             progress.Message = MinesweeperWorldGenSystem.WorldgenMinesPassMessage.Value;
 
-            // Main world generation code here
-            PlaceMines();
+            int minesPer100Tiles;
+            if (Config.C.CustomMinePer100TilesValue)
+            {
+                minesPer100Tiles = (int)Config.C.MinesPer100Tile;
+            }
+            else
+            {
+                minesPer100Tiles = MakeMineRatio();
+            }
+            PlaceMines(minesPer100Tiles);
 
-            // Place everything else
             progress.Message = MinesweeperWorldGenSystem.WorldgenHintTilesPassMessage.Value;
         }
-
-        private void PlaceMines()
+        public static void PlaceMines(int minesPer100Tiles)
         {
-            int minPer100Tiles = Config.C.CustomMinePer100TilesValue ? (int)Config.C.MinesPer100Tile : MakeMineRatio();
-            int minesAdded = 0; // testing code
-
-            for (int j = 0; j < Main.maxTilesY; j++)
+            // 1) wipe all existing Minesweeper info --------------------------
+            for (int y = 0; y < Main.maxTilesY; y++)
             {
-                for (int i = 0; i < Main.maxTilesX; i++)
+                for (int x = 0; x < Main.maxTilesX; x++)
                 {
-                    Tile tile = Framing.GetTileSafely(i, j);
-                    if (!JJUtils.IsTileSolidForMine(tile))
-                    {
-                        continue;
-                    }
+                    Tile tile = Framing.GetTileSafely(x, y);
                     ref var data = ref tile.Get<MinesweeperData>();
-                    bool hasMine = WorldGen.genRand.Next(100) < minPer100Tiles;
-                    if (hasMine)
+
+                    if (data.HasOrAtLeastHadMine || data.TileNumber != 0 || data.HasFlag)
+                    {
+                        data.ClearMineFlagData();   // sets MineStatus = None and clears flag
+                        data.TileNumber = 0;
+                    }
+                }
+            }
+
+            // 2) place mines with the new ratio ------------------------------
+            int minesAdded = 0;
+            var rand = Main.rand;                 // WorldGen.genRand is only safe during world-gen
+
+            for (int y = 0; y < Main.maxTilesY; y++)
+            {
+                for (int x = 0; x < Main.maxTilesX; x++)
+                {
+                    Tile tile = Framing.GetTileSafely(x, y);
+                    if (!JJUtils.IsTileSolidForMine(tile))
+                        continue;
+
+                    ref var data = ref tile.Get<MinesweeperData>();
+                    if (rand.Next(100) < minesPer100Tiles)
                     {
                         data.MineStatus = MineStatus.UnsolvedMine;
-                        MinesweeperData.UpdateNumbersOfMines3x3(i, j);
                         minesAdded++;
                     }
                 }
             }
-            Log.Info("Total select parts Mines added: " + minesAdded); // testing code
+
+            // 3) recalculate the numbers on *every* tile ---------------------
+            for (int y = 0; y < Main.maxTilesY; y++)
+            {
+                for (int x = 0; x < Main.maxTilesX; x++)
+                {
+                    ref var data = ref Main.tile[x, y].Get<MinesweeperData>();
+                    data.UpdateNumbersOfMines(x, y);
+                    ModNetHandler.minesweeperPacketHandler.SendSingleTile(x, y); // sync to clients
+                }
+            }
+
+            Log.Info($"[Minesweeper] Re-generated world mines: {minesAdded} added, ratio {minesPer100Tiles}/100.");
         }
 
         private int MakeMineRatio()
