@@ -12,7 +12,7 @@ namespace Terrasweeper.Content.Items.Accessories
     /// <seealso cref="MineRadarInfoDisplay"/>
     /// <seealso cref="MineRadarInfoPlayer"/>
     /// </summary>
-    public class MineRadarInfoAccessory : ModItem
+    public class MineRadarInfoAccessoryItem : ModItem
     {
         public override void SetStaticDefaults()
         {

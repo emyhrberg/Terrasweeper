@@ -13,34 +13,35 @@ namespace Terrasweeper.Content.NPCs.NineBoss
     [AutoloadBossHead]
     public class NineBoss : ModNPC
     {
-        private int state
+        #region setup
+        public enum NineBossState
         {
-            get => (int)NPC.ai[0];
-            set => NPC.ai[0] = value;
+            Idle,
+            Charging,
+            ShootingMines
         }
 
-        private int subState
+        private NineBossState State
         {
-            get => (int)NPC.ai[1];
-            set => NPC.ai[1] = value;
+            get => (NineBossState)NPC.ai[0];
+            set => NPC.ai[0] = (int)value;
         }
 
-        private float stateTimer
-        {
-            get => NPC.ai[2];
-            set => NPC.ai[2] = value;
-        }
+        // values stored in NPC.ai
+        private ref float Timer => ref NPC.ai[1];   // generic time in state
+        private ref float ShotsFired => ref NPC.ai[2];
 
-        private float stateTimer2
-        {
-            get => NPC.ai[3];
-            set => NPC.ai[3] = value;
-        }
+        private const string NumbersTexturePath = "Terrasweeper/Content/NPCs/NineBoss/NineBoss";   // sheet
+                 
+        // Movement tuning
+        private const float DashSpeedClassic = 7f;
+        private const float DashSpeedExpert = 9f;
+        private const float HoverSpeed = 4f;
+        private const float HoverAccel = 0.04f;
 
-        private bool secondPhase => state == 1;
         public override void SetStaticDefaults()
         {
-            Main.npcFrameCount[Type] = 8;
+            Main.npcFrameCount[Type] = 9;
 
             NPCID.Sets.MPAllowedEnemies[Type] = true;
             NPCID.Sets.BossBestiaryPriority.Add(Type);
@@ -59,8 +60,8 @@ namespace Terrasweeper.Content.NPCs.NineBoss
         public override void SetDefaults()
         {
             // Hitbox
-            NPC.width = 64;
-            NPC.height = 128;
+            NPC.width = 30;
+            NPC.height = 30;
 
             // Damage and Defence
             NPC.damage = 32;
@@ -84,11 +85,186 @@ namespace Terrasweeper.Content.NPCs.NineBoss
             NPC.SpawnWithHigherTime(30);
             NPC.boss = true;
             NPC.npcSlots = 10f;
-
-            // AI
-            NPC.aiStyle = -1;
         }
 
+        #endregion
+
+        #region AI
+        public override void AI()
+        {
+            // Ensure we have an alive target or despawn
+            if (!AcquireTargetOrDespawn()) return;
+
+            Player player = Main.player[NPC.target];
+
+            // Pick the behaviour function – one line, no break/continue clutter
+            Action<Player> action = State switch
+            {
+                NineBossState.Idle => HandleIdle,
+                NineBossState.Charging => HandleCharging,
+                NineBossState.ShootingMines => HandleShootingMines,
+                _ => static _ => { }   // safety fallback
+            };
+
+            action(player);
+        }
+
+        private void HandleIdle(Player player)
+        {
+            const float speed = 5f;
+            const float accel = 0.05f;
+            MoveToTarget(player, speed, accel, out _);
+
+            Timer++;
+
+            // every few seconds pick the next behaviour
+            float threshold = Main.expertMode ? 180f : 240f;          // 3–4 s
+            if (Timer >= threshold)
+            {
+                State = Main.rand.NextBool()
+                    ? NineBossState.Charging
+                    : NineBossState.ShootingMines;
+
+                Timer = ShotsFired = 0;
+                NPC.netUpdate = true;
+            }
+        }
+
+        private void HandleCharging(Player player)
+        {
+            float dashSpeed = Main.expertMode ? DashSpeedExpert : DashSpeedClassic;
+            const int dashTicks = 20;
+            const int totalTicks = 60;
+
+            if (Timer == 0)
+            {
+                Vector2 dir = Vector2.Normalize(player.Center - NPC.Center);
+                NPC.velocity = dir * dashSpeed;
+                NPC.netUpdate = true;
+            }
+
+            if (Timer > dashTicks)
+                NPC.velocity *= 0.96f;
+
+            if (++Timer >= totalTicks)
+            {
+                State = NineBossState.Idle;
+                Timer = 0;
+                NPC.netUpdate = true;
+            }
+        }
+
+        private void HandleShootingMines(Player player)
+        {
+            MoveToTarget(player, HoverSpeed, HoverAccel, out _);
+
+            const int shootInterval = 90;                 // classic
+            const int shootIntervalExpert = 60;           // expert
+            const int maxShots = 5;
+
+            int tickGap = Main.expertMode ? shootIntervalExpert : shootInterval;
+
+            if (++Timer % tickGap == 0)
+            {
+                float projSpeed = Main.expertMode ? 8f : 6f;
+                int damage = (int)(NPC.damage * 0.60f);
+
+                ShootProjectileToward(player,
+                    ModContent.ProjectileType<MinedMineProjectile>(),
+                    projSpeed,
+                    damage,
+                    3f);
+
+                if (++ShotsFired >= maxShots)
+                {
+                    // done – back to idle
+                    State = NineBossState.Idle;
+                    Timer = ShotsFired = 0;
+                    NPC.netUpdate = true;
+                }
+            }
+        }
+
+        private void ShootProjectileToward(Player player, int type, float speed, int dmg, float kb)
+        {
+            Vector2 dir = Vector2.Normalize(player.Center - NPC.Center) * speed;
+            Vector2 spawn = NPC.Center + dir * 10f;
+
+            if (Main.netMode != NetmodeID.MultiplayerClient)
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), spawn, dir, type, dmg, kb, Main.myPlayer);
+        }
+
+        /// <summary>Accelerates the NPC toward <paramref name="player"/>.</summary>
+        private void MoveToTarget(Player player, float topSpeed, float accel, out float distance)
+        {
+            distance = Vector2.Distance(NPC.Center, player.Center);
+            if (distance == 0) return;
+
+            Vector2 desired = (player.Center - NPC.Center) / distance * topSpeed;
+
+            // Smoothly approach the desired velocity.
+            if (NPC.velocity.X < desired.X) NPC.velocity.X += accel;
+            if (NPC.velocity.X > desired.X) NPC.velocity.X -= accel;
+            if (NPC.velocity.Y < desired.Y) NPC.velocity.Y += accel;
+            if (NPC.velocity.Y > desired.Y) NPC.velocity.Y -= accel;
+        }
+
+        #endregion
+
+        #region animation
+        public override void FindFrame(int frameHeight)
+        {
+            // advance slightly faster when moving
+            NPC.frameCounter += 0.15 + NPC.velocity.Length() * 0.02;
+
+            if (NPC.frameCounter >= 6)
+            {
+                NPC.frameCounter = 0;
+                NPC.frame.Y += frameHeight;
+
+                if (NPC.frame.Y >= frameHeight * Main.npcFrameCount[Type])
+                    NPC.frame.Y = 0;                          // loop back to first frame
+            }
+        }
+
+        //  draw the life-digit overlay
+        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Texture2D tex = ModContent.Request<Texture2D>(NumbersTexturePath).Value;
+            const int w = 30, h = 30;
+            int digit = Utils.Clamp((NPC.life - 1) / 1000, 0, 8);     // 0-8
+
+            Rectangle src = new(digit * w, 0, w, h);
+            Vector2 pos = NPC.Center - screenPos + new Vector2(0, -NPC.height * 0.6f);
+
+            spriteBatch.Draw(tex,
+                             pos,
+                             src,
+                             drawColor,
+                             0f,
+                             new Vector2(w / 2f, h / 2f),
+                             1f,
+                             SpriteEffects.None,
+                             0f);
+        }
+        #endregion
+
+        private bool AcquireTargetOrDespawn()
+        {
+            if (NPC.target < 0 || NPC.target >= 255 || Main.player[NPC.target].dead)
+                NPC.TargetClosest();
+
+            Player p = Main.player[NPC.target];
+            if (p.dead || !p.active)
+            {
+                NPC.velocity.Y -= 0.04f;
+                NPC.EncourageDespawn(10);
+                return false;
+            }
+            return true;
+        }
+
+        #region misc helpers and utility methods
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
             cooldownSlot = ImmunityCooldownID.Bosses;
@@ -97,7 +273,6 @@ namespace Terrasweeper.Content.NPCs.NineBoss
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            // Drops empty for now
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MinedMine>(), 
                 chanceDenominator: 1, 
                 minimumDropped: 10, 
@@ -108,516 +283,6 @@ namespace Terrasweeper.Content.NPCs.NineBoss
         {
             NPC.SetEventFlagCleared(ref BossDownedSystem.downedNineBoss, -1);
         }
-
-        public override void AI()
-        {
-            // Handle Targetting
-            if (NPC.target == 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
-            {
-                NPC.TargetClosest();
-            }
-
-            // Set Player Target
-            Player player = Main.player[NPC.target];
-
-            // Despawn Behaviour
-            if (player.dead || !player.active)
-            {
-                NPC.velocity.Y -= 0.04f;
-                NPC.EncourageDespawn(10);
-                return;
-            }
-
-            // Handle State Machine
-            switch (state)
-            {
-                case 0:
-                    HandleFirstState(player);
-                    break;
-                case 1:
-                    HandleSecondState(player);
-                    break;
-            }
-        }
-
-        private void HandleFirstState(Player player)
-        {
-            // Move towards player
-            if (subState == 0)
-            {
-                // Setup Speed
-                float baseMoveSpeed = 5f;
-                float accelerationSpeed = 0.04f;
-
-                // Expert Mode Adjustment
-                if (Main.expertMode)
-                {
-                    baseMoveSpeed = 7f;
-                    accelerationSpeed = 0.15f;
-                }
-
-                // Move Towards Target
-                MoveToTarget(player, baseMoveSpeed, accelerationSpeed, out float distanceToPlayer);
-
-                // Increase State Timer
-                stateTimer += 1f;
-
-                // Check if change substate
-                float threshold = 600f;
-                if (Main.expertMode)
-                {
-                    threshold *= 0.3f;
-                }
-
-                // Change Substate if Conditions Met
-                if (stateTimer >= threshold)
-                {
-                    subState = 1;
-                    stateTimer = 0;
-                    stateTimer2 = 0;
-                    NPC.netUpdate = true;
-                    return;
-                }
-            }
-
-            // Charge at Player
-            else if (subState == 1)
-            {
-                // Setup Speed
-                float baseSpeed = 6f;
-                if (Main.expertMode)
-                {
-                    baseSpeed = 7f;
-                }
-
-                // Handle Charge Velocity
-                float deltaX = player.Center.X - NPC.Center.X;
-                float deltaY = player.Center.Y - NPC.Center.Y;
-
-                // Get Distance 
-                float distanceToPlayer = (float)Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
-
-                // Calculate Velocity
-                float movementSpeed = baseSpeed / distanceToPlayer;
-                Vector2 velocity = new Vector2(deltaX, deltaY) * movementSpeed;
-
-                // Apply Velocity to NPC
-                NPC.velocity = velocity;
-
-                // Move to Post Charge State
-                subState = 2;
-
-                // Update Network
-                NPC.netUpdate = true;
-                if (NPC.netSpam > 10)
-                {
-                    NPC.netSpam = 10;
-                }
-            }
-            // Post Charge State
-            else if (subState == 2)
-            {
-                // Increase Timer
-                stateTimer += 1f;
-
-                // Slow Down the Charge
-                if (stateTimer >= 48f)
-                {
-                    // Slow Velocity
-                    NPC.velocity *= 0.98f;
-
-                    // Adjust Based on Difficulty
-                    if (Main.expertMode)
-                    {
-                        NPC.velocity *= 0.985f;
-                    }
-
-                    // If Velocity close to 0
-                    if (Math.Abs(NPC.velocity.X) < 0.05) NPC.velocity.X = 0f;
-                    if (Math.Abs(NPC.velocity.Y) < 0.05) NPC.velocity.Y = 0f;
-                }
-
-                // Handle State Changing
-                int threshold = 150;
-                if (Main.expertMode)
-                {
-                    threshold = 100;
-                }
-
-                // Handle State Change
-                if (stateTimer >= threshold)
-                {
-                    // Increment Second Timer
-                    stateTimer2 += 1f;
-
-                    // Reset Main timer
-                    stateTimer = 0f;
-
-                    // Reset Target
-                    NPC.target = 255;
-
-                    // Change Sub State
-                    if (stateTimer2 >= 2f)
-                    {
-                        subState = 0;
-                        stateTimer2 = 0f;
-                    }
-                    else
-                    {
-                        subState = 1;
-                    }
-                }
-            }
-
-            // Check Second State Switch
-            float lowHealthThreshold = 0.35f;
-            if (NPC.life < NPC.lifeMax * lowHealthThreshold)
-            {
-                // Go to Second State
-                state = 1;
-                subState = 0;
-                stateTimer = 0f;
-                stateTimer2 = 0f;
-
-                // Handle Network
-                NPC.netUpdate = true;
-                if (NPC.netSpam > 10)
-                {
-                    NPC.netSpam = 10;
-                }
-            }
-        }
-
-        private void HandleSecondState(Player player)
-        {
-            // Move towards player
-            if (subState == 0)
-            {
-                // Setup Speed
-                float baseMoveSpeed = 6f;
-                float accelerationSpeed = 0.07f;
-
-                // Expert Mode Adjustment
-                if (Main.expertMode)
-                {
-                    baseMoveSpeed = 8f;
-                    accelerationSpeed = 0.2f;
-                }
-
-                // Move Towards Target
-                MoveToTarget(player, baseMoveSpeed, accelerationSpeed, out float distanceToPlayer);
-
-                // Increase State Timer
-                stateTimer += 1f;
-
-                // Check if change substate
-                float threshold = 400f;
-                if (Main.expertMode)
-                {
-                    threshold *= 0.3f;
-                }
-
-                // Change Substate if Conditions Met
-                if (stateTimer >= threshold)
-                {
-                    subState = 1;
-                    stateTimer = 0;
-                    stateTimer2 = 0;
-                    NPC.netUpdate = true;
-                    return;
-                }
-
-                // Handle Secondary Action
-                if (NPC.position.Y + NPC.height < player.Center.Y && distanceToPlayer < 500f)
-                {
-                    // Increase Secondary Timer
-                    if (!player.dead)
-                    {
-                        stateTimer2 += 1f;
-                    }
-
-                    // Handle Projectile Threshold
-                    float projThreshold = 120f;
-                    if (Main.expertMode)
-                    {
-                        projThreshold *= 0.4f;
-                    }
-
-                    // Handle Shooting Projectile
-                    if (stateTimer2 >= projThreshold)
-                    {
-                        // Reset Timer
-                        stateTimer2 = 0;
-
-                        // Set Move Speed
-                        float projSpeed = 7f;
-                        if (Main.expertMode)
-                        {
-                            projSpeed = 8.5f;
-                        }
-
-                        // Calculate Damage
-                        int projDamage = (int)(NPC.damage * .5f);
-                        float projKnockback = 3f;
-                        if (Main.expertMode)
-                        {
-                            projDamage += (int)(NPC.damage * .15);
-                            projKnockback += .5f;
-                        }
-
-                        // Shoot Projectile
-                        ShootProjectile(player, ModContent.ProjectileType<MinedMineProjectile>(), projSpeed, projDamage, projKnockback);
-                    }
-                }
-            }
-
-            // Charge at Player
-            else if (subState == 1)
-            {
-                // Setup Speed
-                float baseSpeed = 8f;
-                if (Main.expertMode)
-                {
-                    baseSpeed = 9f;
-                }
-
-                // Handle Charge Velocity
-                float deltaX = player.Center.X - NPC.Center.X;
-                float deltaY = player.Center.Y - NPC.Center.Y;
-
-                // Get Distance 
-                float distanceToPlayer = (float)Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
-
-                // Calculate Velocity
-                float movementSpeed = baseSpeed / distanceToPlayer;
-                Vector2 velocity = new Vector2(deltaX, deltaY) * movementSpeed;
-
-                // Apply Velocity to NPC
-                NPC.velocity = velocity;
-
-                // Move to Post Charge State
-                subState = 2;
-
-                // Update Network
-                NPC.netUpdate = true;
-                if (NPC.netSpam > 10)
-                {
-                    NPC.netSpam = 10;
-                }
-            }
-            // Post Charge State
-            else if (subState == 2)
-            {
-                // Increase Timer
-                stateTimer += 1f;
-
-                // Slow Down the Charge
-                if (stateTimer >= 40f)
-                {
-                    // Slow Velocity
-                    NPC.velocity *= 0.98f;
-
-                    // Adjust Based on Difficulty
-                    if (Main.expertMode)
-                    {
-                        NPC.velocity *= 0.985f;
-                    }
-
-                    // If Velocity close to 0
-                    if (Math.Abs(NPC.velocity.X) < 0.05) NPC.velocity.X = 0f;
-                    if (Math.Abs(NPC.velocity.Y) < 0.05) NPC.velocity.Y = 0f;
-                }
-
-                // Handle State Changing
-                int threshold = 120;
-                if (Main.expertMode)
-                {
-                    threshold = 85;
-                }
-
-                // Handle State Change
-                if (stateTimer >= threshold)
-                {
-                    // Increment Second Timer
-                    stateTimer2 += 1f;
-
-                    // Reset Main timer
-                    stateTimer = 0f;
-
-                    // Reset Target
-                    NPC.target = 255;
-
-                    // Change Sub State
-                    if (stateTimer2 >= 4f)
-                    {
-                        subState = 0;
-                        stateTimer2 = 0f;
-                    }
-                    else
-                    {
-                        subState = 1;
-                    }
-                }
-            }
-        }
-
-        private void MoveToTarget(Player player, float moveSpeed, float accelerationRate, out float distanceToPlayer)
-        {
-            // Set Distance to Player
-            distanceToPlayer = Vector2.Distance(NPC.Center, player.Center);
-
-            // Set Move Speeds
-            float movementSpeed = moveSpeed / distanceToPlayer;
-
-            float targetVelocityX = (player.Center.X - NPC.Center.X) * movementSpeed;
-            float targetVelocityY = (player.Center.Y - NPC.Center.Y) * movementSpeed;
-
-            // Apply Acceleration
-            if (NPC.velocity.X < targetVelocityX)
-            {
-                // Increase Velocity by Acceleration
-                NPC.velocity.X += accelerationRate;
-
-                // Further increase velocity
-                if (NPC.velocity.X < 0f && targetVelocityX > 0f)
-                {
-                    NPC.velocity.X += accelerationRate;
-                }
-            }
-
-            if (NPC.velocity.X > targetVelocityX)
-            {
-                // Increase Velocity by Acceleration
-                NPC.velocity.X -= accelerationRate;
-
-                // Further increase velocity
-                if (NPC.velocity.X > 0f && targetVelocityX < 0f)
-                {
-                    NPC.velocity.X -= accelerationRate;
-                }
-            }
-
-            if (NPC.velocity.Y < targetVelocityY)
-            {
-                // Increase Velocity by Acceleration
-                NPC.velocity.Y += accelerationRate;
-
-                // Further increase velocity
-                if (NPC.velocity.Y < 0f && targetVelocityY > 0f)
-                {
-                    NPC.velocity.Y += accelerationRate;
-                }
-            }
-
-            if (NPC.velocity.Y > targetVelocityY)
-            {
-                // Increase Velocity by Acceleration
-                NPC.velocity.Y -= accelerationRate;
-
-                // Further increase velocity
-                if (NPC.velocity.Y > 0f && targetVelocityY < 0f)
-                {
-                    NPC.velocity.Y -= accelerationRate;
-                }
-            }
-        }
-
-        private void ShootProjectile(Player player, int type, float speed, int damage, float knockback)
-        {
-            // Get Target Position
-            Vector2 projTarget = new(player.Center.X - NPC.Center.X, player.Center.Y - NPC.Center.Y);
-            float projDistance = (float)(projTarget.X * projTarget.X - projTarget.Y * projTarget.Y);
-            float projTargetDistance = speed / projDistance;
-
-            // Set Velocity
-            Vector2 projVelocity = projTarget * projTargetDistance;
-
-            // Get Spawn Position
-            Vector2 projSpawm = NPC.Center + projVelocity * 10f;
-
-            // Handle Network Logic
-            if (Main.netMode != NetmodeID.MultiplayerClient)
-            {
-                int projectileID = Projectile.NewProjectile(NPC.GetSource_FromAI(), projSpawm, projVelocity, type, damage, knockback);
-                if (Main.netMode == NetmodeID.Server && projectileID < 200)
-                {
-                    NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, projectileID);
-                }
-            }
-        }
-
-        public override void FindFrame(int frameHeight)
-        {
-            // First Phase
-            int startFrame = 0;
-            int endFrame = 3;
-
-            // Adjust for Second Phase
-            if (secondPhase)
-            {
-                startFrame = 4;
-                endFrame = 7;
-
-                // Ensure frame is within range
-                if (NPC.frame.Y < startFrame * frameHeight)
-                {
-                    NPC.frame.Y = startFrame * frameHeight;
-                }
-            }
-
-            // Handle Animation
-            int frameSpeed = 5;
-
-            // Increment Frame Counters
-            NPC.frameCounter += 0.5f;
-            NPC.frameCounter += NPC.velocity.Length() / 10f;
-
-            // Adjust Frame
-            if (NPC.frameCounter >= frameSpeed)
-            {
-                NPC.frameCounter = 0;
-                NPC.frame.Y += frameHeight;
-
-                // Loop back to start
-                if (NPC.frame.Y > endFrame * frameHeight)
-                {
-                    NPC.frame.Y = startFrame * frameHeight;
-                }
-            }
-        }
-
-        private const int NumberFrameWidth = 30; // width of one digit
-        private const int NumberFrameHeight = 30; // height of one digit
-        private const string NumbersTexturePath = "Terrasweeper/Content/NPCs/NineBoss/NineBoss";   // sheet
-
-        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            Texture2D numbersTex = ModContent.Request<Texture2D>(NumbersTexturePath).Value;
-            int frameIndex = Utils.Clamp((NPC.life - 1) / 1000, 0, 8);
-
-            // Source rectangle inside the sheet
-            Rectangle src = new Rectangle(
-                frameIndex * NumberFrameWidth,
-                0,                            
-                NumberFrameWidth,
-                NumberFrameHeight);
-
-            Vector2 drawPosition =
-                NPC.Center                     // NPC centre
-                - screenPos                    // convert world screen coords
-                + new Vector2(0f, -NPC.height * 0.6f); // raise above sprite
-
-            // Draw
-            spriteBatch.Draw(
-                numbersTex,
-                drawPosition,
-                src,
-                drawColor,
-                0f,
-                new Vector2(NumberFrameWidth / 2f, NumberFrameHeight / 2f), // origin
-                1f,                      // scale
-                SpriteEffects.None,
-                0f);                     // layer depth
-        }
+        #endregion
     }
 }

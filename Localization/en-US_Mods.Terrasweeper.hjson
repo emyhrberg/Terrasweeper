@@ -51,6 +51,21 @@ Items: {
 		DisplayName: Minesweeper Potion
 		Tooltip: ""
 	}
+
+	MineRadarInfoAccessoryItem: {
+		DisplayName: Mine Radar
+		Tooltip: "Detects how many mines are around you"
+	}
+
+	NineSummonConsumable: {
+		DisplayName: Nine Summon Consumable
+		Tooltip: ""
+	}
+
+	NineBossBag: {
+		DisplayName: Nine Boss Bag
+		Tooltip: ""
+	}
 }
 
 Projectiles: {

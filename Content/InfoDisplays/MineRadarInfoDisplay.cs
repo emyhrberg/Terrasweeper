@@ -9,7 +9,7 @@ namespace Terrasweeper.Content.InfoDisplays
     /// <summary>
     /// InfoDisplay that shows how many mines are nearby.
     /// <seealso cref="MineRadarInfoPlayer"/>
-    /// <seealso cref="MineRadarInfoAccessory"/>
+    /// <seealso cref="MineRadarInfoAccessoryItem"/>
     /// </summary>
     public class MineRadarInfoDisplay : InfoDisplay
     {
@@ -29,7 +29,7 @@ namespace Terrasweeper.Content.InfoDisplays
             // return true;
             // Show if the accessory is in inventory or equipped
             var player = Main.LocalPlayer;
-            return player.HasItem(ModContent.ItemType<MineRadarInfoAccessory>());
+            return player.HasItem(ModContent.ItemType<MineRadarInfoAccessoryItem>());
         }
 
         public override string DisplayValue(ref Color displayColor, ref Color displayShadowColor)
