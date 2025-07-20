@@ -62,7 +62,7 @@ namespace Terrasweeper.Common.Globals
                         {
                             countOfRevealedMinesAndFlaggedTilesArroundNumberedTile++;
                         }
-                        if (JJUtils.IsTileSolidForMine(tileSafely))
+                        if (JJUtils.IsTileSolidForNumbers(tileSafely))
                         {
                             countOfSolidTiles++;
                         }
@@ -79,6 +79,10 @@ namespace Terrasweeper.Common.Globals
                     for (int sj = j - 1; sj <= j + 1; sj++)
                     {
                         Tile tileSafely = Framing.GetTileSafely(si, sj);
+                        if (!JJUtils.IsTileSolidForNumbers(tileSafely))
+                        {
+                            continue;
+                        }
                         Main.LocalPlayer.PickTile(si, sj, (int)Math.Ceiling(item.pick / countOfSolidTiles));
                         minedSomething = true;
                     }
@@ -89,9 +93,6 @@ namespace Terrasweeper.Common.Globals
                 }
                 return minedSomething;
             }
-
-
-
             return false;
         }
 

@@ -57,7 +57,7 @@ namespace Terrasweeper.Common.Systems
                     Tile tile = Framing.GetTileSafely(x, y);
                     ref var data = ref tile.Get<MinesweeperData>();
 
-                    if (data.HasOrAtLeastHadMine || data.TileNumber != 0 || data.HasFlag)
+                    if (data.MineStatus == MineStatus.UnsolvedMine || data.TileNumber != 0 || data.HasFlag)
                     {
                         data.ClearMineFlagData();   // sets MineStatus = None and clears flag
                         data.TileNumber = 0;
@@ -100,7 +100,7 @@ namespace Terrasweeper.Common.Systems
             Log.Info($"[Minesweeper] Re-generated world mines: {minesAdded} added, ratio {minesPer100Tiles}/100.");
         }
 
-        private int MakeMineRatio()
+        public static int MakeMineRatio()
         {
             int value = 12; // Baseline value, Normal or Journey, medium, no special seed
             if (Main.expertMode) value += 3; // 15 mines for Expert
