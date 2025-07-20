@@ -73,7 +73,8 @@ namespace Terrasweeper.Helpers
                 !TileID.Sets.BreakableWhenPlacing[tileID] &&
                 !TileID.Sets.TouchDamageBleeding[tileID] &&
                 !TileID.Sets.IsAContainer[tileID] &&
-                !Main.tileCut[tileID];
+                !Main.tileCut[tileID] &&
+                tileID != TileID.Cactus;
             return result;
         }
 

@@ -1,26 +1,19 @@
 using Microsoft.Xna.Framework.Graphics;
+using System.Net.Mail;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terrasweeper.Common.Players;
 
 namespace Terrasweeper.Common.BuilderToggles
 {
     public class ShowMinesBuilderToggle : BuilderToggle
     {
-#if DEBUG
-        public override bool Active() => true;
-#else
-        public override bool Active() => false;
-#endif
+        public override bool Active() => Main.LocalPlayer.GetModPlayer<MineGogglesPlayer>().active;
 
         public override int NumberOfStates => 2;
-
-        public override void SetStaticDefaults()
-        {
-            //CurrentState = 1; // ??
-        }
 
         public override string DisplayValue()
         {

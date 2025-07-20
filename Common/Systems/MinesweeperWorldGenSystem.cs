@@ -57,10 +57,10 @@ namespace Terrasweeper.Common.Systems
                     Tile tile = Framing.GetTileSafely(x, y);
                     ref var data = ref tile.Get<MinesweeperData>();
 
-                    if (data.MineStatus == MineStatus.UnsolvedMine || data.TileNumber != 0 || data.HasFlag)
+                    if (data.MineStatus == MineStatus.UnsolvedMine)
                     {
-                        data.ClearMineFlagData();   // sets MineStatus = None and clears flag
-                        data.TileNumber = 0;
+                        data.data = 0;
+                        MinesweeperData.UpdateNumbersOfMines3x3(x, y);
                     }
                 }
             }
@@ -82,18 +82,8 @@ namespace Terrasweeper.Common.Systems
                     {
                         data.MineStatus = MineStatus.UnsolvedMine;
                         minesAdded++;
+                        MinesweeperData.UpdateNumbersOfMines3x3(x, y);
                     }
-                }
-            }
-
-            // 3) recalculate the numbers on *every* tile ---------------------
-            for (int y = 0; y < Main.maxTilesY; y++)
-            {
-                for (int x = 0; x < Main.maxTilesX; x++)
-                {
-                    ref var data = ref Main.tile[x, y].Get<MinesweeperData>();
-                    data.UpdateNumbersOfMines(x, y);
-                    ModNetHandler.minesweeperPacketHandler.SendSingleTile(x, y); // sync to clients
                 }
             }
 

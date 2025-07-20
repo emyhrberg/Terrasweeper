@@ -54,7 +54,7 @@ Items: {
 
 	MineRadarInfoAccessoryItem: {
 		DisplayName: Mine Radar
-		Tooltip: "Detects how many mines are around you"
+		Tooltip: Detects how many mines are around you
 	}
 
 	NineSummonConsumable: {
@@ -64,6 +64,11 @@ Items: {
 
 	NineBossBag: {
 		DisplayName: Nine Boss Bag
+		Tooltip: ""
+	}
+
+	MinesGoggles: {
+		DisplayName: Mines Goggles
 		Tooltip: ""
 	}
 }

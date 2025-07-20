@@ -64,6 +64,7 @@ namespace Terrasweeper.Common.Systems
                 Log.Warn($"Mine count exceeded 9 at ({x}, {y}). Clamping to 9.");
             }
             TileNumber = (byte)mineCount;
+            ModNetHandler.minesweeperPacketHandler.SendSingleTile(x, y);
         }
 
         public static void UpdateNumbersOfMines3x3(int x, int y)
@@ -76,7 +77,6 @@ namespace Terrasweeper.Common.Systems
                     Tile neighborTile = Framing.GetTileSafely(x + i, y + j);
                     ref var data = ref neighborTile.Get<MinesweeperData>();
                     data.UpdateNumbersOfMines(x + i, y + j);
-                    ModNetHandler.minesweeperPacketHandler.SendSingleTile(x + i, y + j);
                 }
             }
         }
