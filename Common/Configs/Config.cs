@@ -26,7 +26,14 @@ namespace Terrasweeper.Common.Configs
             Log.Info("Config changed with new mines per 100 tiles:" + MinesPer100Tile);
 
             // Update ITD to the new mine spawn chance
-            WorldgenMinesPass.PlaceMines((int) MinesPer100Tile);
+            if (CustomMinePer100TilesValue)
+            {
+                WorldgenMinesPass.PlaceMines((int)MinesPer100Tile);
+            }
+            else
+            {
+                WorldgenMinesPass.PlaceMines(WorldgenMinesPass.MakeMineRatio());
+            }
         }
 
         public static Config C => ModContent.GetInstance<Config>();
