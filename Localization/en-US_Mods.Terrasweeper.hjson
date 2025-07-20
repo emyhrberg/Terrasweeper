@@ -124,3 +124,5 @@ Buffs: {
 		Description: Shows the location of all mines
 	}
 }
+
+NPCs.NineBoss.DisplayName: Nine Boss
