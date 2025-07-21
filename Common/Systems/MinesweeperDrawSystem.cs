@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using System;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -9,6 +11,11 @@ namespace Terrasweeper.Common.Systems
 {
     internal class MinesweeperDrawSystem : ModSystem
     {
+        // Fade variables
+        private float CurrentFadeTimer; // The time it has spent fading
+        private static readonly TimeSpan FadeTime = TimeSpan.FromSeconds(2);
+        private float ShowMineBuffOpacity;
+
         public override void PostDrawTiles()
         {
             base.PostDrawTiles();
@@ -16,6 +23,9 @@ namespace Terrasweeper.Common.Systems
             DrawMinesweeperElements();
         }
 
+        /// <summary>
+        /// Draw some dust and mines with mines visible buff from a potion
+        /// </summary>
         public override void PostUpdateWorld()
         {
             if (!Main.LocalPlayer.HasBuff(ModContent.BuffType<MinesVisibleBuff>()))
@@ -112,19 +122,56 @@ namespace Terrasweeper.Common.Systems
                         opacity = 0f; // 0%
                     Color color = Lighting.GetColor(i, j) * opacity;
 
+                    // Minesweeper Potion Buff
+                    int showMinesBuff = ModContent.BuffType<MinesVisibleBuff>();
+                    int slot = Main.LocalPlayer.FindBuffIndex(showMinesBuff);
+
+                    if (slot != -1)
+                    {
+                        int ticks = Main.LocalPlayer.buffTime[slot];
+                        // WARNING:
+                        // For some reson, Log and NewChat crashes here, so dont use it!!!
+                        //Log.Info("ticks: " + ticks);
+                        // Ticks start at 180 (3 seconds).
+                        // Ticks between 180 and 150 should lerp from 0 to 1 opacity.
+                        // Ticks between 30 and 0 should lerp from 1 to 0 opacity.
+                        if (ticks >= 150)
+                        {
+                            float t = (180f - ticks) / 30f; // 0 to 1
+                            ShowMineBuffOpacity = MathHelper.Lerp(0, 1, t);
+                        }
+                        else if (ticks >= 30)
+                        {
+                            ShowMineBuffOpacity = 1f;
+                        }
+                        else
+                        {
+                            float t = ticks / 30f; // 1 to 0
+                            ShowMineBuffOpacity = MathHelper.Lerp(0, 1, t);
+                        }
+                    }
+
                     // Mines (only debug)
                     var mineVisibilityToggle = ModContent.GetInstance<ShowMinesBuilderToggle>();
                     bool ShowDebugMines = mineVisibilityToggle.Active() && mineVisibilityToggle.CurrentState == 0;
                     bool MineTile = unsolvedMine && !data.HasFlag && isTileSolidForMine;
-                    if (ShowDebugMines && MineTile || MineTile && Main.LocalPlayer.HasBuff(ModContent.BuffType<MinesVisibleBuff>()))
+                    if (ShowDebugMines && MineTile)
                     {
                         // Unsolved Mine
-                        // Draw the mine if it is unsolved and the player has the MinesVisibleBuff
                         Main.spriteBatch.Draw(
                             Ass.Minesweeper.Value,
                             drawPos,
                             MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.Mine),
                             color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                    }
+                    // Minesweeper Potion Buff
+                    else if (MineTile && Main.LocalPlayer.HasBuff(showMinesBuff))
+                    {
+                        Main.spriteBatch.Draw(
+                            Ass.Minesweeper.Value,
+                            drawPos,
+                            MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.Mine),
+                            color * ShowMineBuffOpacity, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                     }
                     // Solved Mine
                     else if (data.MineStatus == MineStatus.Solved)
@@ -161,7 +208,7 @@ namespace Terrasweeper.Common.Systems
                             drawPos,
                             MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.Nine),
                             Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-                        Log.Warn($"Wrong data on tile!");
+                        Log.Warn($"Wrong data on MINE!");
                     }
                     // Numbers
                     else if (!isTileSolidForNumbers)
@@ -188,7 +235,7 @@ namespace Terrasweeper.Common.Systems
                             drawPos,
                             MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.Nine), // 9
                             Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-                            Log.Warn($"Wrong data on tile!");
+                            Log.Warn($"Wrong data on NUMBER!");
                         }
                     }
 

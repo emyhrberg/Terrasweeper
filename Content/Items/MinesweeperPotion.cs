@@ -32,9 +32,9 @@ namespace Terrasweeper.Content.Items
             Item.consumable = true;
             Item.rare = ItemRarityID.Orange;
             Item.value = Item.buyPrice(silver: 1);
-            Item.buffType = ModContent.BuffType<MinesVisibleBuff>(); // Specify an existing buff to be applied when used.
+            Item.buffType = ModContent.BuffType<MinesVisibleBuff>();
             const int tick = 60; // 1 second = 60 ticks
-            Item.buffTime = 2 * tick; // 5 seconds duration
+            Item.buffTime = 3 * tick; // 3 seconds duration
         }
 
         public override void AddRecipes()

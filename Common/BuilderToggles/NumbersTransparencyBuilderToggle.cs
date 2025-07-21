@@ -34,7 +34,9 @@ namespace Terrasweeper.Common.BuilderToggles
             else
                 return Transparency0.Value;
         }
-
+        /// <summary>
+        /// Default left click handles switching states properly, no need to do anything here
+        /// </summary>
         public override bool OnLeftClick(ref SoundStyle? sound)
         {
             return base.OnLeftClick(ref sound);
