@@ -12,10 +12,15 @@ They still counts as a mine for a numbers, so keep this in mind!
 
 Game also functional in Multiplayer! 👥
 
-Good luck!
+[h2] Features [/h2]
+Right-click with your pickaxe on an empty (or numbered) tile to mine all surrounding tiles if the number of flagged tiles and revealed mines equals the number itself! (Don't worry - this is balanced by weakening your pickaxe power for tile breaking!)
+Minesweeper Potion - allows you to see mines around you for 3 seconds!
+Flag Bomb - flags all mines around!
+Changing the amount of mines in config - technically this is cheating, but if you want, you can change the amount of mines in the config! It will change their amount in your world automatically!
 
-[h2] Debugging [/h2]
-Debug tools are available: mine placer item and config for world gen settings.
+More features coming in future updates - leave your suggestions in the comments!
+
+Good luck!
 
 [h2] World Gen Preview [/h2]
 https://i.imgur.com/QSK86Lw.mp4

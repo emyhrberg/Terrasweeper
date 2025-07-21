@@ -16,7 +16,7 @@ namespace Terrasweeper.Common.Systems
         private static readonly TimeSpan FadeTime = TimeSpan.FromSeconds(2);
         private float ShowMineBuffOpacity;
 
-        private const int maxDistanceOfMinesVisibilityForMinesweeperPotionInTiles = 7;
+        private const int maxDistanceOfMinesVisibilityForMinesweeperPotionInTiles = 10;
 
         public override void PostDrawTiles()
         {

@@ -18,7 +18,7 @@ namespace Terrasweeper.Content.Items
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient<MinedMine>(99);
-            recipe.AddTile(TileID.HeavyWorkBench);
+            recipe.AddTile(TileID.WorkBenches);
             recipe.Register();
 
         }

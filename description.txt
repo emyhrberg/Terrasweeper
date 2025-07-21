@@ -11,10 +11,15 @@ They still counts as a mine for a numbers, so keep this in mind!
 
 Game also functional in Multiplayer!
 
-Good luck!
+Features:
+Right-click with your pickaxe on an empty (or numbered) tile to mine all surrounding tiles if the number of flagged tiles and revealed mines equals the number itself! (Don't worry - this is balanced by weakening your pickaxe power for tile breaking!)
+Minesweeper Potion - allows you to see mines around you for 3 seconds!
+Flag Bomb - flags all mines around!
+Changing the amount of mines in config - technically this is cheating, but if you want, you can change the amount of mines in the config! It will change their amount in your world automatically!
 
-Debugging:
-Debug tools are available: mine placer item and config for world gen settings.
+More features coming in future updates - leave your suggestions in the comments!
+
+Good luck!
 
 Mod Jam Info:
 Team: Erky, Cotlim, Cronus

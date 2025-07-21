@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terrasweeper.Common.Systems;
@@ -22,6 +23,11 @@ namespace Terrasweeper.Common.Configs
         public override void OnChanged()
         {
             base.OnChanged();
+
+            if (Main.gameMenu)
+            {
+                return;
+            }
 
             Log.Info("Config changed with new mines per 100 tiles:" + MinesPer100Tile);
 

@@ -28,7 +28,7 @@ namespace Terrasweeper.Content.Items.Accessories
         // This is the main hook that allows for our info display to actually work with this accessory. 
         public override void UpdateInfoAccessory(Player player)
         {
-            int radius = 25;
+            int radius = 4;
             int mineCount = 0;
             int px = (int)(player.Center.X / 16f);
             int py = (int)(player.Center.Y / 16f);
@@ -53,8 +53,9 @@ namespace Terrasweeper.Content.Items.Accessories
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<MinedMine>(), 10)
-                .AddTile(TileID.WorkBenches)
+                .AddIngredient(ItemID.Radar)
+                .AddIngredient<MinedMine>(50)
+                .AddTile(TileID.Anvils)
                 .Register();
         }
     }

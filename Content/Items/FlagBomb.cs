@@ -16,7 +16,7 @@ namespace Terrasweeper.Content.Items
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient<FlaggedFlag>(10);
+            recipe.AddIngredient<FlaggedFlag>(20);
             recipe.AddIngredient(ItemID.Bomb);
             recipe.Register();
         }

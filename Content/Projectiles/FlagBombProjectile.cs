@@ -94,7 +94,8 @@ namespace Terrasweeper.Content.Projectiles
                     ref var data = ref tile.Get<MinesweeperData>();
                     if (data.MineStatus == MineStatus.UnsolvedMine)
                     {
-                        data.HasFlag = true;
+                        data.MineStatus = MineStatus.Solved;
+                        data.HasFlag = false;
                         ModNetHandler.minesweeperPacketHandler.SendSingleTile(i, j);
                     }
                 }

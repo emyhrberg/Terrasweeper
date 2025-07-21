@@ -19,6 +19,11 @@ namespace Terrasweeper.Content.Items
             recipe.AddIngredient<FlaggedFlag>(20);
             recipe.AddIngredient(ItemID.StickyBomb);
             recipe.Register();
+
+            CreateRecipe()
+            .AddIngredient<FlagBomb>(1)
+            .AddIngredient(ItemID.Gel)
+            .Register();
         }
     }
 }

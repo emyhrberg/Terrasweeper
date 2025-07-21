@@ -67,7 +67,6 @@ namespace Terrasweeper.Common.Systems
 
             // 2) place mines with the new ratio ------------------------------
             int minesAdded = 0;
-            var rand = Main.rand;                 // WorldGen.genRand is only safe during world-gen
 
             for (int y = 0; y < Main.maxTilesY; y++)
             {
@@ -88,7 +87,8 @@ namespace Terrasweeper.Common.Systems
                             continue;
 
                         ref var data = ref tile.Get<MinesweeperData>();
-                        if (rand.Next(100) < actuallMinerPer100Tiles)
+                    
+                        if (JJUtils.GenRandNumber(x, y, Main.ActiveWorldFileData.Seed) <= actuallMinerPer100Tiles)
                         {
                             data.MineStatus = MineStatus.UnsolvedMine;
                             minesAdded++;

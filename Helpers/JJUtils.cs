@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -124,6 +125,24 @@ namespace Terrasweeper.Helpers
                 return DepthZone.Overworld;
             return DepthZone.Sky;
         }
+
+        public static int GenRandNumber(int x, int y, int seed, int min = 1, int max = 100)
+        {
+            unchecked
+            {
+                // Hash
+                uint value = (uint)(x * 73856093 ^ y * 19349663 ^ seed * 83492791);
+
+                // Xorshift
+                value ^= value << 13;
+                value ^= value >> 17;
+                value ^= value << 5;
+
+                // Return value between min amd max
+                return (int)(min + (value % (max - min)));
+            }
+        }
+
     }
 
     public enum DepthZone

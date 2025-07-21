@@ -150,5 +150,10 @@ Buffs: {
 	}
 }
 
+Conditions: {
+	NotInExpertMode: Not In Expert mode
+	NotInMasterMode: Not In Master mode
+}
+
 NPCs.NineBoss.DisplayName: Nine Boss
 Keybinds.OpenConfig.DisplayName: Open Config

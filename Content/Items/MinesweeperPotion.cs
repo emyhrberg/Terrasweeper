@@ -1,5 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terrasweeper.Content.Buffs;
 
@@ -40,9 +41,28 @@ namespace Terrasweeper.Content.Items
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<MinedMine>(), 20)
-                .AddTile(TileID.WorkBenches)
+                .AddIngredient(ItemID.BottledWater)
+                .AddIngredient<MinedMine>(10)
+                .AddIngredient(ItemID.Blinkroot)
+                .AddTile(TileID.Bottles)
+                .AddCondition(Condition.InClassicMode)
                 .Register();
+            CreateRecipe()
+                .AddIngredient(ItemID.BottledWater)
+                .AddIngredient<MinedMine>(20)
+                .AddIngredient(ItemID.Blinkroot)
+                .AddTile(TileID.Bottles)
+                .AddCondition(Condition.InExpertMode)
+                .AddCondition(Language.GetOrRegister("Mods.Terrasweeper.Conditions.NotInMasterMode"), () => !Main.masterMode)
+                .Register();
+            CreateRecipe()
+                .AddIngredient(ItemID.BottledWater)
+                .AddIngredient<MinedMine>(999)
+                .AddIngredient(ItemID.Blinkroot)
+                .AddTile(TileID.Bottles)
+                .AddCondition(Condition.InMasterMode)
+                .Register();
+
         }
     }
 }
