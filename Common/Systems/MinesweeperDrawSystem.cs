@@ -16,63 +16,13 @@ namespace Terrasweeper.Common.Systems
         private static readonly TimeSpan FadeTime = TimeSpan.FromSeconds(2);
         private float ShowMineBuffOpacity;
 
+        private const int maxDistanceOfMinesVisibilityForMinesweeperPotionInTiles = 7;
+
         public override void PostDrawTiles()
         {
             base.PostDrawTiles();
 
             DrawMinesweeperElements();
-        }
-
-        /// <summary>
-        /// Draw some dust and mines with mines visible buff from a potion
-        /// </summary>
-        public override void PostUpdateWorld()
-        {
-            if (!Main.LocalPlayer.HasBuff(ModContent.BuffType<MinesVisibleBuff>()))
-                return;                                   // nothing to do
-
-            Vector2 offScreen = Main.drawToScreen ? Vector2.Zero : new(Main.offScreenRange);
-            int startX = (int)((Main.screenPosition.X - offScreen.X) / 16f) - 1;
-            int startY = (int)((Main.screenPosition.Y - offScreen.Y) / 16f) - 1;
-            int endX = (int)((Main.screenPosition.X + Main.screenWidth + offScreen.X) / 16f) + 2;
-            int endY = (int)((Main.screenPosition.Y + Main.screenHeight + offScreen.Y) / 16f) + 5;
-
-            startX = Utils.Clamp(startX, 0, Main.maxTilesX);
-            endX = Utils.Clamp(endX, 0, Main.maxTilesX);
-            startY = Utils.Clamp(startY, 0, Main.maxTilesY);
-            endY = Utils.Clamp(endY, 0, Main.maxTilesY);
-
-            Point overdraw = Main.GetScreenOverdrawOffset();
-
-            for (int i = startX + overdraw.X; i < endX - overdraw.X; i++)
-            {
-                for (int j = startY + overdraw.Y; j < endY - overdraw.Y; j++)
-                {
-                    var tile = Main.tile[i, j];
-                    ref var data = ref tile.Get<MinesweeperData>();
-
-                    if (data.MineStatus != MineStatus.UnsolvedMine || !JJUtils.IsTileSolidForMine(tile))
-                        continue;
-
-                    // periodic dust (¼ chance per frame per tile)
-                    if (Main.rand.NextBool(40))
-                    {
-                        Dust d = Dust.NewDustDirect(
-                            Position: new Vector2(i * 16, j * 16),
-                            Width: 16, Height: 16,
-                            DustID.TreasureSparkle,                 // same gold-spelunker dust
-                            SpeedX: 0f, SpeedY: 0f, Alpha: 150,
-                            newColor: default,
-                            Scale: 0.05f);
-                        d.fadeIn = 1.50f;
-                        d.velocity *= 0.10f;
-                        d.noLight = false;     // let the dust itself cast tiny light
-                    }
-
-                    // steady “glow” so the tile pops in dark caves
-                    Lighting.AddLight(i, j, r: 0.65f, g: 0.55f, b: 0.15f); // warm gold-yellow
-                }
-            }
         }
 
         public void DrawMinesweeperElements()
@@ -168,12 +118,44 @@ namespace Terrasweeper.Common.Systems
                     // Minesweeper Potion Buff
                     else if (mineTile && Main.LocalPlayer.HasBuff(showMinesBuff))
                     {
+                        // Getting distancebetween Player and tile
+                        float distanceInTiles = Vector2.Distance(Main.LocalPlayer.position, new Vector2(i, j) * 16f) / 16f;
+
+                        // If distance > 7(in tiles) - skip that mine
+                        if (distanceInTiles > 7)
+                        {
+                            continue;
+                        }
+
+                        // Inversion of a percent (thats why 1f - ) also ^2 to make an opacity effect less stronger (maybe you can set bigger power like 2.5 or 3; because distanceInTiles / maxDistanceOfMinesVisibilityForMinesweeperPotionInTiles is between 0 and 1, taking it in power makes it smaller, so 1 - this_percent^2 would be bigger, so opacity would be weaker and glowing would be stronger)
+                        float aPercentageOfDistance = 1f - (float)Math.Pow(distanceInTiles / maxDistanceOfMinesVisibilityForMinesweeperPotionInTiles, 2f); 
+
+                        // Draving Mine
                         Main.spriteBatch.Draw(
                             Ass.Minesweeper.Value,
                             drawPos,
                             MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.Mine),
-                            color * ShowMineBuffOpacity, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                            color * ShowMineBuffOpacity * aPercentageOfDistance, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+
+                        // Drawing dust and glow
+                        if (Main.rand.NextBool(40))
+                        {
+                            Dust d = Dust.NewDustDirect(
+                                Position: new Vector2(i * 16, j * 16),
+                                Width: 16, Height: 16,
+                                DustID.TreasureSparkle,                 // same gold-spelunker dust
+                                SpeedX: 0f, SpeedY: 0f, Alpha: 150,
+                                newColor: default,
+                                Scale: 0.05f);
+                            d.fadeIn = 1.50f;
+                            d.velocity *= 0.10f;
+                            d.noLight = false;     // let the dust itself cast tiny light
+                        }
+
+                        // steady “glow” so the tile pops in dark caves
+                        Lighting.AddLight(i, j, r: 0.65f * aPercentageOfDistance, g: 0.55f * aPercentageOfDistance, b: 0.15f * aPercentageOfDistance); // warm gold-yellow
                     }
+
                     // Solved Mine
                     else if (data.MineStatus == MineStatus.Solved)
                     {
@@ -183,6 +165,7 @@ namespace Terrasweeper.Common.Systems
                             MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.SolvedMine),
                             color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                     }
+
                     // Failed Mine
                     else if (data.MineStatus == MineStatus.Failed)
                     {
@@ -192,6 +175,7 @@ namespace Terrasweeper.Common.Systems
                             MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.FailedMine),
                             color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                     }
+
                     // Flag
                     else if (data.HasFlag && isTileSolidForMine)
                     {
@@ -201,6 +185,7 @@ namespace Terrasweeper.Common.Systems
                             MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.Flag),
                             color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                     }
+
                     // Error data on tile
                     else if ((data.HasFlag || unsolvedMine) && !isTileSolidForMine)
                     {
@@ -211,6 +196,7 @@ namespace Terrasweeper.Common.Systems
                             Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                         Log.Warn($"Wrong data on MINE!");
                     }
+
                     // Numbers
                     else if (!isTileSolidForNumbers)
                     {
