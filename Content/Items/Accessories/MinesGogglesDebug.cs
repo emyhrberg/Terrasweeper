@@ -10,7 +10,7 @@ using Terrasweeper.Common.Players;
 
 namespace Terrasweeper.Content.Items.Accessories
 {
-    internal class MinesGoggles : ModItem
+    internal class MinesGogglesDebug : ModItem
     {
         public override string Texture => "Terraria/Images/Item_" + ItemID.Sunglasses;
 
@@ -33,18 +33,5 @@ namespace Terrasweeper.Content.Items.Accessories
         {
             player.GetModPlayer<MineGogglesPlayer>().active = true;
         }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient<MinedMine>(99)
-                .AddIngredient<FlaggedFlag>(99)
-                .AddIngredient(ItemID.Sunglasses)
-                .AddIngredient(ItemID.LunarBar, 30)
-                .AddTile(TileID.MythrilAnvil)
-                .Register();
-        }
-
-
     }
 }

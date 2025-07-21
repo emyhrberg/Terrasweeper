@@ -71,6 +71,11 @@ Items: {
 		DisplayName: Mines Goggles
 		Tooltip: ""
 	}
+
+	MinesGogglesDebug: {
+		DisplayName: Mines Goggles Debug
+		Tooltip: ""
+	}
 }
 
 Projectiles: {

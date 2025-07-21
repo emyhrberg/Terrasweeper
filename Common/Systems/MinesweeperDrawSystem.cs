@@ -151,11 +151,12 @@ namespace Terrasweeper.Common.Systems
                         }
                     }
 
-                    // Mines (only debug)
-                    var mineVisibilityToggle = ModContent.GetInstance<ShowMinesBuilderToggle>();
-                    bool ShowDebugMines = mineVisibilityToggle.Active() && mineVisibilityToggle.CurrentState == 0;
-                    bool MineTile = unsolvedMine && !data.HasFlag && isTileSolidForMine;
-                    if (ShowDebugMines && MineTile)
+                    // Mines
+                    ShowMinesBuilderToggle mineVisibilityToggle = ModContent.GetInstance<ShowMinesBuilderToggle>();
+
+                    bool showMines = mineVisibilityToggle.Active() && mineVisibilityToggle.CurrentState == 0;
+                    bool mineTile = unsolvedMine && !data.HasFlag && isTileSolidForMine;
+                    if (showMines && mineTile)
                     {
                         // Unsolved Mine
                         Main.spriteBatch.Draw(
@@ -165,7 +166,7 @@ namespace Terrasweeper.Common.Systems
                             color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                     }
                     // Minesweeper Potion Buff
-                    else if (MineTile && Main.LocalPlayer.HasBuff(showMinesBuff))
+                    else if (mineTile && Main.LocalPlayer.HasBuff(showMinesBuff))
                     {
                         Main.spriteBatch.Draw(
                             Ass.Minesweeper.Value,
