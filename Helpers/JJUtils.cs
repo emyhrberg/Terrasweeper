@@ -74,7 +74,8 @@ namespace Terrasweeper.Helpers
                 !TileID.Sets.TouchDamageBleeding[tileID] &&
                 !TileID.Sets.IsAContainer[tileID] &&
                 !Main.tileCut[tileID] &&
-                tileID != TileID.Cactus;
+                tileID != TileID.Cactus &&
+                tileID != TileID.Rope;
             return result;
         }
 
@@ -104,12 +105,33 @@ namespace Terrasweeper.Helpers
 
         public static void ToggleFlagState(int i, int j)
         {
-            
             Tile tile = Framing.GetTileSafely(i, j);
             ref var data = ref tile.Get<MinesweeperData>();
             data.HasFlag = !data.HasFlag;
             SoundEngine.PlaySound(SoundID.Tink, i * 16, j * 16);
             ModNetHandler.minesweeperPacketHandler.SendSingleTile(i, j);
         }
+
+        public static DepthZone GetDepthZone(int tileY)
+        {
+            if (tileY > Main.UnderworldLayer)
+                return DepthZone.Underworld;
+            if (tileY <= Main.UnderworldLayer && tileY > Main.rockLayer)
+                return DepthZone.RockLayer;
+            if (tileY <= Main.rockLayer && tileY > Main.worldSurface)
+                return DepthZone.DirtLayer;
+            if (tileY <= Main.worldSurface && tileY > Main.worldSurface * 0.35)
+                return DepthZone.Overworld;
+            return DepthZone.Sky;
+        }
+    }
+
+    public enum DepthZone
+    {
+        Sky,
+        Overworld,
+        DirtLayer,
+        RockLayer,
+        Underworld
     }
 }

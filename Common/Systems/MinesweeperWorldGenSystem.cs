@@ -71,20 +71,30 @@ namespace Terrasweeper.Common.Systems
 
             for (int y = 0; y < Main.maxTilesY; y++)
             {
-                for (int x = 0; x < Main.maxTilesX; x++)
+                int actuallMinerPer100Tiles = minesPer100Tiles;
+                DepthZone depthZone = JJUtils.GetDepthZone(y);
+                if (depthZone == DepthZone.Sky)
                 {
-                    Tile tile = Framing.GetTileSafely(x, y);
-                    if (!JJUtils.IsTileSolidForMine(tile))
-                        continue;
-
-                    ref var data = ref tile.Get<MinesweeperData>();
-                    if (rand.Next(100) < minesPer100Tiles)
-                    {
-                        data.MineStatus = MineStatus.UnsolvedMine;
-                        minesAdded++;
-                        MinesweeperData.UpdateNumbersOfMines3x3(x, y);
-                    }
+                    actuallMinerPer100Tiles = (int)(actuallMinerPer100Tiles * 0.5f);
+                }else if(depthZone == DepthZone.Overworld)
+                {
+                    actuallMinerPer100Tiles = (int)(actuallMinerPer100Tiles * 0.75f);
                 }
+
+                    for (int x = 0; x < Main.maxTilesX; x++)
+                    {
+                        Tile tile = Framing.GetTileSafely(x, y);
+                        if (!JJUtils.IsTileSolidForMine(tile))
+                            continue;
+
+                        ref var data = ref tile.Get<MinesweeperData>();
+                        if (rand.Next(100) < actuallMinerPer100Tiles)
+                        {
+                            data.MineStatus = MineStatus.UnsolvedMine;
+                            minesAdded++;
+                            MinesweeperData.UpdateNumbersOfMines3x3(x, y);
+                        }
+                    }
             }
 
             Log.Info($"[Minesweeper] Re-generated world mines: {minesAdded} added, ratio {minesPer100Tiles}/100.");

@@ -13,7 +13,7 @@ namespace Terrasweeper.Common.Globals
     {
         public override bool AltFunctionUse(Item item, Player player)
         {
-            if (item.pick <= 0 || ModContent.GetInstance<NumbersTransparencyBuilderToggle>().CurrentState == 2)
+            if (item.pick <= 0 || ModContent.GetInstance<NumbersTransparencyBuilderToggle>().CurrentState == 2 || !player.ItemTimeIsZero)
             {
                 return false;
             }
@@ -83,15 +83,20 @@ namespace Terrasweeper.Common.Globals
                         {
                             continue;
                         }
-                        Main.LocalPlayer.PickTile(si, sj, (int)Math.Ceiling(item.pick / countOfSolidTiles));
+                        Main.LocalPlayer.PickTile(si, sj, (int)Math.Floor(item.pick / countOfSolidTiles));
                         minedSomething = true;
                     }
                 }
                 if (minedSomething)
                 {
                     ItemID.Sets.ItemsThatAllowRepeatedRightClick[item.type] = true;
+                    player.ApplyItemTime(item, player.pickSpeed);
+                    if (!player.ItemAnimationActive)
+                    {
+                        player.ApplyItemAnimation(item);
+                    }
                 }
-                return minedSomething;
+                return false;
             }
             return false;
         }
