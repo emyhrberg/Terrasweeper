@@ -88,7 +88,8 @@ namespace Terrasweeper.Common.Systems
 
                         ref var data = ref tile.Get<MinesweeperData>();
                     
-                        if (JJUtils.GenRandNumber(x, y, Main.ActiveWorldFileData.Seed) <= actuallMinerPer100Tiles)
+                        if (JJUtils.GenRandNumber(x, y, Main.ActiveWorldFileData.Seed) <= actuallMinerPer100Tiles && 
+                        data.MineStatus == MineStatus.None)
                         {
                             data.MineStatus = MineStatus.UnsolvedMine;
                             minesAdded++;

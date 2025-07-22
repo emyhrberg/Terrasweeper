@@ -1,5 +1,2 @@
-v1.0:
-- Added minesweeper potion to see all mines for a few seconds
-- Added mine goggles to see all mines permanently, TODO revisit if this is needed
-- Added config option to instantly update mine ratio while in a world
-- Fixed misc bugs related to flag placing and mine functionality
+v1.0.1:
+- Minor fix of editing amount of mines in config
