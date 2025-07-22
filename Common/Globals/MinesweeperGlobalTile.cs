@@ -69,4 +69,13 @@ public class MinesweeperGlobalTile : GlobalTile
         }
         return JJUtils.IsTileSolidForMine(tileTypeBeingPlaced);
     }
+
+    public override bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak)
+    {
+        Tile tile = Framing.GetTileSafely(i, j);
+        ref var data = ref tile.Get<MinesweeperData>();
+
+        data.UpdateNumbersOfMines(i, j);
+        return base.TileFrame(i, j, type, ref resetFrame, ref noBreak);
+    }
 }
