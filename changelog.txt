@@ -1,2 +1,4 @@
 v1.0.1:
 - Minor fix of editing amount of mines in config
+- Minor fix of spawning Mined Mine Item in MP
+- Excluding Minesweeper Potion Effect from Infinite Effects of Fargo's Mutant Mod 

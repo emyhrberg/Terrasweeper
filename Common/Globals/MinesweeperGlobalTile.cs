@@ -48,7 +48,7 @@ public class MinesweeperGlobalTile : GlobalTile
                 new Vector2(i * 16f, j * 16f),
                 ModContent.ItemType<MinedMine>(),
                 1, false);
-            NetMessage.SendData(MessageID.SyncItem, number: item);
+            NetMessage.SendData(MessageID.SyncItem, number: item, number2:1);
 
 
             MinesweeperData.UpdateNumbersOfMines3x3(i, j);
