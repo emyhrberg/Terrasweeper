@@ -61,7 +61,7 @@ namespace Terrasweeper.Common.Systems
             if (mineCount > 9)
             {
                 mineCount = 9;
-                Log.Warn($"Mine count exceeded 9 at ({x}, {y}). Clamping to 9.");
+                //Log.Warn($"Mine count exceeded 9 at ({x}, {y}). Clamping to 9.");
             }
             TileNumber = (byte)mineCount;
             ModNetHandler.minesweeperPacketHandler.SendSingleTile(x, y);

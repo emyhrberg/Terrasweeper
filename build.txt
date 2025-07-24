@@ -4,3 +4,4 @@ version = 1.0.1
 buildIgnore = Assets/Photoshop*
 side = both
 includeSource = true
+weakReferences = Fargowiltas

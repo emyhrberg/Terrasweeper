@@ -49,6 +49,19 @@ namespace Terrasweeper.Common.Systems
 
             Point screenOverdrawOffset = Main.GetScreenOverdrawOffset();
 
+            // Minesweeper Potion Buff
+            int showMinesBuff = ModContent.BuffType<MinesVisibleBuff>();
+            int slot = Main.LocalPlayer.FindBuffIndex(showMinesBuff);
+
+            if (slot != -1)
+            {
+                ShowMineBuffOpacity = Math.Clamp(ShowMineBuffOpacity + (1f / 30f), 0, 1);
+            }
+            else
+            {
+                ShowMineBuffOpacity = Math.Clamp(ShowMineBuffOpacity - (1f / 30f), 0, 1);
+            }
+
             for (int i = tileStartX + screenOverdrawOffset.X; i < tileEndX - screenOverdrawOffset.X; i++)
             {
                 for (int j = tileStartY + screenOverdrawOffset.Y; j < tileEndY - screenOverdrawOffset.Y; j++)
@@ -72,35 +85,6 @@ namespace Terrasweeper.Common.Systems
                         opacity = 0f; // 0%
                     Color color = Lighting.GetColor(i, j) * opacity;
 
-                    // Minesweeper Potion Buff
-                    int showMinesBuff = ModContent.BuffType<MinesVisibleBuff>();
-                    int slot = Main.LocalPlayer.FindBuffIndex(showMinesBuff);
-
-                    if (slot != -1)
-                    {
-                        int ticks = Main.LocalPlayer.buffTime[slot];
-                        // WARNING:
-                        // For some reson, Log and NewChat crashes here, so dont use it!!!
-                        //Log.Info("ticks: " + ticks);
-                        // Ticks start at 180 (3 seconds).
-                        // Ticks between 180 and 150 should lerp from 0 to 1 opacity.
-                        // Ticks between 30 and 0 should lerp from 1 to 0 opacity.
-                        if (ticks >= 150)
-                        {
-                            float t = (180f - ticks) / 30f; // 0 to 1
-                            ShowMineBuffOpacity = MathHelper.Lerp(0, 1, t);
-                        }
-                        else if (ticks >= 30)
-                        {
-                            ShowMineBuffOpacity = 1f;
-                        }
-                        else
-                        {
-                            float t = ticks / 30f; // 1 to 0
-                            ShowMineBuffOpacity = MathHelper.Lerp(0, 1, t);
-                        }
-                    }
-
                     // Mines
                     ShowMinesBuilderToggle mineVisibilityToggle = ModContent.GetInstance<ShowMinesBuilderToggle>();
 
@@ -116,7 +100,7 @@ namespace Terrasweeper.Common.Systems
                             color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                     }
                     // Minesweeper Potion Buff
-                    else if (mineTile && Main.LocalPlayer.HasBuff(showMinesBuff))
+                    else if (mineTile && ShowMineBuffOpacity > 0)
                     {
                         // Getting distancebetween Player and tile
                         float distanceInTiles = Vector2.Distance(Main.LocalPlayer.position, new Vector2(i, j) * 16f) / 16f;
@@ -128,7 +112,7 @@ namespace Terrasweeper.Common.Systems
                         }
 
                         // Inversion of a percent (thats why 1f - ) also ^2 to make an opacity effect less stronger (maybe you can set bigger power like 2.5 or 3; because distanceInTiles / maxDistanceOfMinesVisibilityForMinesweeperPotionInTiles is between 0 and 1, taking it in power makes it smaller, so 1 - this_percent^2 would be bigger, so opacity would be weaker and glowing would be stronger)
-                        float aPercentageOfDistance = 1f - (float)Math.Pow(distanceInTiles / maxDistanceOfMinesVisibilityForMinesweeperPotionInTiles, 2f); 
+                        float aPercentageOfDistance = 1f - (float)Math.Pow(distanceInTiles / maxDistanceOfMinesVisibilityForMinesweeperPotionInTiles, 2f);
 
                         // Draving Mine
                         Main.spriteBatch.Draw(

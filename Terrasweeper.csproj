@@ -9,7 +9,13 @@
 	</PropertyGroup>
 
 	<!-- References -->
-
+	<ItemGroup>
+		<Reference Include="Fargowiltas">
+			<HintPath>lib\Fargowiltas.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+	
+	
     <!-- Publicize tModLoader for easy access to private fields -->
 	<ItemGroup>
 		<PackageReference Include="Krafs.Publicizer" PrivateAssets="true" Version="2.2.1" />

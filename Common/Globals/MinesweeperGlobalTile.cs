@@ -75,7 +75,7 @@ public class MinesweeperGlobalTile : GlobalTile
         Tile tile = Framing.GetTileSafely(i, j);
         ref var data = ref tile.Get<MinesweeperData>();
 
-        data.UpdateNumbersOfMines(i, j);
+        MinesweeperData.UpdateNumbersOfMines3x3(i, j);
         return base.TileFrame(i, j, type, ref resetFrame, ref noBreak);
     }
 }

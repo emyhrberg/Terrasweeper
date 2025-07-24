@@ -76,7 +76,7 @@ namespace Terrasweeper.Helpers
                 !TileID.Sets.IsAContainer[tileID] &&
                 !Main.tileCut[tileID] &&
                 tileID != TileID.Cactus &&
-                tileID != TileID.Rope;
+                tileID != TileID.Rope || tileID == TileID.Traps;
             return result;
         }
 
