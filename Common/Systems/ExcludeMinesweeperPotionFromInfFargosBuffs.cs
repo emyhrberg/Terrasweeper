@@ -10,6 +10,7 @@ using Terrasweeper.Content.Items;
 namespace Terrasweeper.Common.Systems
 {
     [JITWhenModsEnabled("Fargowiltas")]
+    [ExtendsFromMod("Fargowiltas")]
     internal class ExcludeMinesweeperPotionFromInfFargosBuffs : ModSystem
     {
         public override void PostSetupContent()
