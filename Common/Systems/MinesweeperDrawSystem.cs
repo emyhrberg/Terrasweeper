@@ -178,7 +178,7 @@ namespace Terrasweeper.Common.Systems
                             drawPos,
                             MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.Nine),
                             Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-                        Log.Warn($"Wrong data on MINE!");
+                        //Log.Warn($"Wrong data on MINE!");
                     }
 
                     // Numbers
@@ -206,7 +206,7 @@ namespace Terrasweeper.Common.Systems
                             drawPos,
                             MinesweeperTextures.GetRectangle(MinesweeperTexturesEnum.Nine), // 9
                             Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-                            Log.Warn($"Wrong data on NUMBER!");
+                            //Log.Warn($"Wrong data on NUMBER!");
                         }
                     }
 
